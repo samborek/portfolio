@@ -8,6 +8,11 @@ cover: /images/work/hydration_1.jpg
 hero_image: /images/work/hydration_1.jpg
 carousel:
   - /images/work/hydration.json
+  - /images/work/hydration_2.jpg
+  - /images/work/hydration_3.jpg
+  - /images/work/hydration_4.jpg
+  - /images/work/hydration_5.jpg
+  - /images/work/hydration_6.jpg
 carousel_object_fit: cover
 client: Hydration Protocol
 role: "Lead Product Designer"
