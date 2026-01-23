@@ -40,8 +40,8 @@
   /* Layout */
   --sidebar-width: 20rem;
   --sidebar-px: var(--space-lg);
-  --max-project-width: 100rem;
-  /* 1600px */
+  --max-project-width: 75rem;
+  /* 1200px */
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -307,7 +307,7 @@ ol {
 }
 
 /* Right-align layout on wide screens: sidebar expands, projects stay fixed width */
-@media (min-width: 122rem) {
+@media (min-width: 95rem) {
   .portfolio-wrapper {
     grid-template-columns: 1fr var(--max-project-width);
     margin-right: var(--space-lg);
@@ -808,8 +808,7 @@ ol {
   }
 }
 
-.embla__slide img,
-.embla__slide .unicorn-scene canvas {
+.embla__slide img {
   position: absolute;
   inset: 0;
   width: 100% !important;
@@ -820,6 +819,19 @@ ol {
   transform-origin: center;
   /* Smooth fade-in for lazy-loaded images */
   animation: imgFadeIn 0.8s ease-out forwards;
+  -webkit-user-drag: none;
+  z-index: 0;
+}
+
+.embla__slide .unicorn-scene canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: var(--carousel-object-position, center);
+  transform: scale(var(--carousel-image-scale, 1));
+  transform-origin: center;
   -webkit-user-drag: none;
   z-index: 0;
 }
