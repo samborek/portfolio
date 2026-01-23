@@ -250,8 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Run slightly after load to ensure critical path is clear
   if (document.readyState === 'complete') {
-    setTimeout(triggerBackgroundLoading, 2000);
+    setTimeout(triggerBackgroundLoading, 200);
   } else {
-    window.addEventListener('load', () => setTimeout(triggerBackgroundLoading, 2000));
+    window.addEventListener('load', () => setTimeout(triggerBackgroundLoading, 200));
   }
 });
