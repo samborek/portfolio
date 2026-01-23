@@ -1,0 +1,143 @@
+<% const carouselStyle = [
+  page.carousel_aspect_ratio ? `--carousel-aspect-ratio:${page.carousel_aspect_ratio};` : '',
+  page.carousel_object_fit ? `--carousel-object-fit:${page.carousel_object_fit};` : '',
+  page.project_page_carousel_height ? `--project-page-carousel-height:${page.project_page_carousel_height};` : '',
+].join(''); %>
+<article class="project-page"<% if (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
+    <header class="project-header">
+        <div class="project-meta">
+            <% const backUrl = page.back_url || theme.back_url || url_for('/'); %>
+            <% const backLabel = page.back_label || theme.back_label || 'Work'; %>
+
+            <nav class="project-breadcrumb" aria-label="Breadcrumb">
+                <a class="project-back" href="<%- backUrl %>">
+                    <span class="project-back-icon" aria-hidden="true">←</span>
+                    <span class="project-back-label"><%= backLabel %></span>
+                    <span class="breadcrumb-separator" aria-hidden="true">/</span>
+                </a>
+                <span class="breadcrumb-current" aria-current="page"><%= page.title %></span>
+            </nav>
+
+            <div class="project-meta-details">
+                <span class="project-category">
+                    <%= page.category || 'Project' %>
+                </span>
+                <% if (page.year) { %>
+                    <span class="project-year">
+                        <%= page.year %>
+                    </span>
+                    <% } %>
+            </div>
+        </div>
+        <h1 class="project-title">
+            <%= page.title %>
+        </h1>
+        <p class="project-intro">
+            <%= page.intro || '' %>
+        </p>
+    </header>
+
+    <% if (page.carousel && page.carousel.length) { %>
+        <!-- Carousel View -->
+        <div class="project-carousel">
+            <% page.carousel.forEach(function(imgUrl) { %>
+                <div class="carousel-item">
+                    <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %> slide">
+                </div>
+                <% }); %>
+        </div>
+        <% } else if (page.hero_image) { %>
+            <!-- Fallback Single Hero -->
+            <div class="project-hero-image">
+                <img src="<%- url_for(page.hero_image) %>" alt="<%= page.title %>">
+            </div>
+            <% } %>
+
+                <div class="project-content">
+                    <% if (page.client || page.role || page.tech) { %>
+                        <aside class="project-details">
+                            <% if (page.client) { %>
+                                <div class="detail">
+                                    <h4>Client</h4>
+                                    <p>
+                                        <%= page.client %>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <% if (page.role) { %>
+                                        <div class="detail">
+                                            <h4>Role</h4>
+                                            <p>
+                                                <%= page.role %>
+                                            </p>
+                                        </div>
+                                        <% } %>
+                                            <% if (page.tech) { %>
+                                                <div class="detail">
+                                                    <h4>Tech Stack</h4>
+                                                    <p>
+                                                        <%= page.tech %>
+                                                    </p>
+                                                </div>
+                                                <% } %>
+                                                    <% if (page.link) { %>
+                                                        <div class="detail">
+                                                            <a href="<%= page.link %>" target="_blank"
+                                                                class="project-link">Visit Project →</a>
+                                                        </div>
+                                                        <% } %>
+                        </aside>
+                        <% } %>
+
+                            <div class="project-body">
+                                <%- page.content %>
+                            </div>
+                </div>
+
+                <% if (page.gallery && page.gallery.length) { %>
+                    <div class="project-gallery">
+                        <% page.gallery.forEach(function(image) { %>
+                            <figure class="gallery-item">
+                                <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>">
+                                <% if (image.caption) { %>
+                                    <figcaption>
+                                        <%= image.caption %>
+                                    </figcaption>
+                                    <% } %>
+                            </figure>
+                            <% }); %>
+                    </div>
+                    <% } %>
+
+                        <% if (page.testimonial) { %>
+                            <blockquote class="project-testimonial">
+                                <p>"<%= page.testimonial.quote %>"</p>
+                                <% if (page.testimonial.author) { %>
+                                    <cite>— <%= page.testimonial.author %>
+                                            <% if (page.testimonial.role) { %>, <%= page.testimonial.role %>
+                                                    <% } %></cite>
+                                    <% } %>
+                            </blockquote>
+                            <% } %>
+</article>
+
+<section class="more-work">
+    <h2>More Work</h2>
+    <div class="related-projects">
+        <% const otherProjects=site.pages.filter(p=> p.layout === 'project' && p.path !== page.path).slice(0, 2);
+            otherProjects.forEach(function(project) {
+            %>
+            <a href="<%- url_for(project.path) %>" class="related-project-card">
+                <% if (project.cover) { %>
+                    <img src="<%- url_for(project.cover) %>" alt="<%= project.title %>">
+                    <% } %>
+                        <span class="related-category">
+                            <%= project.category || 'Project' %>
+                        </span>
+                        <h3>
+                            <%= project.title %>
+                        </h3>
+            </a>
+            <% }); %>
+    </div>
+</section>
