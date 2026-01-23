@@ -73,8 +73,8 @@
                     project.carousel_image_height ? `--carousel-image-height:${project.carousel_image_height};` : '' ,
                     project.carousel_image_top ? `--carousel-image_top:${project.carousel_image_top};` : '' ,
                     ].join(''); %>
-                    <section class="project-section" id="project-<%= index %>" <% if (carouselStyle) { %> style="<%-
-                            carouselStyle %>"<% } %>>
+                    <section class="project-section" id="project-<%= index %>" data-project-index="<%= index %>" <% if
+                        (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
                                 <div class="project-carousel-wrapper">
                                     <!-- Navigation Zones -->
                                     <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev"></div>

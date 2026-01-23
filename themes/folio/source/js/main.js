@@ -229,22 +229,67 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Background Preloading ---
-  // Trigger loading of non-initial slides after page is ready
-  const triggerBackgroundLoading = () => {
-    // Unicorn Scenes (simplified approach - promote to eager if possible)
-    const lazyScenes = document.querySelectorAll('.unicorn-scene[data-background-lazy-us="true"]');
-    lazyScenes.forEach((scene, i) => {
-      setTimeout(() => {
-        scene.setAttribute('data-us-lazyload', 'false');
-      }, i * 200); // Stagger requests
-    });
+  // --- Project-by-Project Sequencer ---
+  // Batches loading per project to prevent network congestion while ensuring readiness.
+  const initProjectSequencer = () => {
+    const projects = Array.from(document.querySelectorAll('.project-section[data-project-index]'))
+      .sort((a, b) => parseInt(a.dataset.projectIndex) - parseInt(b.dataset.projectIndex));
+
+    if (projects.length <= 1) return; // Only 1 project (already eager) or none
+
+    // Start from Project 1 (Project 0 is standard eager load)
+    let currentProjectIndex = 1;
+
+    const loadNextProject = () => {
+      if (currentProjectIndex >= projects.length) return;
+
+      const project = projects[currentProjectIndex];
+      const assets = [];
+
+      // Collect assets in this project
+      const images = project.querySelectorAll('img[loading="lazy"]');
+      const scenes = project.querySelectorAll('.unicorn-scene[data-us-lazyload="true"]');
+
+      images.forEach(img => {
+        assets.push(new Promise(resolve => {
+          if (img.complete) return resolve();
+          img.onload = resolve;
+          img.onerror = resolve; // Continue even on error
+          img.loading = 'eager'; // Trigger load
+        }));
+      });
+
+      scenes.forEach(scene => {
+        assets.push(new Promise(resolve => {
+          // Unicorn doesn't have a standard load event on the DIV wrapper, 
+          // but we can flip the attribute to trigger its internal logic
+          scene.setAttribute('data-us-lazyload', 'false');
+          // Give it a fixed time budget to "start" - we can't easily await full canvas ready here
+          // without deeper hooks, but flipping the bit starts the network request.
+          setTimeout(resolve, 200);
+        }));
+      });
+
+      // Wait for all assets in this project (or timeout safety)
+      const batchPromise = Promise.all(assets);
+      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000)); // 3s max per project
+
+      Promise.race([batchPromise, timeoutPromise]).then(() => {
+        // Project loaded (or timed out), move to next
+        currentProjectIndex++;
+        // Small breathing room for main thread
+        setTimeout(loadNextProject, 100);
+      });
+    };
+
+    // Kick off the sequencer
+    loadNextProject();
   };
 
   // Run slightly after load to ensure critical path is clear
   if (document.readyState === 'complete') {
-    setTimeout(triggerBackgroundLoading, 800);
+    setTimeout(initProjectSequencer, 800);
   } else {
-    window.addEventListener('load', () => setTimeout(triggerBackgroundLoading, 800));
+    window.addEventListener('load', () => setTimeout(initProjectSequencer, 800));
   }
 });
