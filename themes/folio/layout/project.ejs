@@ -60,7 +60,7 @@
                                     <% } else { %>
                                         <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %>"
                                             loading="<%= index === 0 ? 'eager' : 'lazy' %>" <%=index===0
-                                            ? 'fetchpriority="high"' : 'data-background-lazy="true"' %>
+                                            ? 'fetchpriority="high"' : '' %>
                                         onload="this.parentElement.classList.add('loaded')">
                                         <% } %>
                     </div>
