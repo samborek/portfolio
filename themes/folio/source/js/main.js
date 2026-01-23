@@ -232,22 +232,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Background Preloading ---
   // Trigger loading of non-initial slides after page is ready
   const triggerBackgroundLoading = () => {
-    // Images
-    const lazyImages = document.querySelectorAll('img[data-background-lazy="true"]');
-    lazyImages.forEach((img, i) => {
-      setTimeout(() => {
-        img.loading = 'eager';
-        const container = img.closest('.image-container');
-        if (container) container.classList.add('instant-transition');
-      }, i * 200); // Stagger requests by 200ms
-    });
-
     // Unicorn Scenes (simplified approach - promote to eager if possible)
     const lazyScenes = document.querySelectorAll('.unicorn-scene[data-background-lazy-us="true"]');
     lazyScenes.forEach((scene, i) => {
       setTimeout(() => {
         scene.setAttribute('data-us-lazyload', 'false');
-      }, (lazyImages.length * 200) + (i * 200)); // Start after images are done
+      }, i * 200); // Stagger requests
     });
   };
 

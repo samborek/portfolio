@@ -2076,16 +2076,6 @@ body.project-page {
   z-index: 1;
 }
 
-/* Instant snap for background-preloaded images */
-.image-container img[data-background-lazy="true"],
-.image-container.loaded img[data-background-lazy="true"] {
-  opacity: 1 !important;
-  transition: none !important;
-}
-
-.image-container.instant-transition .image-placeholder {
-  transition: none !important;
-}
 
 .image-container.loaded img {
   opacity: 1;
