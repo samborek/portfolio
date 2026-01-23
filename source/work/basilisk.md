@@ -7,7 +7,7 @@ order: 999
 cover: /images/work/basilisk_1.jpg
 hero_image: /images/work/basilisk_1.jpg
 carousel:
-  - /images/work/basilisk_1.png
+  - /images/work/basilisk_1.jpg
   - /images/work/basilisk_2.png
   - /images/work/basilisk_3.png
   - /images/work/basilisk_4.png

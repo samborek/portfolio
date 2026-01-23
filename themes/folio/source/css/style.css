@@ -818,8 +818,20 @@ ol {
   object-position: var(--carousel-object-position, center);
   transform: scale(var(--carousel-image-scale, 1));
   transform-origin: center;
+  /* Smooth fade-in for lazy-loaded images */
+  animation: imgFadeIn 0.8s ease-out forwards;
   -webkit-user-drag: none;
   z-index: 0;
+}
+
+@keyframes imgFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Canvas fade-in effect */

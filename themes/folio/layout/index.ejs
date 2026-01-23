@@ -99,16 +99,16 @@
                                                                     </div>
                                                                     <% } else { %>
                                                                         <img src="<%- url_for(imgUrl) %>"
-                                                                            alt="<%= project.title %>"
-                                                                            draggable="false">
+                                                                            alt="<%= project.title %>" draggable="false"
+                                                                            loading="lazy" decoding="async">
                                                                         <% } %>
                                                             </div>
                                                             <% }); %>
                                                                 <% } else if (project.cover) { %>
                                                                     <div class="embla__slide">
                                                                         <img src="<%- url_for(project.cover) %>"
-                                                                            alt="<%= project.title %>"
-                                                                            draggable="false">
+                                                                            alt="<%= project.title %>" draggable="false"
+                                                                            loading="lazy" decoding="async">
                                                                     </div>
                                                                     <% } %>
                                             </div>
