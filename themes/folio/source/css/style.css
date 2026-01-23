@@ -687,27 +687,28 @@ ol {
   mask-image: radial-gradient(white, black);
   -webkit-mask-image: -webkit-radial-gradient(white, black);
   transition: transform var(--transition-base);
+  --slider-cursor: ew-resize;
+  cursor: var(--slider-cursor);
   --carousel-slide-gap: 0.625rem;
   /* Allow carousel to expand - slides will have fixed max-width */
 }
 
-/* Navigation Zones - show cursor states */
+/* Navigation Zones - visual only, cursor set via JS on wrapper */
 .carousel-nav-zone {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 50%;
   z-index: 5;
+  pointer-events: none;
 }
 
 .carousel-nav-zone--left {
   left: 0;
-  cursor: w-resize;
 }
 
 .carousel-nav-zone--right {
   right: 0;
-  cursor: e-resize;
 }
 
 .carousel-scroll-hint {
@@ -2060,7 +2061,7 @@ body.project-page {
   display: block;
   width: 100%;
   height: 100%;
-  cursor: pointer;
+  cursor: var(--slider-cursor, pointer);
   transition: transform 0.4s ease, filter 0.4s ease;
   overflow: hidden;
   border-radius: 12px;

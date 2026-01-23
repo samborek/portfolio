@@ -75,28 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navigation (Click and Mouse Move)
     const wrapper = emblaNode.closest('.project-carousel-wrapper');
     if (wrapper) {
-      let isDragging = false;
-      let startX = 0;
-
-      wrapper.addEventListener('pointerdown', (e) => {
-        startX = e.clientX;
-        isDragging = false;
-      });
-
-      wrapper.addEventListener('pointermove', (e) => {
-        if (Math.abs(e.clientX - startX) > 5) isDragging = true;
-      });
-
-      wrapper.addEventListener('click', (e) => {
-        if (isDragging) return;
-        const rect = wrapper.getBoundingClientRect();
-        if ((e.clientX - rect.left) < rect.width / 2) embla.scrollPrev();
-        else embla.scrollNext();
-      });
-
+      // Cursor states based on mouse position
       wrapper.addEventListener('mousemove', (e) => {
         const rect = wrapper.getBoundingClientRect();
-        wrapper.style.cursor = (e.clientX - rect.left) < rect.width / 2 ? 'w-resize' : 'e-resize';
+        const cursor = (e.clientX - rect.left) < rect.width / 2 ? 'w-resize' : 'e-resize';
+        wrapper.style.setProperty('--slider-cursor', cursor);
       });
 
       // Wheel event for touchpad horizontal scroll
