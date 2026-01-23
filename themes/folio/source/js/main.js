@@ -82,6 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.style.setProperty('--slider-cursor', cursor);
       });
 
+      wrapper.addEventListener('click', (e) => {
+        // Only trigger if we're not clicking the progress bar or other interactive elements
+        if (e.target.closest('.project-carousel-progress')) return;
+
+        const rect = wrapper.getBoundingClientRect();
+        if ((e.clientX - rect.left) < rect.width / 2) {
+          embla.scrollPrev();
+        } else {
+          embla.scrollNext();
+        }
+      });
+
       // Wheel event for touchpad horizontal scroll
       let wheelAccumulator = 0;
       const wheelThreshold = 100;

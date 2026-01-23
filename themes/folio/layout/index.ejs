@@ -8,7 +8,8 @@
         <aside class="sidebar">
             <div class="sidebar-content">
                 <div class="sidebar-hero">
-                    <span class="project-link-item" style="text-transform: lowercase; border-bottom: none;">sambø</span>
+                    <span class="project-link-item" style="text-transform: lowercase; border-bottom: none;">Michal
+                        Sambora — sambø</span>
                 </div>
                 <h1 class="sidebar-title">
                     <%= theme.hero_title || "I'm  Michal Sambora" %>
@@ -89,8 +90,7 @@
                                                             style="--carousel-object-position:${project.carousel_first_object_position};"
                                                             ` : '' ; %>
                                                             <div class="embla__slide" <%=firstStyle %>>
-                                                                <a href="<%- url_for(project.path) %>"
-                                                                    class="project-slide-link">
+                                                                <div class="project-slide-item">
                                                                     <% if (imgUrl.endsWith('.json')) { %>
                                                                         <div class="unicorn-scene"
                                                                             data-us-project-src="<%- url_for(imgUrl) %>"
@@ -114,13 +114,12 @@
                                                                                             onload="this.parentElement.classList.add('loaded')">
                                                                             </div>
                                                                             <% } %>
-                                                                </a>
+                                                                </div>
                                                             </div>
                                                             <% }); %>
                                                                 <% } else if (project.cover) { %>
                                                                     <div class="embla__slide">
-                                                                        <a href="<%- url_for(project.path) %>"
-                                                                            class="project-slide-link">
+                                                                        <div class="project-slide-item">
                                                                             <div class="image-container">
                                                                                 <div class="image-skeleton"></div>
                                                                                 <% if (project.blur) { %>
@@ -134,7 +133,7 @@
                                                                                             draggable="false"
                                                                                             onload="this.parentElement.classList.add('loaded')">
                                                                             </div>
-                                                                        </a>
+                                                                        </div>
                                                                     </div>
                                                                     <% } %>
                                             </div>
@@ -147,9 +146,19 @@
                                 </div>
                                 <div class="project-info">
                                     <div class="project-info-header">
-                                        <h3 class="project-title">
-                                            <%= project.title %>
-                                        </h3>
+                                        <div class="project-title-row">
+                                            <h3 class="project-title">
+                                                <%= project.title %>
+                                            </h3>
+                                            <a href="<%- url_for(project.path) %>" class="project-pill-button">
+                                                <span>View Project</span>
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                                                    <polyline points="7 7 17 7 17 17"></polyline>
+                                                </svg>
+                                            </a>
+                                        </div>
                                         <% if (project.intro) { %>
                                             <p class="project-subtitle">
                                                 <%= project.intro %>
