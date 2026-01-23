@@ -95,7 +95,9 @@
                                                                         <div class="unicorn-scene"
                                                                             data-us-project-src="<%- url_for(imgUrl) %>"
                                                                             data-us-scale="1" data-us-dpi="1.5"
-                                                                            data-us-lazyload="true"
+                                                                            data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>"
+                                                                            <%=index> 0 ?
+                                                                            'data-background-lazy-us="true"' : '' %>
                                                                             data-us-production="true">
                                                                             <div class="unicorn-scene-skeleton"></div>
                                                                         </div>
@@ -109,9 +111,13 @@
                                                                                     <% } %>
                                                                                         <img src="<%- url_for(imgUrl) %>"
                                                                                             alt="<%= project.title %>"
-                                                                                            loading="lazy"
-                                                                                            draggable="false"
-                                                                                            onload="this.parentElement.classList.add('loaded')">
+                                                                                            loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                                                                                            <%=index===0
+                                                                                            ? 'fetchpriority="high"'
+                                                                                            : 'data-background-lazy="true"'
+                                                                                            %>
+                                                                                        draggable="false"
+                                                                                        onload="this.parentElement.classList.add('loaded')">
                                                                             </div>
                                                                             <% } %>
                                                                 </div>

@@ -823,7 +823,13 @@ ol {
 /* Canvas fade-in effect */
 .embla__slide .unicorn-scene canvas {
   opacity: 0;
-  transition: opacity 0.5s ease 0.2s;
+  transition: opacity 0.4s ease;
+}
+
+/* Instant snap for background-preloaded scenes */
+.unicorn-scene[data-background-lazy-us="true"] canvas {
+  opacity: 1 !important;
+  transition: none !important;
 }
 
 .embla__slide .unicorn-scene.loaded canvas {
@@ -2037,7 +2043,7 @@ body.project-page {
   filter: blur(25px);
   opacity: 0.95;
   animation: shimmer 1s ease-in-out infinite;
-  transition: opacity 0.6s ease 0.3s;
+  transition: opacity 0.3s ease;
   pointer-events: none;
   z-index: 2;
 }
@@ -2066,8 +2072,19 @@ body.project-page {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.4s ease;
   z-index: 1;
+}
+
+/* Instant snap for background-preloaded images */
+.image-container img[data-background-lazy="true"],
+.image-container.loaded img[data-background-lazy="true"] {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.image-container.instant-transition .image-placeholder {
+  transition: none !important;
 }
 
 .image-container.loaded img {
@@ -2081,7 +2098,7 @@ body.project-page {
   background-position: center;
   filter: blur(20px);
   transform: scale(1.1);
-  transition: opacity 0.6s ease;
+  transition: opacity 0.4s ease;
   z-index: 2;
 }
 

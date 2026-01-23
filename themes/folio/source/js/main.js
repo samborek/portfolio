@@ -228,4 +228,30 @@ document.addEventListener('DOMContentLoaded', () => {
       workList.classList.toggle('collapsed', isExpanded);
     });
   }
+
+  // --- Background Preloading ---
+  // Trigger loading of non-initial slides after page is ready
+  const triggerBackgroundLoading = () => {
+    // Images
+    const lazyImages = document.querySelectorAll('img[data-background-lazy="true"]');
+    lazyImages.forEach(img => {
+      img.loading = 'eager';
+      const container = img.closest('.image-container');
+      if (container) container.classList.add('instant-transition');
+    });
+
+    // Unicorn Scenes (simplified approach - promote to eager if possible)
+    // Note: Unicorn Studio manual control is limited, but this helps the browser prioritize cards
+    const lazyScenes = document.querySelectorAll('.unicorn-scene[data-background-lazy-us="true"]');
+    lazyScenes.forEach(scene => {
+      scene.setAttribute('data-us-lazyload', 'false');
+    });
+  };
+
+  // Run slightly after load to ensure critical path is clear
+  if (document.readyState === 'complete') {
+    setTimeout(triggerBackgroundLoading, 2000);
+  } else {
+    window.addEventListener('load', () => setTimeout(triggerBackgroundLoading, 2000));
+  }
 });
