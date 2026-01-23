@@ -15,7 +15,7 @@ client: Cyber Corp
 role: Visual Design
 tech: Figma, After Effects
 link: https://example.com
-intro: "A futuristic brand identity for a cyber-security firm that wanted to look less corporate and more like a lifestyle brand."
+intro: "A futuristic brand identity."
 problem: "The brand felt too corporate and traditional, failing to connect with a younger, tech-savvy audience. The visual identity didn't reflect the innovative nature of the company."
 solution: "Created a bold cyberpunk-inspired brand system with neon aesthetics and terminal-inspired typography. The new identity positions the company as cutting-edge and forward-thinking while maintaining professional credibility."
 scope:

@@ -29,10 +29,5 @@ Basilisk is a liquidity protocol built for the Kusama ecosystem. Its mission is 
 
 I was responsible for redesigning the UI, building the new Design System and continue improving the Exchange Interface, create new sub products and pages along with our internal team and community feedback.
 
-<div class="project-info">
-  <div><strong>Team</strong><br>GalacticCouncil</div>
-  <div><strong>Work Handled</strong><br>Visual Design<br>UI &amp; UX Design</div>
-  <div><strong>Industries</strong><br>Blockchain</div>
-  <div><strong>When</strong><br>Q2 2022</div>
-</div>
+
 

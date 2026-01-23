@@ -25,6 +25,7 @@ scope:
   - Design Tokens
   - UI/UX Design
 when: 2024
+website: https://next-hydration.netlify.app/
 ---
 
 Complete redesign of Hydration's DeFi exchange and borrow/lending platform. The project involved rethinking the entire user experience from the ground up, establishing a robust design tokens architecture, and delivering a native-feeling mobile experience.

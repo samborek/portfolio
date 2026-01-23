@@ -1,26 +1,31 @@
-<% const carouselStyle=[
-    page.carousel_aspect_ratio ? '--carousel-aspect-ratio:' + page.carousel_aspect_ratio + ';' : '',
-    page.carousel_object_fit ? '--carousel-object-fit:' + page.carousel_object_fit + ';' : '',
-    page.project_page_carousel_height ? '--project-page-carousel-height:' + page.project_page_carousel_height + ';' : '',
-].join(''); %>
-<article class="project-page" <% if (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
-    <header class="project-header">
-        <div class="project-header-top">
-            <div class="project-header-left">
-                <a class="project-back" href="<%- page.back_url || theme.back_url || url_for('/') %>">
-                    <span class="project-back-icon" aria-hidden="true">&larr;</span>
-                    <span class="project-back-label"><%= page.back_label || theme.back_label || 'Back' %></span>
-                </a>
-                <div class="project-meta-details">
-                    <span class="project-category"><%= page.category || 'Project' %></span>
-                    <% if (page.year) { %>
-                        <span class="project-year"><%= page.year %></span>
-                    <% } %>
-                </div>
-            </div>
-            <% if (page.scope) { %>
-                <div class="project-scope">
-                    <%= Array.isArray(page.scope) ? page.scope.join(' , ') : (page.scope || '') %>
+<% const carouselStyle=[ page.carousel_aspect_ratio ? '--carousel-aspect-ratio:' + page.carousel_aspect_ratio + ';' : ''
+    , page.carousel_object_fit ? '--carousel-object-fit:' + page.carousel_object_fit + ';' : '' ,
+    page.project_page_carousel_height ? '--project-page-carousel-height:' + page.project_page_carousel_height + ';' : ''
+    , ].join(''); %>
+    <article class="project-page" <% if (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
+                <header class="project-header">
+                    <div class="project-header-top">
+                        <div class="project-header-left">
+                            <a class="project-back" href="<%- page.back_url || theme.back_url || url_for('/') %>">
+                                <span class="project-back-icon" aria-hidden="true">&larr;</span>
+                                <span class="project-back-label">
+                                    <%= page.back_label || theme.back_label || 'Back' %>
+                                </span>
+                            </a>
+                            <div class="project-meta-details">
+                                <span class="project-category">
+                                    <%= page.category || 'Project' %>
+                                </span>
+                                <% if (page.year) { %>
+                                    <span class="project-year">
+                                        <%= page.year %>
+                                    </span>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% if (page.scope) { %>
+                            <div class="project-scope">
+                                <%= Array.isArray(page.scope) ? page.scope.join(' , ') : (page.scope || '') %>
                 </div>
             <% } %>
         </div>
@@ -28,25 +33,6 @@
         <p class="project-intro"><%= page.intro || '' %></p>
     </header>
 
-    <div class="project-info-grid">
-        <% if (page.problem) { %>
-            <div class="info-block">
-                <h4>Problem</h4>
-                <p><%= page.problem %></p>
-            </div>
-        <% } %>
-        <% if (page.solution) { %>
-            <div class="info-block">
-                <h4>Solution</h4>
-                <p><%= page.solution %></p>
-            </div>
-        <% } %>
-        <% if (page.link) { %>
-            <div class="info-block">
-                <a href="<%= page.link %>" target="_blank" class="project-link">Visit Project &rarr;</a>
-            </div>
-        <% } %>
-    </div>
 
     <div class="project-content">
         <div class="project-body">
@@ -60,71 +46,89 @@
                 <div class="image-container">
                     <div class="image-skeleton"></div>
                     <% if (page.blur) { %>
-                        <div class="image-placeholder" style="background-image: url('<%- url_for(page.blur) %>');"></div>
-                    <% } %>
-                    <% if (imgUrl.endsWith('.json')) { %>
-                        <div class="unicorn-scene" data-us-project-src="<%- url_for(imgUrl) %>" data-us-scale="1" data-us-dpi="1.5" data-us-lazyload="true" data-us-production="true">
-                            <div class="unicorn-scene-skeleton"></div>
+                        <div class="image-placeholder" style="background-image: url(' <%- url_for(page.blur) %>');">
+                            </div>
+                            <% } %>
+                                <% if (imgUrl.endsWith('.json')) { %>
+                                    <div class="unicorn-scene" data-us-project-src="<%- url_for(imgUrl) %>"
+                                        data-us-scale="1" data-us-dpi="1.5" data-us-lazyload="true"
+                                        data-us-production="true">
+                                        <div class="unicorn-scene-skeleton"></div>
+                                    </div>
+                                    <% } else { %>
+                                        <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %>" loading="lazy"
+                                            onload="this.parentElement.classList.add('loaded')">
+                                        <% } %>
+                    </div>
+                    <% }); %>
                         </div>
-                    <% } else { %>
-                        <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %>" loading="lazy" onload="this.parentElement.classList.add('loaded')">
-                    <% } %>
-                </div>
-            <% }); %>
-        </div>
-    <% } else if (page.hero_image) { %>
-        <div class="project-image-stack">
-            <div class="image-container">
-                <div class="image-skeleton"></div>
-                <% if (page.blur) { %>
-                    <div class="image-placeholder" style="background-image: url('<%- url_for(page.blur) %>');"></div>
-                <% } %>
-                <img src="<%- url_for(page.hero_image) %>" alt="<%= page.title %>" loading="lazy" onload="this.parentElement.classList.add('loaded')">
-            </div>
-        </div>
-    <% } %>
+                        <% } else if (page.hero_image) { %>
+                            <div class="project-image-stack">
+                                <div class="image-container">
+                                    <div class="image-skeleton"></div>
+                                    <% if (page.blur) { %>
+                                        <div class="image-placeholder"
+                                            style="background-image: url('<%- url_for(page.blur) %>');"></div>
+                                        <% } %>
+                                            <img src="<%- url_for(page.hero_image) %>" alt="<%= page.title %>"
+                                                loading="lazy" onload="this.parentElement.classList.add('loaded')">
+                                </div>
+                            </div>
+                            <% } %>
 
-    <% if (page.gallery && page.gallery.length) { %>
-        <div class="project-gallery">
-            <% page.gallery.forEach(function(image) { %>
-                <figure class="gallery-item">
-                    <div class="image-container">
-                        <div class="image-skeleton"></div>
-                        <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>" loading="lazy" onload="this.parentElement.classList.add('loaded')">
-                    </div>
-                    <% if (image.caption) { %>
-                        <figcaption><%= image.caption %></figcaption>
-                    <% } %>
-                </figure>
-            <% }); %>
+                                <% if (page.gallery && page.gallery.length) { %>
+                                    <div class="project-gallery">
+                                        <% page.gallery.forEach(function(image) { %>
+                                            <figure class="gallery-item">
+                                                <div class="image-container">
+                                                    <div class="image-skeleton"></div>
+                                                    <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>"
+                                                        loading="lazy"
+                                                        onload="this.parentElement.classList.add('loaded')">
+                                                </div>
+                                                <% if (image.caption) { %>
+                                                    <figcaption>
+                                                        <%= image.caption %>
+                                                    </figcaption>
+                                                    <% } %>
+                                            </figure>
+                                            <% }); %>
+                                    </div>
+                                    <% } %>
+
+                                        <% if (page.testimonial) { %>
+                                            <blockquote class="project-testimonial">
+                                                <p>"<%= page.testimonial.quote %>"</p>
+                                                <% if (page.testimonial.author) { %>
+                                                    <cite>&mdash; <%= page.testimonial.author %>
+                                                            <% if (page.testimonial.role) { %>, <%=
+                                                                    page.testimonial.role %>
+                                                                    <% } %></cite>
+                                                    <% } %>
+                                            </blockquote>
+                                            <% } %>
+    </article>
+
+    <section class="more-work">
+        <h2>More Work</h2>
+        <div class="related-projects">
+            <% const otherProjects=site.pages.filter(function(p) { return p.layout==='project' && p.path !==page.path;
+                }).slice(0, 2); otherProjects.forEach(function(project) { %>
+                <a href="<%- url_for(project.path) %>" class="related-project-card">
+                    <% if (project.cover) { %>
+                        <div class="image-container">
+                            <div class="image-skeleton"></div>
+                            <img src="<%- url_for(project.cover) %>" alt="<%= project.title %>" loading="lazy"
+                                onload="this.parentElement.classList.add('loaded')">
+                        </div>
+                        <% } %>
+                            <span class="related-category">
+                                <%= project.category || 'Project' %>
+                            </span>
+                            <h3>
+                                <%= project.title %>
+                            </h3>
+                </a>
+                <% }); %>
         </div>
-    <% } %>
-
-    <% if (page.testimonial) { %>
-        <blockquote class="project-testimonial">
-            <p>"<%= page.testimonial.quote %>"</p>
-            <% if (page.testimonial.author) { %>
-                <cite>&mdash; <%= page.testimonial.author %><% if (page.testimonial.role) { %>, <%= page.testimonial.role %><% } %></cite>
-            <% } %>
-        </blockquote>
-    <% } %>
-</article>
-
-<section class="more-work">
-    <h2>More Work</h2>
-    <div class="related-projects">
-        <% const otherProjects = site.pages.filter(function(p) { return p.layout === 'project' && p.path !== page.path; }).slice(0, 2);
-            otherProjects.forEach(function(project) { %>
-            <a href="<%- url_for(project.path) %>" class="related-project-card">
-                <% if (project.cover) { %>
-                    <div class="image-container">
-                        <div class="image-skeleton"></div>
-                        <img src="<%- url_for(project.cover) %>" alt="<%= project.title %>" loading="lazy" onload="this.parentElement.classList.add('loaded')">
-                    </div>
-                <% } %>
-                <span class="related-category"><%= project.category || 'Project' %></span>
-                <h3><%= project.title %></h3>
-            </a>
-        <% }); %>
-    </div>
-</section>
+    </section>
