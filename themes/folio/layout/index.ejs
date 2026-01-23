@@ -89,32 +89,58 @@
                                                             style="--carousel-object-position:${project.carousel_first_object_position};"
                                                             ` : '' ; %>
                                                             <div class="embla__slide" <%=firstStyle %>>
-                                                                <% if (imgUrl.endsWith('.json')) { %>
-                                                                    <div class="unicorn-scene"
-                                                                        data-us-project-src="<%- url_for(imgUrl) %>"
-                                                                        data-us-scale="1" data-us-dpi="1.5"
-                                                                        data-us-lazyload="true"
-                                                                        data-us-production="true">
-                                                                        <div class="unicorn-scene-skeleton"></div>
-                                                                    </div>
-                                                                    <% } else { %>
-                                                                        <img src="<%- url_for(imgUrl) %>"
-                                                                            alt="<%= project.title %>" draggable="false"
-                                                                            loading="lazy" decoding="async">
-                                                                        <% } %>
+                                                                <a href="<%- url_for(project.path) %>"
+                                                                    class="project-slide-link">
+                                                                    <% if (imgUrl.endsWith('.json')) { %>
+                                                                        <div class="unicorn-scene"
+                                                                            data-us-project-src="<%- url_for(imgUrl) %>"
+                                                                            data-us-scale="1" data-us-dpi="1.5"
+                                                                            data-us-lazyload="true"
+                                                                            data-us-production="true">
+                                                                            <div class="unicorn-scene-skeleton"></div>
+                                                                        </div>
+                                                                        <% } else { %>
+                                                                            <div class="image-container">
+                                                                                <div class="image-skeleton"></div>
+                                                                                <% if (project.blur) { %>
+                                                                                    <div class="image-placeholder"
+                                                                                        style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                    </div>
+                                                                                    <% } %>
+                                                                                        <img src="<%- url_for(imgUrl) %>"
+                                                                                            alt="<%= project.title %>"
+                                                                                            loading="lazy"
+                                                                                            draggable="false"
+                                                                                            onload="this.parentElement.classList.add('loaded')">
+                                                                            </div>
+                                                                            <% } %>
+                                                                </a>
                                                             </div>
                                                             <% }); %>
                                                                 <% } else if (project.cover) { %>
                                                                     <div class="embla__slide">
-                                                                        <img src="<%- url_for(project.cover) %>"
-                                                                            alt="<%= project.title %>" draggable="false"
-                                                                            loading="lazy" decoding="async">
+                                                                        <a href="<%- url_for(project.path) %>"
+                                                                            class="project-slide-link">
+                                                                            <div class="image-container">
+                                                                                <div class="image-skeleton"></div>
+                                                                                <% if (project.blur) { %>
+                                                                                    <div class="image-placeholder"
+                                                                                        style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                    </div>
+                                                                                    <% } %>
+                                                                                        <img src="<%- url_for(project.cover) %>"
+                                                                                            alt="<%= project.title %>"
+                                                                                            loading="lazy"
+                                                                                            draggable="false"
+                                                                                            onload="this.parentElement.classList.add('loaded')">
+                                                                            </div>
+                                                                        </a>
                                                                     </div>
                                                                     <% } %>
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="carousel-scroll-hint" aria-hidden="true">Drag ↔</span>
+                                    <span class="carousel-scroll-hint" aria-hidden="true">Scroll ↔</span>
                                 </div>
                                 <div class="project-carousel-progress" aria-hidden="true">
                                     <span></span>

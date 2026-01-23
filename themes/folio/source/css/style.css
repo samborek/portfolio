@@ -40,8 +40,8 @@
   /* Layout */
   --sidebar-width: 20rem;
   --sidebar-px: var(--space-lg);
-  --max-project-width: 75rem;
-  /* 1200px */
+  --max-project-width: 137.5rem;
+  /* 2200px */
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -307,7 +307,7 @@ ol {
 }
 
 /* Right-align layout on wide screens: sidebar expands, projects stay fixed width */
-@media (min-width: 95rem) {
+@media (min-width: 122rem) {
   .portfolio-wrapper {
     grid-template-columns: 1fr var(--max-project-width);
     margin-right: var(--space-lg);
@@ -687,20 +687,17 @@ ol {
   mask-image: radial-gradient(white, black);
   -webkit-mask-image: -webkit-radial-gradient(white, black);
   transition: transform var(--transition-base);
-  /* Suggest horizontal interaction */
-  cursor: ew-resize;
   --carousel-slide-gap: 0.625rem;
   /* Allow carousel to expand - slides will have fixed max-width */
 }
 
-/* Navigation Zones - visual only, clicks handled by JS */
+/* Navigation Zones - show cursor states */
 .carousel-nav-zone {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 50%;
   z-index: 5;
-  pointer-events: none;
 }
 
 .carousel-nav-zone--left {
@@ -808,21 +805,7 @@ ol {
   }
 }
 
-.embla__slide img {
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover;
-  object-position: var(--carousel-object-position, center);
-  transform: scale(var(--carousel-image-scale, 1));
-  transform-origin: center;
-  /* Smooth fade-in for lazy-loaded images */
-  animation: imgFadeIn 0.8s ease-out forwards;
-  -webkit-user-drag: none;
-  z-index: 0;
-}
-
+.embla__slide img,
 .embla__slide .unicorn-scene canvas {
   position: absolute;
   inset: 0;
@@ -834,16 +817,6 @@ ol {
   transform-origin: center;
   -webkit-user-drag: none;
   z-index: 0;
-}
-
-@keyframes imgFadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 
 /* Canvas fade-in effect */
@@ -1994,8 +1967,59 @@ body.project-page {
   z-index: 2;
 }
 
-.unicorn-scene.loaded .unicorn-scene-skeleton {
+.unicorn-scene.loaded .unicorn-scene-skeleton,
+.image-container.loaded .image-placeholder,
+.image-container:has(.unicorn-scene.loaded) .image-placeholder {
   opacity: 0;
+  pointer-events: none;
+}
+
+/* Image container & placeholder for carousel and related projects */
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-bg-secondary);
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.image-container img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+
+.image-container.loaded img {
+  opacity: 1;
+}
+
+.image-placeholder {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px);
+  transform: scale(1.1);
+  transition: opacity 0.6s ease;
+  z-index: 2;
+}
+
+.image-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      rgba(215, 218, 223, 0.1) 0%,
+      rgba(215, 218, 223, 0.3) 50%,
+      rgba(215, 218, 223, 0.1) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  z-index: 0;
 }
 
 @keyframes shimmer {
@@ -2005,5 +2029,277 @@ body.project-page {
 
   100% {
     background-position: -100% 0;
+  }
+}
+
+/* Project Subpage Stacked Images */
+.project-image-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  margin: var(--space-xl) 0;
+  max-width: 1600px;
+  width: 100%;
+}
+
+.project-image-stack .image-container {
+  aspect-ratio: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-bg-secondary);
+}
+
+.project-image-stack .image-container img {
+  position: relative;
+  height: auto;
+  display: block;
+}
+
+/* Clickable Carousel Links */
+.project-slide-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.project-slide-link:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+}
+
+.embla__slide {
+  overflow: visible !important;
+  /* Allow scale hover without clipping */
+}
+
+/* Refined Project Subpage Header & Details */
+.project-details--top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-details--top .detail h4 {
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+.project-details--top .detail p {
+  font-size: var(--size-md);
+  font-weight: 500;
+}
+
+/* Fix JSON Scene sizing in image stack */
+.project-image-stack .image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9 !important;
+  /* Force aspect ratio for JSON/Images */
+  background: var(--color-bg-secondary);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.project-image-stack .unicorn-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.project-image-stack .image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Project Page Content Adjustments */
+.project-page .project-content {
+  display: block;
+  margin-top: 0;
+  margin-bottom: var(--space-2xl);
+}
+
+.project-page .project-body {
+  max-width: 100%;
+}
+
+.project-page .project-body p {
+  font-size: var(--size-md);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+/* Final Project Info Grid Refinements (2200px wide) */
+.project-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* --- Project Detail Page Stylings (Final Consolidated Version) --- */
+.project-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 2rem;
+  margin-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.project-header-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.project-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.6rem !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a !important;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  line-height: 1 !important;
+}
+
+.project-back:hover {
+  background: #fdfdfd !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.project-back-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.project-meta-details {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  line-height: 1;
+}
+
+.project-category,
+.project-year {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.project-scope {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.project-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl) var(--space-3xl);
+  margin-bottom: 4rem;
+}
+
+.info-block h4 {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #444444;
+  /* Darker, as seen in the screenshot */
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  text-transform: none !important;
+  letter-spacing: -0.01em;
+}
+
+.info-block p {
+  font-size: 1.1rem;
+  color: #777777;
+  /* Muted text as seen in the screenshot */
+  line-height: 1.6;
+  font-weight: 450;
+  max-width: 95%;
+}
+
+@media (max-width: 1024px) {
+  .project-header-top {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .project-header-left {
+    width: 100%;
+  }
+
+  .project-scope {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .project-info-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* --- Mobile Edge-to-Edge and Lightbox Zoom --- */
+@media (max-width: 768px) {
+  .project-page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Edge-to-edge images on mobile */
+  .project-image-stack,
+  .project-gallery {
+    margin-left: -16px;
+    margin-right: -16px;
+    width: calc(100% + 32px);
+    max-width: none;
+  }
+
+  .project-image-stack .image-container,
+  .project-gallery .image-container {
+    border-radius: 0;
+  }
+
+  .project-info-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
 }

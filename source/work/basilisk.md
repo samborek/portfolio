@@ -8,9 +8,9 @@ cover: /images/work/basilisk_1.jpg
 hero_image: /images/work/basilisk_1.jpg
 carousel:
   - /images/work/basilisk_1.jpg
-  - /images/work/basilisk_2.png
-  - /images/work/basilisk_3.png
-  - /images/work/basilisk_4.png
+  - /images/work/basilisk_2.jpg
+  - /images/work/basilisk_3.jpg
+  - /images/work/basilisk_4.jpg
 intro: "Decentralized Exchange built on Kusama"
 client: GalacticCouncil
 role: "Visual Design, UI & UX Design"
