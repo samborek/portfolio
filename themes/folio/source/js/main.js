@@ -292,4 +292,54 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     window.addEventListener('load', () => setTimeout(initProjectSequencer, 800));
   }
+
+  // --- Subtle Parallax on Carousel Images ---
+  const initParallax = () => {
+    const carouselWrappers = document.querySelectorAll('.project-carousel-wrapper');
+    if (!carouselWrappers.length) return;
+
+    // Parallax intensity: how much the image moves (percentage of container height)
+    const PARALLAX_STRENGTH = 4; // ±3% movement
+
+    const updateParallax = () => {
+      carouselWrappers.forEach(wrapper => {
+        const rect = wrapper.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // Calculate how far through the viewport the element is (0 = top, 1 = bottom)
+        const elementCenter = rect.top + rect.height / 2;
+        const viewportCenter = viewportHeight / 2;
+        const progress = (elementCenter - viewportCenter) / viewportHeight;
+
+        // Clamp progress to -1 to 1 range
+        const clampedProgress = Math.max(-1, Math.min(1, progress));
+
+        // Convert to parallax offset (when element is above center, image shifts up; below, shifts down)
+        const parallaxY = clampedProgress * PARALLAX_STRENGTH;
+
+        // Apply to all images and canvases in this carousel
+        const media = wrapper.querySelectorAll('.embla__slide img, .embla__slide .unicorn-scene canvas');
+        media.forEach(el => {
+          el.style.setProperty('--parallax-y', `${parallaxY}%`);
+        });
+      });
+    };
+
+    // Throttled scroll handler
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateParallax();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateParallax(); // Initial call
+  };
+
+  initParallax();
 });
