@@ -2,6 +2,39 @@
    FOLIO THEME - Minimal 2-Column Portfolio
    ============================================ */
 
+/* Custom Fonts */
+@font-face {
+  font-family: 'Gazpacho';
+  src: url('/font/GazpachoRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gazpacho';
+  src: url('/font/GazpachoMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gazpacho';
+  src: url('/font/GazpachoBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gazpacho';
+  src: url('/font/GazpachoBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* CSS Variables */
 :root {
   /* Light Theme Colors */
@@ -13,8 +46,9 @@
   --color-accent: #000000;
 
   /* Typography */
-  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Gazpacho', Georgia, serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
 
   /* Sizes */
   --size-xs: 0.75rem;
@@ -402,7 +436,7 @@ ol {
 .sidebar-title {
   font-family: var(--font-display);
   font-size: var(--size-2xl);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.2;
   margin: 0.1875rem 0 1.9375rem;
   max-width: 20rem;
@@ -1217,10 +1251,12 @@ ol {
 
 #connect .project-title {
   color: #666;
+  font-family: var(--font-body);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 2.5rem;
+  font-weight: 500;
 }
 
 .connect-wrapper {
@@ -1248,6 +1284,7 @@ ol {
 }
 
 #connect .section-intro {
+  font-family: var(--font-display);
   font-size: 2rem;
   line-height: 1.2;
   font-weight: 500;
@@ -1436,7 +1473,7 @@ ol {
   padding-bottom: 0.5rem;
   line-height: 1rem;
   height: fit-content;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--color-text-muted);
 }
 

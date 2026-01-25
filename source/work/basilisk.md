@@ -23,6 +23,8 @@ scope:
   - UI/UX Design
   - Design System
   - Prototyping
+  - Landing page
+website: https://bsx.fi/
 ---
 
 Basilisk is a liquidity protocol built for the Kusama ecosystem. Its mission is to enable frictionless liquidity that caters to the evolving needs of crypto assets – both fungible, and non-fungible (NFTs).

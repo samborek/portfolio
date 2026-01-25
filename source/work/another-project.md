@@ -4,10 +4,10 @@ layout: project
 category: Blockchain
 year: 2023
 order: 2
-cover: /images/work/hydra_1.jpg
-hero_image: /images/work/hydra_1.jpg
+cover: /images/work/hydra_1_1.jpg
+hero_image: /images/work/hydra_1_1.jpg
 carousel:
-  - /images/work/hydra_1.jpg
+  - /images/work/hydra_1_1.jpg
   - /images/work/hydra_2.jpg
   - /images/work/hydra_3.jpg
 carousel_object_fit: cover
