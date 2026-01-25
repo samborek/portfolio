@@ -11,54 +11,54 @@ carousel:
   - /images/work/plaant_2.jpg
   - /images/work/plaant_3.jpg
 carousel_image_scale: 1.1
-client: Cyber Corp
+client: Plaant
 role: UI & UX Design
 tech: Figma
 link: https://example.com
-intro: "Unie app for hydroponic plant cultivation"
-problem: "The brand felt too corporate and traditional, failing to connect with a younger, tech-savvy audience. The visual identity didn't reflect the innovative nature of the company."
-solution: "Created a bold cyberpunk-inspired brand system with neon aesthetics and terminal-inspired typography. The new identity positions the company as cutting-edge and forward-thinking while maintaining professional credibility."
+intro: "Smart home hydroponics made simple"
+problem: "Bringing nature indoors can be complex and intimidating for urban dwellers with limited space and no green thumb. Existing hydroponic solutions were often too industrial or overly complicated for a domestic setting."
+solution: "Created an intuitive digital ecosystem and brand identity that balances organic softness with smart technology. The design system uses biophilic principles to make plant care an effortless and rewarding experience through a minimalist, nature-first interface."
 scope:
   - Brand Identity
-  - Logo Design
-  - Website Design
-  - Motion Graphics
-credits: "Creative Team"
+  - App Design
+  - IoT Integration
+  - UI/UX Design
+credits: "Plaant Team"
 testimonial:
-  quote: "The visual language you created completely transformed how our clients perceive us. It's bold, different, and exactly what we needed."
-  author: "Sarah Connor"
-  role: "CEO, Cyber Corp"
+  quote: "The interface makes complex nutrient management feel as simple as checking the weather. It has completely transformed how our users interact with their indoor gardens."
+  author: "Elara Vance"
+  role: "Product Lead, Plaant"
 ---
 
 ## The Vision
 
-Cyber Corp wanted to break away from the traditional blue shield iconography of the security industry. They wanted to embrace the glitch aesthetic and neon palette of cyberpunk culture.
+Plaant aims to bridge the gap between urban living and nature. The goal was to create a brand that feels alive and breathable, moving away from sterile industrial aesthetics toward a "living" design language.
 
 <div class="parallax-section rounded">
   <div class="parallax-image-container" data-parallax="0.15">
-    <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=2670" alt="Neon City">
+    <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&q=80&w=2670" alt="Lush Greenery">
   </div>
 </div>
 
 ## Typography & Color
 
-We chose a monospaced font family to evoke early computing terminals, paired with a vibrant neon green and hot pink color palette that stands out against deep voids of black.
+We selected a clean, rounded sans-serif typeface to convey friendliness and accessibility. The color palette is rooted in nature—using varying shades of moss green, sage, and warm earth tones to create a calming, organic atmosphere.
 
 <div class="image-block with-parallax">
-  <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=2670" alt="Code Interface" data-parallax="0.1">
+  <img src="https://images.unsplash.com/photo-1592150621344-78439b734d47?auto=format&fit=crop&q=80&w=2670" alt="Plant Detail" data-parallax="0.1">
 </div>
 
 ## Digital Application
 
-The website interface mimics a terminal session, with command-line interactions for power users and a rich graphical interface for general visitors.
+The mobile app serves as the brain of the system. We prioritized high-contrast data visualization for plant health and growth patterns, ensuring that light and nutrient levels are easily understood at a glance.
 
 <div class="project-gallery">
   <div class="gallery-item">
-     <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=2670" alt="Coding">
-     <figcaption>Backend Systems</figcaption>
+     <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=2670" alt="Smart Home App">
+     <figcaption>Growth Analytics</figcaption>
   </div>
    <div class="gallery-item">
-     <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2670" alt="Analysis">
-     <figcaption>Data Analysis</figcaption>
+     <img src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?auto=format&fit=crop&q=80&w=2670" alt="Plant Monitoring">
+     <figcaption>Nutrient Control</figcaption>
   </div>
 </div>
