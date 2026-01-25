@@ -40,8 +40,8 @@
   /* Layout */
   --sidebar-width: 20rem;
   --sidebar-px: var(--space-lg);
-  --max-project-width: 137.5rem;
-  /* 2200px */
+  --max-project-width: 100rem;
+  /* 1600px */
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -940,16 +940,25 @@ ol {
 .project-info-header {
   grid-column: 1 / -1;
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+/* Container for headline + description */
+.project-text-container {
+  display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 0.25rem;
+  /* 50% reduced gap between title and subtitle */
 }
 
 .project-title-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  margin-bottom: 1px;
+  width: auto;
+  margin-bottom: 0;
 }
 
 .project-actions {
@@ -1036,21 +1045,22 @@ ol {
   font-family: var(--font-display);
   font-size: 1.5625rem;
   font-weight: 500;
-  line-height: 1.8125rem;
+  line-height: 1.5125rem;
   color: rgba(61, 61, 61, 1);
   margin: 0;
 }
 
 .project-info .project-title {
   padding-bottom: 0;
-  line-height: 1.8125rem;
+  line-height: 1.5125rem;
 }
 
 .project-subtitle {
   font-size: 1.25rem;
   color: rgba(138, 138, 138, 1);
   margin: 0;
-  padding-bottom: 24px;
+  padding-bottom: 12px;
+  /* Reduced by 50% */
 }
 
 .project-info-section {
@@ -1570,6 +1580,9 @@ ol {
 body.project-page {
   padding-top: 0;
   padding-bottom: 0;
+  /* Larger max-width for detail pages */
+  --max-project-width: 137.5rem;
+  /* 2200px */
   /* Tighter, more connected project-page spacing */
   --project-page-padding-y: var(--space-xl);
   --project-page-header-gap: var(--space-lg);
