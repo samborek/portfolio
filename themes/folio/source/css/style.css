@@ -1577,6 +1577,39 @@ ol {
   .project-info-header {
     order: 0;
     /* Title stays at top */
+    flex-direction: row;
+    align-items: flex-start;
+    /* Align arrow to top of title+description */
+  }
+
+  /* Arrow-only button on mobile */
+  .project-pill-button {
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .project-pill-button span,
+  .world-icon {
+    display: none;
+  }
+
+  .project-pill-button svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* 20% smaller title and description on mobile */
+  .project-title {
+    font-size: 1.45rem;
+    /* 1.5625rem * 0.8 */
+    line-height: 1.2;
+  }
+
+  .project-subtitle {
+    font-size: 1rem;
+    /* 1.25rem * 0.8 */
   }
 
   .project-info-left,
