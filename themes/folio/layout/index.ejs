@@ -64,7 +64,7 @@
 
         <!-- Right Content - Projects -->
         <main class="projects-column" id="projects">
-            <% projects.forEach(function(project, index) { %>
+            <% projects.forEach(function(project, pindex) { %>
                 <% const carouselStyle=[ project.carousel_aspect_ratio ?
                     `--carousel-aspect-ratio:${project.carousel_aspect_ratio};` : '' , project.carousel_object_fit ?
                     `--carousel-object-fit:${project.carousel_object_fit};` : '' , project.carousel_object_position ?
@@ -192,42 +192,31 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="project-info-left">
-                                        <% if (project.problem) { %>
-                                            <div class="project-info-section">
-                                                <h4 class="project-info-heading">Problem</h4>
+                                    <div class="project-info-content">
+                                        <% if (project.problem || project.solution) { %>
+                                            <div class="project-description-block">
                                                 <p class="project-info-text">
                                                     <%= project.problem %>
+                                                        <%= project.solution %>
                                                 </p>
                                             </div>
                                             <% } %>
-                                                <% if (project.scope && project.scope.length) { %>
-                                                    <div class="project-info-section">
-                                                        <h4 class="project-info-heading">Scope</h4>
-                                                        <ul class="project-info-list">
-                                                            <% project.scope.forEach(function(item) { %>
-                                                                <li>
-                                                                    <%= item %>
-                                                                </li>
-                                                                <% }); %>
-                                                        </ul>
-                                                    </div>
-                                                    <% } %>
-                                    </div>
-                                    <div class="project-info-right">
-                                        <% if (project.solution) { %>
-                                            <div class="project-info-section">
-                                                <h4 class="project-info-heading">Solution</h4>
-                                                <p class="project-info-text">
-                                                    <%= project.solution %>
-                                                </p>
-                                            </div>
-                                            <% } %>
-                                                <div class="project-info-section">
-                                                    <h4 class="project-info-heading">When</h4>
-                                                    <p class="project-info-text">
-                                                        <%= project.when || project.date_label || project.year || '—' %>
-                                                    </p>
+
+                                                <div class="project-meta-row">
+                                                    <% if (project.scope && project.scope.length) { %>
+                                                        <div class="project-meta-item">
+                                                            <span class="project-meta-label">Scope:</span>
+                                                            <span class="project-meta-value">
+                                                                <%= project.scope.join(', ') %>
+                                                            </span>
+                                                        </div>
+                                                        <% } %>
+                                                            <div class="project-meta-item">
+                                                                <span class="project-meta-label">Year:</span>
+                                                                <span class="project-meta-value">
+                                                                    <%= project.when || project.year || ' —' %>
+                                                            </span>
+                                                        </div>
                                                 </div>
                                     </div>
                                 </div>

@@ -751,17 +751,14 @@ body {
 
 /* Project Info */
 .project-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: var(--space-xl);
-  row-gap: var(--space-xs);
-  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
   padding: var(--space-lg) var(--space-lg) 2.625rem;
   padding-top: var(--project-info-padding-top, var(--space-lg));
   background: var(--color-bg-secondary);
   border-radius: 12px;
   max-width: var(--max-project-width);
-  /* Match slider max-width */
 }
 
 .project-info-header {
@@ -855,16 +852,41 @@ body {
 
 
 
-.project-info-left {
+.project-info-content {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
 }
 
-.project-info-right {
+.project-description-block {
+  max-width: 50rem;
+}
+
+.project-meta-row {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border);
+}
+
+.project-meta-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.project-meta-label {
+  font-size: var(--size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.project-meta-value {
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
 }
 
 /* Legacy support - maps to component classes */
@@ -1405,29 +1427,15 @@ body {
     /* 1.25rem * 0.8 */
   }
 
-  .project-info-left,
-  .project-info-right {
-    display: contents;
+  .project-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
   }
 
-  .project-info-left .project-info-section:first-child {
-    order: 1;
-    /* Problem */
-  }
-
-  .project-info-right .project-info-section:first-child {
-    order: 2;
-    /* Solution */
-  }
-
-  .project-info-left .project-info-section:last-child {
-    order: 3;
-    /* Scope */
-  }
-
-  .project-info-right .project-info-section:last-child {
-    order: 4;
-    /* When */
+  .project-meta-row {
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 }
 
