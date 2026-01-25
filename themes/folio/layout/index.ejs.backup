@@ -64,7 +64,7 @@
 
         <!-- Right Content - Projects -->
         <main class="projects-column" id="projects">
-            <% projects.forEach(function(project, pindex) { %>
+            <% projects.forEach(function(project, index) { %>
                 <% const carouselStyle=[ project.carousel_aspect_ratio ?
                     `--carousel-aspect-ratio:${project.carousel_aspect_ratio};` : '' , project.carousel_object_fit ?
                     `--carousel-object-fit:${project.carousel_object_fit};` : '' , project.carousel_object_position ?
@@ -73,7 +73,7 @@
                     project.carousel_image_height ? `--carousel-image-height:${project.carousel_image_height};` : '' ,
                     project.carousel_image_top ? `--carousel-image_top:${project.carousel_image_top};` : '' ,
                     ].join(''); %>
-                    <section class="project-section" id="project-<%= pindex %>" data-project-index="<%= pindex %>" <% if
+                    <section class="project-section" id="project-<%= index %>" data-project-index="<%= index %>" <% if
                         (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
                                 <div class="project-carousel-wrapper" <% if (project.disable_parallax) { %>
                                     data-disable-parallax="true" <% } %>>
@@ -96,8 +96,8 @@
                                                                             <div class="unicorn-scene"
                                                                                 data-us-project-src="<%- url_for(imgUrl) %>"
                                                                                 data-us-scale="1" data-us-dpi="1.5"
-                                                                                data-us-lazyload="<%= pindex === 0 ? 'false' : 'true' %>"
-                                                                                <%=pindex> 0 ?
+                                                                                data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>"
+                                                                                <%=index> 0 ?
                                                                                 'data-background-lazy-us="true"' : '' %>
                                                                                 data-us-production="true">
                                                                                 <div class="unicorn-scene-skeleton">
@@ -113,8 +113,8 @@
                                                                                         <% } %>
                                                                                             <img src="<%- url_for(imgUrl) %>"
                                                                                                 alt="<%= project.title %>"
-                                                                                                loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
-                                                                                                <%=pindex===0
+                                                                                                loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                                                                                                <%=index===0
                                                                                                 ? 'fetchpriority="high"'
                                                                                                 : '' %>
                                                                                             draggable="false"
@@ -192,40 +192,44 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <% if (project.description) { %>
-                                        <div class="project-description">
-                                            <p class="project-info-text">
-                                                <%= project.description %>
-                                            </p>
-                                        </div>
-                                        <% } else if (project.problem || project.solution) { %>
-                                            <div class="project-description">
+                                    <div class="project-info-left">
+                                        <% if (project.problem) { %>
+                                            <div class="project-info-section">
+                                                <h4 class="project-info-heading">Problem</h4>
                                                 <p class="project-info-text">
                                                     <%= project.problem %>
-                                                        <% if (project.problem && project.solution) { %>
-                                                            <% } %>
-                                                                <%= project.solution %>
                                                 </p>
                                             </div>
                                             <% } %>
-                                                <div class="project-meta-row">
-                                                    <% if (project.scope && project.scope.length) { %>
-                                                        <div class="project-scope-tags">
-                                                            <% project.scope.forEach(function(item, idx) { %>
-                                                                <span class="scope-tag">
+                                                <% if (project.scope && project.scope.length) { %>
+                                                    <div class="project-info-section">
+                                                        <h4 class="project-info-heading">Scope</h4>
+                                                        <ul class="project-info-list">
+                                                            <% project.scope.forEach(function(item) { %>
+                                                                <li>
                                                                     <%= item %>
-                                                                </span>
-                                                                <% if (idx < project.scope.length - 1) { %><span
-                                                                        class="scope-separator">·</span>
-                                                                    <% } %>
-                                                                        <% }); %>
-                                                        </div>
-                                                        <% } %>
-                                                            <span class="project-year">
-                                                                <%= project.when || project.date_label || project.year
-                                                                    || '—' %>
-                                                            </span>
+                                                                </li>
+                                                                <% }); %>
+                                                        </ul>
+                                                    </div>
+                                                    <% } %>
+                                    </div>
+                                    <div class="project-info-right">
+                                        <% if (project.solution) { %>
+                                            <div class="project-info-section">
+                                                <h4 class="project-info-heading">Solution</h4>
+                                                <p class="project-info-text">
+                                                    <%= project.solution %>
+                                                </p>
+                                            </div>
+                                            <% } %>
+                                                <div class="project-info-section">
+                                                    <h4 class="project-info-heading">When</h4>
+                                                    <p class="project-info-text">
+                                                        <%= project.when || project.date_label || project.year || '—' %>
+                                                    </p>
                                                 </div>
+                                    </div>
                                 </div>
                     </section>
                     <% }); %>
