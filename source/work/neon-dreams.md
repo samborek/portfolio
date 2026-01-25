@@ -1,19 +1,19 @@
 ---
-title: Neon Dreams
+title: Plaant
 layout: project
-category: Brand Identity
-year: 2024
+category: Lifestyle
+year: 2022
 order: 2
-cover: /images/work/cans-2.png
-hero_image: /images/work/cans-2.png
+cover: /images/work/plaant_1.jpg
+hero_image: /images/work/plaant_1.jpg
 carousel:
-  - /images/work/cans-2.png
-  - /images/work/usdc.png
-  - /images/work/usdt.png
+  - /images/work/plaant_1.jpg
+  - /images/work/plaant_2.jpg
+  - /images/work/plaant_3.jpg
 carousel_image_scale: 1.1
 client: Cyber Corp
-role: Visual Design
-tech: Figma, After Effects
+role: UI & UX Design
+tech: Figma
 link: https://example.com
 intro: "A futuristic brand identity."
 problem: "The brand felt too corporate and traditional, failing to connect with a younger, tech-savvy audience. The visual identity didn't reflect the innovative nature of the company."
