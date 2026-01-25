@@ -388,20 +388,27 @@ document.addEventListener('DOMContentLoaded', () => {
       item.addEventListener('mousemove', (e) => {
         if (isMobile || !preview.classList.contains('active')) return;
 
-        // Follow cursor with slight offset
-        const x = e.clientX + 20;
-        const y = e.clientY + 20;
+        const gap = 20;
+        // Force a layout read to ensure we have the correct height including text
+        const width = preview.offsetWidth;
+        const height = preview.offsetHeight;
 
-        // Check bounds to prevent overflow
-        const rect = preview.getBoundingClientRect();
-        const overflowX = (x + rect.width / 2) - window.innerWidth;
-        const overflowY = (y + rect.height / 2) - window.innerHeight;
+        let finalX = e.clientX + gap;
+        let finalY = e.clientY + gap;
 
-        let finalX = x;
-        let finalY = y;
+        // Check horizontal boundary
+        if (finalX + width > window.innerWidth) {
+          finalX = e.clientX - width - gap;
+        }
 
-        if (overflowX > 0) finalX -= (overflowX + 20);
-        if (overflowY > 0) finalY -= (overflowY + 20);
+        // Check vertical boundary
+        if (finalY + height > window.innerHeight) {
+          finalY = e.clientY - height - gap;
+        }
+
+        // Final safety check to ensure it doesn't go off top/left
+        finalX = Math.max(gap, finalX);
+        finalY = Math.max(gap, finalY);
 
         preview.style.transform = `translate(${finalX}px, ${finalY}px) scale(1)`;
       });
