@@ -75,76 +75,78 @@
                     ].join(''); %>
                     <section class="project-section" id="project-<%= index %>" data-project-index="<%= index %>" <% if
                         (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
-                                <div class="project-carousel-wrapper">
-                                    <!-- Navigation Zones -->
-                                    <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev"></div>
-                                    <div class="carousel-nav-zone carousel-nav-zone--right" data-nav="next"></div>
+                                <div class="project-carousel-wrapper" <% if (project.disable_parallax) { %>
+                                    data-disable-parallax="true" <% } %>>
+                                        <!-- Navigation Zones -->
+                                        <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev"></div>
+                                        <div class="carousel-nav-zone carousel-nav-zone--right" data-nav="next"></div>
 
-                                    <div class="embla">
-                                        <div class="embla__viewport">
-                                            <div class="embla__container">
-                                                <% if (project.carousel && project.carousel.length) { %>
-                                                    <% project.carousel.forEach(function(imgUrl, slideIndex) { %>
-                                                        <% const firstStyle=(project.carousel_first_object_position &&
-                                                            slideIndex===0) ? `
-                                                            style="--carousel-object-position:${project.carousel_first_object_position};"
-                                                            ` : '' ; %>
-                                                            <div class="embla__slide" <%=firstStyle %>>
-                                                                <div class="project-slide-item">
-                                                                    <% if (imgUrl.endsWith('.json')) { %>
-                                                                        <div class="unicorn-scene"
-                                                                            data-us-project-src="<%- url_for(imgUrl) %>"
-                                                                            data-us-scale="1" data-us-dpi="1.5"
-                                                                            data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>"
-                                                                            <%=index> 0 ?
-                                                                            'data-background-lazy-us="true"' : '' %>
-                                                                            data-us-production="true">
-                                                                            <div class="unicorn-scene-skeleton"></div>
-                                                                        </div>
-                                                                        <% } else { %>
-                                                                            <div class="image-container">
-                                                                                <div class="image-skeleton"></div>
-                                                                                <% if (project.blur) { %>
-                                                                                    <div class="image-placeholder"
-                                                                                        style="background-image: url('<%- url_for(project.blur) %>');">
-                                                                                    </div>
-                                                                                    <% } %>
-                                                                                        <img src="<%- url_for(imgUrl) %>"
-                                                                                            alt="<%= project.title %>"
-                                                                                            loading="<%= index === 0 ? 'eager' : 'lazy' %>"
-                                                                                            <%=index===0
-                                                                                            ? 'fetchpriority="high"'
-                                                                                            : '' %>
-                                                                                        draggable="false"
-                                                                                        onload="this.parentElement.classList.add('loaded')">
+                                        <div class="embla">
+                                            <div class="embla__viewport">
+                                                <div class="embla__container">
+                                                    <% if (project.carousel && project.carousel.length) { %>
+                                                        <% project.carousel.forEach(function(imgUrl, slideIndex) { %>
+                                                            <% const firstStyle=(project.carousel_first_object_position
+                                                                && slideIndex===0) ? `
+                                                                style="--carousel-object-position:${project.carousel_first_object_position};"
+                                                                ` : '' ; %>
+                                                                <div class="embla__slide" <%=firstStyle %>>
+                                                                    <div class="project-slide-item">
+                                                                        <% if (imgUrl.endsWith('.json')) { %>
+                                                                            <div class="unicorn-scene"
+                                                                                data-us-project-src="<%- url_for(imgUrl) %>"
+                                                                                data-us-scale="1" data-us-dpi="1.5"
+                                                                                data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>"
+                                                                                <%=index> 0 ?
+                                                                                'data-background-lazy-us="true"' : '' %>
+                                                                                data-us-production="true">
+                                                                                <div class="unicorn-scene-skeleton">
+                                                                                </div>
                                                                             </div>
-                                                                            <% } %>
-                                                                </div>
-                                                            </div>
-                                                            <% }); %>
-                                                                <% } else if (project.cover) { %>
-                                                                    <div class="embla__slide">
-                                                                        <div class="project-slide-item">
-                                                                            <div class="image-container">
-                                                                                <div class="image-skeleton"></div>
-                                                                                <% if (project.blur) { %>
-                                                                                    <div class="image-placeholder"
-                                                                                        style="background-image: url('<%- url_for(project.blur) %>');">
-                                                                                    </div>
-                                                                                    <% } %>
-                                                                                        <img src="<%- url_for(project.cover) %>"
-                                                                                            alt="<%= project.title %>"
-                                                                                            loading="lazy"
+                                                                            <% } else { %>
+                                                                                <div class="image-container">
+                                                                                    <div class="image-skeleton"></div>
+                                                                                    <% if (project.blur) { %>
+                                                                                        <div class="image-placeholder"
+                                                                                            style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                        </div>
+                                                                                        <% } %>
+                                                                                            <img src="<%- url_for(imgUrl) %>"
+                                                                                                alt="<%= project.title %>"
+                                                                                                loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                                                                                                <%=index===0
+                                                                                                ? 'fetchpriority="high"'
+                                                                                                : '' %>
                                                                                             draggable="false"
                                                                                             onload="this.parentElement.classList.add('loaded')">
+                                                                                </div>
+                                                                                <% } %>
+                                                                    </div>
+                                                                </div>
+                                                                <% }); %>
+                                                                    <% } else if (project.cover) { %>
+                                                                        <div class="embla__slide">
+                                                                            <div class="project-slide-item">
+                                                                                <div class="image-container">
+                                                                                    <div class="image-skeleton"></div>
+                                                                                    <% if (project.blur) { %>
+                                                                                        <div class="image-placeholder"
+                                                                                            style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                        </div>
+                                                                                        <% } %>
+                                                                                            <img src="<%- url_for(project.cover) %>"
+                                                                                                alt="<%= project.title %>"
+                                                                                                loading="lazy"
+                                                                                                draggable="false"
+                                                                                                onload="this.parentElement.classList.add('loaded')">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <% } %>
+                                                                        <% } %>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <span class="carousel-scroll-hint" aria-hidden="true">Scroll ↔</span>
+                                        <span class="carousel-scroll-hint" aria-hidden="true">Scroll ↔</span>
                                 </div>
                                 <div class="project-carousel-progress" aria-hidden="true">
                                     <span></span>

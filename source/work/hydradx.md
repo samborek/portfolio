@@ -3,7 +3,7 @@ title: HydraDX Omnipool
 layout: project
 category: Blockchain
 year: 2023
-order: 2
+order: 998
 cover: /images/work/hydra_1_1.jpg
 hero_image: /images/work/hydra_1_1.jpg
 carousel:

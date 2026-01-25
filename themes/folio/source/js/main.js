@@ -299,10 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!carouselWrappers.length) return;
 
     // Parallax intensity: how much the image moves (percentage of container height)
-    const PARALLAX_STRENGTH = 4; // ±3% movement
+    const PARALLAX_STRENGTH = 3; // ±3% movement
 
     const updateParallax = () => {
       carouselWrappers.forEach(wrapper => {
+        if (wrapper.dataset.disableParallax === 'true') return;
+
         const rect = wrapper.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
 

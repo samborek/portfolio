@@ -14,6 +14,7 @@ carousel:
   - /images/work/hydration_5.jpg
   - /images/work/hydration_6.jpg
 carousel_object_fit: cover
+disable_parallax: true
 carousel_image_scale: 1
 client: Hydration Protocol
 role: "Lead Product Designer"
