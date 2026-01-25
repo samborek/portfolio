@@ -344,4 +344,78 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   initParallax();
+
+  // --- Resume Hover Preview ---
+  const initResumeHoverPreview = () => {
+    const preview = document.querySelector('.resume-hover-preview');
+    const items = document.querySelectorAll('.resume-list-item');
+    if (!preview || !items.length) return;
+
+    const img = preview.querySelector('.preview-image');
+    const title = preview.querySelector('.preview-title');
+    const year = preview.querySelector('.preview-year');
+    const desc = preview.querySelector('.preview-description');
+
+    let isMobile = window.matchMedia('(max-width: 768px)').matches;
+    window.addEventListener('resize', () => {
+      isMobile = window.matchMedia('(max-width: 768px)').matches;
+    });
+
+    items.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        if (isMobile) return;
+
+        const data = item.dataset;
+        if (!data.previewImage) return;
+
+        // Update content
+        img.classList.remove('loaded');
+        img.src = data.previewImage;
+        img.onload = () => img.classList.add('loaded');
+
+        title.textContent = data.previewTitle || '';
+        year.textContent = data.previewYear || '';
+        desc.textContent = data.previewDescription || '';
+
+        preview.classList.add('active');
+      });
+
+      item.addEventListener('mouseleave', () => {
+        if (isMobile) return;
+        preview.classList.remove('active');
+      });
+
+      item.addEventListener('mousemove', (e) => {
+        if (isMobile || !preview.classList.contains('active')) return;
+
+        // Follow cursor with slight offset
+        const x = e.clientX + 20;
+        const y = e.clientY + 20;
+
+        // Check bounds to prevent overflow
+        const rect = preview.getBoundingClientRect();
+        const overflowX = (x + rect.width / 2) - window.innerWidth;
+        const overflowY = (y + rect.height / 2) - window.innerHeight;
+
+        let finalX = x;
+        let finalY = y;
+
+        if (overflowX > 0) finalX -= (overflowX + 20);
+        if (overflowY > 0) finalY -= (overflowY + 20);
+
+        preview.style.transform = `translate(${finalX}px, ${finalY}px) scale(1)`;
+      });
+
+      // Mobile click handler
+      item.addEventListener('click', (e) => {
+        if (!isMobile) return;
+        // Potential implementation for mobile: show as a modal or expanded state
+        // For now, if the user requested "click on mobile", we could toggle a class
+        // but given the "floating" nature, a modal might be better.
+        // Keeping it simple for now as requested.
+      });
+    });
+  };
+
+  initResumeHoverPreview();
 });

@@ -989,6 +989,8 @@ body {
   color: var(--color-text);
   margin-bottom: var(--space-2xl);
   max-width: 50rem;
+  margin-top: var(--space-sm);
+  opacity: 0.8;
 }
 
 .experience-grid {
@@ -1056,6 +1058,108 @@ body {
 
 .resume-item-title {
   color: var(--color-text);
+}
+
+/* Floating Resume Hover Preview */
+.resume-hover-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    visibility 0.3s;
+  background: #000;
+  /* Dark premium background as requested */
+  color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  will-change: transform, opacity;
+}
+
+.resume-hover-preview.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.resume-hover-preview .preview-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-hover-preview .preview-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.resume-hover-preview .preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.resume-hover-preview .preview-image.loaded {
+  opacity: 1;
+}
+
+.resume-hover-preview .preview-text {
+  padding: 1.5rem;
+}
+
+.resume-hover-preview .preview-header {
+  margin-bottom: 0.75rem;
+}
+
+.resume-hover-preview .preview-year {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888;
+  margin-bottom: 0.25rem;
+}
+
+.resume-hover-preview .preview-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.resume-hover-preview .preview-description {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #ccc;
+  margin: 0;
+}
+
+/* Cursor style for interactive list items */
+.resume-list-item {
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .resume-hover-preview {
+    display: none;
+    /* We can handle mobile differently or show static */
+  }
 }
 
 /* Clients */
@@ -1157,7 +1261,7 @@ body {
   color: #888;
   font-size: 1rem;
   margin-bottom: 0.75rem;
-  max-width: 20rem;
+  max-width: 30rem;
 }
 
 #connect .connect-link {

@@ -275,13 +275,18 @@
                                             <h2 class="resume-section-heading">Speaking</h2>
                                             <ul class="resume-list">
                                                 <% theme.speaking.forEach(function(item) { %>
-                                                    <li>
-                                                        <span class="resume-item-title">
-                                                            <%= item.title %>
-                                                        </span>
-                                                        <span class="resume-item-year">
-                                                            <%= item.year %>
-                                                        </span>
+                                                    <li class="resume-list-item" <% if (item.image) { %>
+                                                        data-preview-image="<%= url_for(item.image) %>" <% } %>
+                                                                <% if (item.description) { %> data-preview-description="
+                                                                    <%= item.description %>" <% } %>
+                                                                            data-preview-title="<%= item.title %>"
+                                                                                data-preview-year="<%= item.year %>">
+                                                                                    <span class="resume-item-title">
+                                                                                        <%= item.title %>
+                                                                                    </span>
+                                                                                    <span class="resume-item-year">
+                                                                                        <%= item.year %>
+                                                                                    </span>
                                                     </li>
                                                     <% }); %>
                                             </ul>
@@ -293,13 +298,23 @@
                                                     <h2 class="resume-section-heading">Events</h2>
                                                     <ul class="resume-list">
                                                         <% theme.events.forEach(function(item) { %>
-                                                            <li>
-                                                                <span class="resume-item-title">
-                                                                    <%= item.title %>
-                                                                </span>
-                                                                <span class="resume-item-year">
-                                                                    <%= item.year %>
-                                                                </span>
+                                                            <li class="resume-list-item" <% if (item.image) { %>
+                                                                data-preview-image="<%= url_for(item.image) %>" <% } %>
+                                                                        <% if (item.description) { %>
+                                                                            data-preview-description="<%=
+                                                                                item.description %>" <% } %>
+                                                                                    data-preview-title="<%= item.title
+                                                                                        %>"
+                                                                                        data-preview-year="<%= item.year
+                                                                                            %>">
+                                                                                            <span
+                                                                                                class="resume-item-title">
+                                                                                                <%= item.title %>
+                                                                                            </span>
+                                                                                            <span
+                                                                                                class="resume-item-year">
+                                                                                                <%= item.year %>
+                                                                                            </span>
                                                             </li>
                                                             <% }); %>
                                                     </ul>
@@ -373,4 +388,20 @@
                                     </section>
                                     <% } %>
         </main>
+
+        <!-- Global Resume Hover Preview -->
+        <div class="resume-hover-preview" aria-hidden="true">
+            <div class="preview-content">
+                <div class="preview-media">
+                    <img src="" alt="" class="preview-image">
+                </div>
+                <div class="preview-text">
+                    <div class="preview-header">
+                        <span class="preview-year"></span>
+                        <h4 class="preview-title"></h4>
+                    </div>
+                    <p class="preview-description"></p>
+                </div>
+            </div>
+        </div>
 </div>

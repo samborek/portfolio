@@ -54,14 +54,22 @@ experience:
 
 # Events Section
 events:
-  - title: "DesignWays edition 4"
+  - title: "DesignWays Ed. 4"
     year: "2022"
-  - title: "DesignWays edition 3"
+    image: "/images/work/plaant_1.jpg"
+    description: "Speaker at the 4th edition of DesignWays, focusing on the intersection of 3D design and product ecosystems."
+  - title: "DesignWays Ed. 3"
     year: "2021"
-  - title: "DesignWays edition 2"
+    image: "/images/work/hydra_1_1.jpg"
+    description: "A deep dive into branding strategies for emerging blockchain protocols and DeFi platforms."
+  - title: "DesignWays Ed. 2"
     year: "2019"
-  - title: "DesignWays edition 1"
+    image: "/images/work/plaant_2.jpg"
+    description: "Discussing the evolution of UI/UX in the age of IoT and connected home devices."
+  - title: "DesignWays Ed. 1"
     year: "2018"
+    image: "/images/work/plaant_3.jpg"
+    description: "The beginning of a journey: shareable insights on building unique design communities."
   - title: "KID Mobile UI Challenge Workshop"
     year: "2017"
 

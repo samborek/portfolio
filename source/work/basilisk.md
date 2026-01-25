@@ -3,7 +3,7 @@ title: Basilisk App
 layout: project
 category: Blockchain
 year: 2022
-order: 999
+order: 998
 cover: /images/work/basilisk_1.jpg
 hero_image: /images/work/basilisk_1.jpg
 carousel:
