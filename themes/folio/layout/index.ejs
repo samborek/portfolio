@@ -4,66 +4,63 @@
 <div class="portfolio-wrapper">
     <% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) - (a.order
         || 0)); %>
-        <!-- Left Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-content">
-                <div class="sidebar-hero">
-                    <span class="project-link-item" style="text-transform: lowercase; border-bottom: none;">Michal
-                        Sambora — sambø</span>
+        <!-- Top Header -->
+        <header class="site-header">
+            <div class="header-inner">
+                <div class="header-brand">
+                    <span class="brand-name">Michal Sambora — sambø</span>
+                    <h1 class="header-title">
+                        <%= theme.hero_title || "I'm Michal Sambora" %>
+                    </h1>
                 </div>
-                <h1 class="sidebar-title">
-                    <%= theme.hero_title || "I'm  Michal Sambora" %>
-                </h1>
 
-                <!-- Work Links (Collapsible) -->
-                <div class="project-links">
-                    <button class="project-links-toggle" aria-expanded="false" aria-controls="work-list">
-                        <span class="project-links-label">Selected Work</span>
-                        <span class="toggle-arrow">↓</span>
-                    </button>
-                    <div class="project-links-list collapsed" id="work-list">
-                        <% projects.forEach(function(project, index) { %>
-                            <a href="#project-<%= index %>" class="project-link-item">
-                                <%= project.title %>
-                            </a>
-                            <% }); %>
+                <nav class="header-nav">
+                    <!-- Work Links -->
+                    <div class="project-links">
+                        <button class="project-links-toggle" aria-expanded="false" aria-controls="work-list">
+                            <span class="project-links-label">Selected Work</span>
+                            <span class="toggle-arrow">↓</span>
+                        </button>
+                        <div class="project-links-list collapsed" id="work-list">
+                            <% projects.forEach(function(project, index) { %>
+                                <a href="#project-<%= index %>" class="project-link-item">
+                                    <%= project.title %>
+                                </a>
+                                <% }); %>
+                        </div>
+                    </div>
+
+                    <div class="nav-links">
+                        <% if (theme.experience) { %>
+                            <a href="#experience" class="nav-link-item">Experience</a>
+                            <% } %>
+                                <a href="#connect" class="nav-link-item">Let's connect</a>
+                    </div>
+                </nav>
+
+                <div class="header-right">
+                    <div class="social-icons">
+                        <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>" target="_blank">𝕏</a>
+                            <% } %>
+                                <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
+                                        target="_blank">in</a>
+                                    <% } %>
+                                        <% if (theme.social?.dribbble) { %><a href="<%= theme.social.dribbble %>"
+                                                target="_blank">◉</a>
+                                            <% } %>
+                                                <% if (theme.social?.behance) { %><a href="<%= theme.social.behance %>"
+                                                        target="_blank">Bē</a>
+                                                    <% } %>
+                                                        <% if (theme.social?.gumroad) { %><a
+                                                                href="<%= theme.social.gumroad %>" target="_blank">G</a>
+                                                            <% } %>
+                    </div>
+                    <div class="header-contact">
+                        <a href="mailto:michal@maise.io" class="header-email">michal@maise.io</a>
                     </div>
                 </div>
-
-                <hr class="sidebar-separator">
-
-                <!-- Navigation Links -->
-                <div class="nav-links">
-                    <% if (theme.experience) { %>
-                        <a href="#experience" class="project-link-item">Experience</a>
-                        <% } %>
-                            <a href="#connect" class="project-link-item">Let's connect</a>
-                </div>
             </div>
-
-            <div class="sidebar-footer">
-                <div class="social-icons">
-                    <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>" target="_blank">𝕏</a>
-                        <% } %>
-                            <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
-                                    target="_blank">in</a>
-                                <% } %>
-                                    <% if (theme.social?.dribbble) { %><a href="<%= theme.social.dribbble %>"
-                                            target="_blank">◉</a>
-                                        <% } %>
-                                            <% if (theme.social?.behance) { %><a href="<%= theme.social.behance %>"
-                                                    target="_blank">Bē</a>
-                                                <% } %>
-                                                    <% if (theme.social?.gumroad) { %><a
-                                                            href="<%= theme.social.gumroad %>" target="_blank">G</a>
-                                                        <% } %>
-                </div>
-
-                <div class="sidebar-contact">
-                    <a href="mailto:michal@maise.io" class="sidebar-email">michal@maise.io</a>
-                </div>
-            </div>
-        </aside>
+        </header>
 
         <!-- Right Content - Projects -->
         <main class="projects-column" id="projects">
@@ -650,5 +647,24 @@
                 });
             });
         });
+
+        // Toggle project links dropdown
+        const linksToggle = document.querySelector('.project-links-toggle');
+        const linksList = document.querySelector('.project-links-list');
+
+        if (linksToggle && linksList) {
+            linksToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isCollapsed = linksList.classList.contains('collapsed');
+                linksList.classList.toggle('collapsed');
+                linksToggle.setAttribute('aria-expanded', isCollapsed);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+                linksList.classList.add('collapsed');
+                linksToggle.setAttribute('aria-expanded', 'false');
+            });
+        }
     });
 </script>
