@@ -208,19 +208,32 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { clearInterval(itv); scene.classList.add('loaded'); }, 600); // Quick fallback
 
         // Workaround for mouse-tracking scenes that break after scrolling
-        if (scene.classList.contains('unicorn-btn') || scene.closest('.unicorn-btn')) {
-          const canvas = scene.querySelector('canvas');
+        // Workaround for mouse-tracking scenes that break after visibility changes
+        const canvas = scene.querySelector('canvas');
+        if (canvas) {
+          const wakeUpScene = () => {
+            const rect = scene.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            // Dispatch multiple events to force-wake the interaction loop
+            ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
+              scene.dispatchEvent(new MouseEvent(type, {
+                clientX: centerX,
+                clientY: centerY,
+                bubbles: true
+              }));
+            });
+
+            // Internal SDKs often look for Window resize to re-init buffers
+            window.dispatchEvent(new Event('resize'));
+          };
+
           const visibilityObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-              if (entry.isIntersecting && canvas) {
-                const rect = scene.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                scene.dispatchEvent(new MouseEvent('mousemove', {
-                  clientX: centerX,
-                  clientY: centerY,
-                  bubbles: true
-                }));
+              if (entry.isIntersecting) {
+                // Wait a frame for the CSS transition/visibility to settle
+                requestAnimationFrame(wakeUpScene);
               }
             });
           }, { threshold: 0.1 });

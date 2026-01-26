@@ -429,6 +429,7 @@
 
 <div class="floating-controls">
     <nav class="content-tabs">
+        <div class="tab-indicator"></div>
         <button class="tab-button active" data-tab="home">Home</button>
         <button class="tab-button" data-tab="playground">Playground</button>
     </nav>
@@ -458,8 +459,31 @@
     document.addEventListener('DOMContentLoaded', function () {
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
+        const tabIndicator = document.querySelector('.tab-indicator');
         const floatControls = document.querySelector('.floating-controls');
         const isMobile = () => window.innerWidth <= 768;
+
+        // Function to update tab indicator
+        const updateIndicator = (activeBtn) => {
+            if (!tabIndicator || !activeBtn) return;
+            const rect = activeBtn.getBoundingClientRect();
+            const parentRect = activeBtn.parentElement.getBoundingClientRect();
+
+            tabIndicator.style.width = `${rect.width}px`;
+            tabIndicator.style.transform = `translateX(${rect.left - parentRect.left}px)`;
+        };
+
+        // Initialize indicator position
+        const activeTab = document.querySelector('.tab-button.active');
+        if (activeTab) {
+            // Wait for next frame to ensure layouts are ready
+            requestAnimationFrame(() => updateIndicator(activeTab));
+        }
+
+        window.addEventListener('resize', () => {
+            const currentActive = document.querySelector('.tab-button.active');
+            if (currentActive) updateIndicator(currentActive);
+        });
 
         // Scroll Visibility
         let lastScrollY = window.scrollY;
@@ -593,6 +617,9 @@
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
 
+                // Update indicator position
+                updateIndicator(button);
+
                 tabContents.forEach(content => {
                     content.classList.remove('active');
                     if (content.id === tab + '-content') {
@@ -611,7 +638,16 @@
                     }
                 });
 
-                window.dispatchEvent(new Event('resize'));
+                // Trigger resize after a frame to ensure complex elements (like Unicorn Studio) re-init
+                requestAnimationFrame(() => {
+                    window.dispatchEvent(new Event('resize'));
+                    // Force a dummy mousemove on the window to wake up mouse-tracking elements
+                    window.dispatchEvent(new MouseEvent('mousemove', {
+                        clientX: window.innerWidth / 2,
+                        clientY: window.innerHeight / 2,
+                        bubbles: true
+                    }));
+                });
             });
         });
     });
