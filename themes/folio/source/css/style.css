@@ -1794,17 +1794,54 @@ body {
   }
 
   .projects-column {
-    padding-left: var(--space-xs);
-    padding-right: var(--space-xs);
+    padding-left: 0;
+    padding-right: 0;
     --project-carousel-to-info-gap: 0px;
   }
 
-  .project-carousel-wrapper,
-  .embla__slide,
-  .project-info {
+  .project-section {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    margin-bottom: var(--section-gap);
+    width: 100%;
+  }
+
+  .project-carousel-wrapper {
+    padding: 0;
     border-radius: 0;
     width: 100%;
+  }
+
+  .embla__slide,
+  .project-info,
+  .image-container,
+  .image-skeleton,
+  .unicorn-scene-skeleton,
+  .project-slide-item,
+  .project-carousel-item {
+    border-radius: 0 !important;
+    width: 100%;
     max-width: 100%;
+  }
+
+  .project-info {
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .project-info .project-title,
+  .project-subtitle,
+  .project-description p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .project-meta-row {
+    margin-top: 0.25rem;
+    padding-top: 0.75rem;
   }
 
   /* Disable heavy effects for better mobile performance */
