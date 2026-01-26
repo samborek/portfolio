@@ -481,17 +481,19 @@
         // Initialize indicator position
         const activeTab = document.querySelector('.tab-button.active');
         if (activeTab) {
-            // Wait for next frame to ensure layouts are ready
-            requestAnimationFrame(() => {
-                updateIndicator(activeTab);
+            // Wait for fonts to be ready to get accurate widths
+            document.fonts.ready.then(() => {
+                requestAnimationFrame(() => {
+                    updateIndicator(activeTab);
 
-                // Initial sidebar state
-                const sidebar = document.querySelector('.sidebar');
-                const portfolioWrapper = document.querySelector('.portfolio-wrapper');
-                if (activeTab.dataset.tab === 'playground') {
-                    sidebar.classList.add('sidebar-hidden');
-                    portfolioWrapper.classList.add('sidebar-hidden');
-                }
+                    // Initial sidebar state
+                    const sidebar = document.querySelector('.sidebar');
+                    const portfolioWrapper = document.querySelector('.portfolio-wrapper');
+                    if (activeTab.dataset.tab === 'playground') {
+                        sidebar.classList.add('sidebar-hidden');
+                        portfolioWrapper.classList.add('sidebar-hidden');
+                    }
+                });
             });
         }
 
