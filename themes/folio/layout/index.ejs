@@ -631,52 +631,51 @@
             button.addEventListener('click', () => {
                 const tab = button.dataset.tab;
 
+                // 1. Immediate Visual Feedback
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-
-                // Update indicator position
                 updateIndicator(button);
 
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                    if (content.id === tab + '-content') {
-                        content.classList.add('active');
-                        if (tab === 'playground') {
-                            // Re-trigger observer for playground items
-                            document.querySelectorAll('.playground-item').forEach(item => {
-                                videoObserver.unobserve(item);
-                                videoObserver.observe(item);
-                                if (isMobile()) {
-                                    mobileFocusObserver.unobserve(item);
-                                    mobileFocusObserver.observe(item);
-                                }
-                            });
-                        }
-                    }
-                });
-
-                // Trigger resize after a frame to ensure complex elements (like Unicorn Studio) re-init
+                // 2. Defer heavy logic to avoid blocking the transition
                 requestAnimationFrame(() => {
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tab + '-content') {
+                            content.classList.add('active');
+                            if (tab === 'playground') {
+                                // Re-trigger observer for playground items
+                                document.querySelectorAll('.playground-item').forEach(item => {
+                                    videoObserver.unobserve(item);
+                                    videoObserver.observe(item);
+                                    if (isMobile()) {
+                                        mobileFocusObserver.unobserve(item);
+                                        mobileFocusObserver.observe(item);
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    // 3. Trigger resize and sidebar state
+                    const sidebar = document.querySelector('.sidebar');
+                    const portfolioWrapper = document.querySelector('.portfolio-wrapper');
+
+                    if (tab === 'playground') {
+                        sidebar.classList.add('sidebar-hidden');
+                        portfolioWrapper.classList.add('sidebar-hidden');
+                    } else {
+                        sidebar.classList.remove('sidebar-hidden');
+                        portfolioWrapper.classList.remove('sidebar-hidden');
+                    }
+
+                    // Wake up complex elements
                     window.dispatchEvent(new Event('resize'));
-                    // Force a dummy mousemove on the window to wake up mouse-tracking elements
                     window.dispatchEvent(new MouseEvent('mousemove', {
                         clientX: window.innerWidth / 2,
                         clientY: window.innerHeight / 2,
                         bubbles: true
                     }));
                 });
-
-                // Hide/show sidebar based on active tab
-                const sidebar = document.querySelector('.sidebar');
-                const portfolioWrapper = document.querySelector('.portfolio-wrapper');
-
-                if (tab === 'playground') {
-                    sidebar.classList.add('sidebar-hidden');
-                    portfolioWrapper.classList.add('sidebar-hidden');
-                } else {
-                    sidebar.classList.remove('sidebar-hidden');
-                    portfolioWrapper.classList.remove('sidebar-hidden');
-                }
             });
         });
     });
