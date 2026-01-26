@@ -247,6 +247,11 @@
             </div>
 
             <div id="playground-content" class="tab-content">
+                <div class="playground-header">
+                    <h1 class="playground-title">Playground</h1>
+                    <p class="playground-description">A collection of experimental work, motion studies, and creative
+                        explorations.</p>
+                </div>
                 <div class="playground-grid">
                     <% const playgroundVideos=[ '3TnVVtbRGc81oG7i-spotify6.mp4'
                         , '6luiGS6HomsrGqhP-spline-globe-fin-new.mp4' , '8pjaPeYtdRZiNOnh-twist3.mp4'
@@ -477,7 +482,17 @@
         const activeTab = document.querySelector('.tab-button.active');
         if (activeTab) {
             // Wait for next frame to ensure layouts are ready
-            requestAnimationFrame(() => updateIndicator(activeTab));
+            requestAnimationFrame(() => {
+                updateIndicator(activeTab);
+
+                // Initial sidebar state
+                const sidebar = document.querySelector('.sidebar');
+                const portfolioWrapper = document.querySelector('.portfolio-wrapper');
+                if (activeTab.dataset.tab === 'playground') {
+                    sidebar.classList.add('sidebar-hidden');
+                    portfolioWrapper.classList.add('sidebar-hidden');
+                }
+            });
         }
 
         window.addEventListener('resize', () => {
@@ -648,6 +663,18 @@
                         bubbles: true
                     }));
                 });
+
+                // Hide/show sidebar based on active tab
+                const sidebar = document.querySelector('.sidebar');
+                const portfolioWrapper = document.querySelector('.portfolio-wrapper');
+
+                if (tab === 'playground') {
+                    sidebar.classList.add('sidebar-hidden');
+                    portfolioWrapper.classList.add('sidebar-hidden');
+                } else {
+                    sidebar.classList.remove('sidebar-hidden');
+                    portfolioWrapper.classList.remove('sidebar-hidden');
+                }
             });
         });
     });
