@@ -99,6 +99,14 @@
   }
 }
 
+@media (max-width: 900px) {
+  :root {
+    --space-xl: 1.5rem;
+    --space-2xl: 2.5rem;
+    --section-gap: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --space-xl: 1rem;
@@ -1015,7 +1023,7 @@ body {
    ============================================ */
 .floating-controls {
   position: fixed;
-  bottom: 2rem;
+  bottom: calc(2rem + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
