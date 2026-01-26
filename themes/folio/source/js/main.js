@@ -1,4 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- Theme Toggle ---
+  const themeToggle = document.getElementById('theme-toggle');
+  const storedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  // Initialize theme
+  if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  // Toggle handler
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      if (targetTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  }
+
   // --- Mobile Navigation ---
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
   const sidebar = document.querySelector('.sidebar');

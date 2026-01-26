@@ -43,24 +43,29 @@
                     <span class="copyright">&copy; <%= new Date().getFullYear() %>
                             <%= config.author %></span>
                     <ul class="social-links">
-                        <% if (theme.social && theme.social.twitter) { %>
+                        <% if (theme.social?.twitter) { %>
                             <li><a href="<%= theme.social.twitter %>" target="_blank">Twitter</a></li>
                             <% } %>
-                                <% if (theme.social && theme.social.linkedin) { %>
+                                <% if (theme.social?.linkedin) { %>
                                     <li><a href="<%= theme.social.linkedin %>" target="_blank">LinkedIn</a></li>
                                     <% } %>
-                                        <% if (theme.social && theme.social.dribbble) { %>
+                                        <% if (theme.social?.dribbble) { %>
                                             <li><a href="<%= theme.social.dribbble %>" target="_blank">Dribbble</a></li>
                                             <% } %>
-                                                <% if (theme.social && theme.social.github) { %>
-                                                    <li><a href="<%= theme.social.github %>" target="_blank">GitHub</a>
-                                                    </li>
+                                                <% if (theme.social?.behance) { %>
+                                                    <li><a href="<%= theme.social.behance %>"
+                                                            target="_blank">Behance</a></li>
                                                     <% } %>
+                                                        <% if (theme.social?.gumroad) { %>
+                                                            <li><a href="<%= theme.social.gumroad %>"
+                                                                    target="_blank">Gumroad</a></li>
+                                                            <% } %>
                     </ul>
                 </div>
             </div>
         </footer>
         <% } %>
+
 
             <%- js('js/embla-carousel') %>
                 <%- js('js/main') %>
