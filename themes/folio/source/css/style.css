@@ -561,7 +561,7 @@ body {
 }
 
 .project-section .project-info {
-  padding: var(--space-lg) var(--space-lg) 2.625rem;
+  padding: var(--space-md) var(--space-lg) 2.625rem;
 }
 
 .project-section .project-carousel-wrapper {
@@ -1164,18 +1164,14 @@ body {
 }
 
 .tab-content {
-  visibility: hidden;
+  display: none;
   opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   overflow: hidden;
 }
 
 .tab-content.active {
-  visibility: visible;
+  display: block;
   opacity: 1;
   pointer-events: auto;
   position: relative;
@@ -1799,7 +1795,7 @@ body {
     --project-carousel-to-info-gap: 0px;
   }
 
-  .project-section {
+  .index-page .project-section {
     border-radius: 0;
     border: none;
     box-shadow: none;
@@ -1807,7 +1803,7 @@ body {
     width: 100%;
   }
 
-  .project-carousel-wrapper {
+  .index-page .project-carousel-wrapper {
     padding: 0;
     border-radius: 0 !important;
     width: 100%;
@@ -1815,26 +1811,30 @@ body {
     -webkit-mask-image: none !important;
   }
 
-  .embla__viewport {
+  .index-page .embla__viewport {
     border-radius: 0 !important;
     mask-image: none !important;
     -webkit-mask-image: none !important;
   }
 
-  .embla__slide,
-  .project-info,
-  .image-container,
-  .image-skeleton,
-  .unicorn-scene,
-  .unicorn-scene canvas,
-  .unicorn-scene-skeleton,
-  .project-slide-item,
-  .project-carousel-item,
-  .project-section {
+  .index-page .embla__slide,
+  .index-page .project-info,
+  .index-page .image-container,
+  .index-page .image-skeleton,
+  .index-page .unicorn-scene,
+  .index-page .unicorn-scene canvas,
+  .index-page .unicorn-scene-skeleton,
+  .index-page .project-slide-item,
+  .index-page .project-carousel-item,
+  .index-page .project-section {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+  }
+
+  .index-page .project-year {
+    display: none;
   }
 
   /* Keep the scroll pill rounded */
