@@ -1815,7 +1815,7 @@ body {
     -webkit-mask-image: none !important;
   }
 
-  .project-carousel-wrapper * {
+  .embla__viewport {
     border-radius: 0 !important;
     mask-image: none !important;
     -webkit-mask-image: none !important;
@@ -1830,12 +1830,16 @@ body {
   .unicorn-scene-skeleton,
   .project-slide-item,
   .project-carousel-item,
-  .project-section,
-  .project-carousel-wrapper {
+  .project-section {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+  }
+
+  /* Keep the scroll pill rounded */
+  .carousel-scroll-hint {
+    border-radius: 2rem !important;
   }
 
   .project-info {
