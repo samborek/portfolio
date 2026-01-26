@@ -1023,13 +1023,13 @@ body {
    ============================================ */
 .floating-controls {
   position: fixed;
-  bottom: calc(2rem + env(safe-area-inset-bottom));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.7rem;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
