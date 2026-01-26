@@ -197,7 +197,7 @@ body {
 .sidebar {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100dvh;
   background: transparent;
   padding: 0 0 var(--space-lg) 0;
   display: flex;
@@ -1090,6 +1090,7 @@ body {
   transition: all 0.3s ease;
   z-index: 1;
   position: relative;
+  touch-action: manipulation;
 }
 
 .tab-button:hover {
