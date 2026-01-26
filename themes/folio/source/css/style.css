@@ -658,6 +658,7 @@ body {
   display: flex;
   touch-action: pan-y pinch-zoom;
   gap: var(--carousel-slide-gap, 1.25rem);
+  will-change: transform;
 }
 
 .embla__slide {
@@ -1785,13 +1786,25 @@ body {
     border-radius: 0;
   }
 
+  /* Disable heavy effects for better mobile performance */
+  .content-tabs,
+  .theme-toggle-wrapper {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--color-bg-secondary);
+  }
+
+  .embla__slide {
+    will-change: transform;
+  }
+
   /* Playground Mobile Scaling */
   .playground-header {
-    padding: var(--space-xl) 8px var(--space-md);
+    padding: var(--space-md) 8px var(--space-sm);
   }
 
   .playground-title {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
   }
 
   .playground-grid {
