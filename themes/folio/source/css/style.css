@@ -1815,6 +1815,12 @@ body {
     -webkit-mask-image: none !important;
   }
 
+  .project-carousel-wrapper * {
+    border-radius: 0 !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+
   .embla__slide,
   .project-info,
   .image-container,
