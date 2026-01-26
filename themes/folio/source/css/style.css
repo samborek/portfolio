@@ -1809,20 +1809,27 @@ body {
 
   .project-carousel-wrapper {
     padding: 0;
-    border-radius: 0;
+    border-radius: 0 !important;
     width: 100%;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
   }
 
   .embla__slide,
   .project-info,
   .image-container,
   .image-skeleton,
+  .unicorn-scene,
+  .unicorn-scene canvas,
   .unicorn-scene-skeleton,
   .project-slide-item,
-  .project-carousel-item {
+  .project-carousel-item,
+  .project-section,
+  .project-carousel-wrapper {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
+    overflow: hidden;
   }
 
   .project-info {
