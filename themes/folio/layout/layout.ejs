@@ -2,6 +2,19 @@
 <html lang="<%= config.language %>">
 
 <head>
+    <script>
+        // Immediately add loading class to prevent flash of unstyled font
+        document.documentElement.classList.add('fonts-loading');
+        // Fallback to show content if fonts take too long or fail
+        const fontTimeout = setTimeout(() => {
+            document.documentElement.classList.remove('fonts-loading');
+        }, 1000);
+
+        document.fonts.ready.then(() => {
+            clearTimeout(fontTimeout);
+            document.documentElement.classList.remove('fonts-loading');
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>
