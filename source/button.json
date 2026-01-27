@@ -8,7 +8,7 @@
             "layerType": "effect",
             "type": "chromab",
             "usesPingPong": false,
-            "speed": 0.13,
+            "speed": 0,
             "trackMouse": 1,
             "trackAxes": "xy",
             "mouseMomentum": 0,
