@@ -498,26 +498,34 @@
         // Scroll handler factory
         const createScrollHandler = (viewElement) => {
             let lastScrollY = 0;
-            let scrollTimer = null;
+            const threshold = 10; // Minimum scroll distance to trigger a change
 
             const handler = () => {
                 const currentScrollY = viewElement.scrollTop;
+                const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+
+                if (scrollDiff < threshold) return;
 
                 // If scrolling down, hide
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
                     floatControls.classList.add('controls-hidden');
-                } else {
-                    // If scrolling up or near top, show
+                } else if (currentScrollY < lastScrollY) {
+                    // If scrolling up, show
+                    floatControls.classList.remove('controls-hidden');
+                }
+
+                // If at the very top, always show
+                if (currentScrollY <= 10) {
                     floatControls.classList.remove('controls-hidden');
                 }
 
                 lastScrollY = currentScrollY;
 
                 // Show after scrolling stops
-                clearTimeout(scrollTimer);
+                clearTimeout(handler.timer);
                 handler.timer = setTimeout(() => {
                     floatControls.classList.remove('controls-hidden');
-                }, 800);
+                }, 1200); // Wait longer before auto-showing
             };
             handler.timer = null;
             return handler;

@@ -1070,8 +1070,9 @@ body {
   gap: 0.7rem;
   pointer-events: none;
   /* Let events pass through the container */
-  transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1),
-    opacity 0.6s cubic-bezier(0.45, 0, 0.55, 1);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.4s ease;
+  will-change: transform;
 }
 
 .floating-controls.controls-hidden {
@@ -1858,7 +1859,7 @@ body {
   }
 
   .project-section {
-    border-radius: 0;
+    border-radius: var(--radius-l);
     border: none;
     box-shadow: none;
     margin-bottom: var(--section-gap);
@@ -1879,6 +1880,13 @@ body {
     -webkit-mask-image: none !important;
   }
 
+  .project-section {
+    border-radius: var(--radius-l) !important;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
   .embla__slide,
   .project-info,
   .image-container,
@@ -1887,12 +1895,10 @@ body {
   .unicorn-scene canvas,
   .unicorn-scene-skeleton,
   .project-slide-item,
-  .project-carousel-item,
-  .project-section {
+  .project-carousel-item {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
   }
 
   /* Keep the scroll pill rounded */
@@ -2586,24 +2592,13 @@ body.project-page {
 .app-view {
   width: 100vw;
   height: 100dvh;
-  overflow-y: auto;
+  overflow-y: scroll;
+  /* Force explicit scroll behavior for Safari */
   overflow-x: hidden;
   position: relative;
   /* Smooth scrolling */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99),
-    visibility 1.0s step-start;
-}
-
-.app-view[aria-hidden="true"] {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99),
-    visibility 1.0s step-end;
 }
 
 
