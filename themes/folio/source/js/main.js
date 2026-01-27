@@ -120,34 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Restart unicorn-scene when it becomes active in the slider
-      const onSlideSelect = () => {
-        const slideNodes = embla.slideNodes();
-        const selectedIndex = embla.selectedScrollSnap();
-        const activeSlide = slideNodes[selectedIndex];
-        if (activeSlide) {
-          const scenes = activeSlide.querySelectorAll('.unicorn-scene');
-          scenes.forEach(scene => {
-            // Wake up interaction loop for internal SDK
-            const rect = scene.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
-              scene.dispatchEvent(new MouseEvent(type, {
-                clientX: centerX,
-                clientY: centerY,
-                bubbles: true
-              }));
-            });
-            window.dispatchEvent(new Event('resize'));
-          });
-        }
-      };
-
-      embla.on('select', onSlideSelect);
-      embla.on('init', onSlideSelect);
-
       // Wheel event for touchpad horizontal scroll
       let wheelAccumulator = 0;
       const wheelThreshold = 100;
@@ -216,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Unicorn Studio Handler
   if (window.UnicornStudio) {
     UnicornStudio.init().then(() => {
-      document.querySelectorAll('.unicorn-scene, .unicorn-btn').forEach(scene => {
+      document.querySelectorAll('.unicorn-scene').forEach(scene => {
         const startTime = performance.now();
 
         const checkSceneLoaded = () => {
@@ -251,53 +223,52 @@ document.addEventListener('DOMContentLoaded', () => {
         const itv = setInterval(() => { if (checkSceneLoaded()) clearInterval(itv); }, 200);
         setTimeout(() => { clearInterval(itv); scene.classList.add('loaded'); }, 600); // Quick fallback
 
+        // Workaround for mouse-tracking scenes that break after scrolling
         // Workaround for mouse-tracking scenes that break after visibility changes
-        const wakeUpScene = () => {
-          const rect = scene.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
+        const canvas = scene.querySelector('canvas');
+        if (canvas) {
+          const wakeUpScene = () => {
+            const rect = scene.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
 
-          // Dispatch multiple events to force-wake the interaction loop
-          ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
-            scene.dispatchEvent(new MouseEvent(type, {
-              clientX: centerX,
-              clientY: centerY,
-              bubbles: true
-            }));
-          });
-
-          // Also dispatch on child canvas if it exists, to be double sure
-          const canvasChild = scene.querySelector('canvas');
-          if (canvasChild) {
+            // Dispatch multiple events to force-wake the interaction loop
             ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
-              canvasChild.dispatchEvent(new MouseEvent(type, {
+              scene.dispatchEvent(new MouseEvent(type, {
                 clientX: centerX,
                 clientY: centerY,
                 bubbles: true
               }));
             });
-          }
+          };
 
-          // Internal SDKs often look for Window resize to re-init buffers
-          // Skip for buttons as it might be too aggressive and "reset" them
-          if (!scene.classList.contains('unicorn-btn')) {
-            window.dispatchEvent(new Event('resize'));
-          }
-        };
-
-        const visibilityObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              // Wait a frame for the CSS transition/visibility to settle
-              requestAnimationFrame(wakeUpScene);
-              // Trigger a few times to ensure SDK catches it
-              setTimeout(wakeUpScene, 100);
-              setTimeout(wakeUpScene, 500);
-            }
-          });
-        }, { threshold: 0.1 });
-        visibilityObserver.observe(scene);
+          const visibilityObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                // Wait a frame for the CSS transition/visibility to settle
+                requestAnimationFrame(wakeUpScene);
+              }
+            });
+          }, { threshold: 0.1 });
+          visibilityObserver.observe(scene);
+        }
       });
+    });
+
+    // --- Scroll Proxying for Nested Containers ---
+    // Proxies nested scroll events to window so global SDK listeners (like Unicorn Studio)
+    // can track element visibility and mouse mapping correctly.
+    document.querySelectorAll('.app-view').forEach(view => {
+      let ticking = false;
+      view.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            window.dispatchEvent(new Event('scroll'));
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
     });
   }
 
@@ -522,13 +493,4 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   initResumeHoverPreview();
-
-  // --- Scroll Proxy for Unicorn Studio ---
-  // Since the app uses nested scrollable containers (.app-view), standard window scroll 
-  // listeners used by SDKs might fail. This proxies the event.
-  document.querySelectorAll('.app-view').forEach(view => {
-    view.addEventListener('scroll', () => {
-      window.dispatchEvent(new Event('scroll'));
-    });
-  });
 });

@@ -142,6 +142,8 @@ html {
   scroll-behavior: smooth;
   background-color: var(--color-bg);
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  width: 100vw;
 }
 
 body {
@@ -149,12 +151,21 @@ body {
   font-size: var(--size-base);
   line-height: 1.6;
   color: var(--color-text);
-  background-color: var(--color-bg);
-  /* Use solid background on body for Safari transparency */
+  background: transparent;
   min-height: 100vh;
-  min-height: -webkit-fill-available;
   -webkit-font-smoothing: antialiased;
   transition: opacity 0.4s ease;
+  overflow-x: hidden;
+  width: 100vw;
+  position: fixed;
+  /* Strictly lock body on mobile to prevent overscroll, main-content handles scroll inside */
+}
+
+/* Ensure body doesn't actually scroll since .app-view handles it */
+.index-page {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
 }
 
 .fonts-loading body {
@@ -171,8 +182,11 @@ body {
 .index-page .main-content {
   padding-top: 0;
   overflow: hidden;
-  width: 100%;
-  height: 100%;
+  height: 100dvh;
+  width: 100vw;
+  position: absolute;
+  /* Changed from relative to absolute to fit inside fixed body */
+  inset: 0;
 }
 
 /* ============================================
@@ -269,7 +283,6 @@ body {
 .sidebar-content {
   flex: 1;
   padding-top: var(--space-lg);
-  padding-top: calc(var(--space-lg) + env(safe-area-inset-top, 0px));
   padding-left: var(--sidebar-px);
   overflow: visible;
   width: 100%;
@@ -1055,17 +1068,10 @@ body {
   display: flex;
   align-items: center;
   gap: 0.7rem;
+  pointer-events: none;
+  /* Let events pass through the container */
   transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1),
     opacity 0.6s cubic-bezier(0.45, 0, 0.55, 1);
-  pointer-events: none;
-  /* Round 5: Prevent blocking button interaction */
-}
-
-.floating-controls button,
-.floating-controls .tab-button,
-.floating-controls #theme-toggle {
-  pointer-events: auto;
-  /* Ensure controls remain interactive */
 }
 
 .floating-controls.controls-hidden {
@@ -1079,6 +1085,8 @@ body {
   -webkit-backdrop-filter: blur(12px);
   height: 3rem;
   padding: 0 0.3rem;
+  pointer-events: auto;
+  /* Buttons remain interactive */
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -1233,7 +1241,7 @@ body {
 
 /* Playground Bento Grid */
 .playground-header {
-  padding: calc(var(--section-gap) + env(safe-area-inset-top, 0px)) var(--space-xl) var(--space-xl);
+  padding: var(--section-gap) var(--space-xl) var(--space-xl);
   max-width: var(--max-project-width);
   margin: 0 auto;
   text-align: center;
@@ -1569,9 +1577,6 @@ body {
   border: none;
   width: 100%;
   max-width: var(--max-project-width);
-  position: relative;
-  z-index: 10;
-  /* Round 5: Boost precedence */
 }
 
 #connect .project-title {
@@ -1748,7 +1753,6 @@ body {
   cursor: pointer;
   transition: transform var(--transition-fast), opacity var(--transition-fast);
   overflow: visible;
-  z-index: 20;
 }
 
 .unicorn-btn:hover {
@@ -1763,7 +1767,7 @@ body {
   width: 25rem !important;
   height: 6.25rem !important;
   pointer-events: none !important;
-  /* Reverted in Round 5: SDK handles interaction on parent anchor */
+  /* Ensure events reach the parent .unicorn-btn */
 }
 
 .unicorn-btn .btn-text {
@@ -1781,7 +1785,8 @@ body {
   justify-content: center;
   font-weight: 500;
   color: var(--color-bg);
-  pointer-events: none;
+  pointer-events: none !important;
+  /* Let clicks pass to the button container */
   text-align: center;
 }
 
@@ -1853,7 +1858,7 @@ body {
   }
 
   .project-section {
-    border-radius: var(--radius-l);
+    border-radius: 0;
     border: none;
     box-shadow: none;
     margin-bottom: var(--section-gap);
@@ -1875,21 +1880,19 @@ body {
   }
 
   .embla__slide,
+  .project-info,
   .image-container,
   .image-skeleton,
   .unicorn-scene,
   .unicorn-scene canvas,
   .unicorn-scene-skeleton,
   .project-slide-item,
-  .project-carousel-item {
+  .project-carousel-item,
+  .project-section {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-  }
-
-  .project-info {
-    border-radius: 0 0 var(--radius-l) var(--radius-l) !important;
   }
 
   /* Keep the scroll pill rounded */
@@ -2565,46 +2568,44 @@ body.project-page {
    ============================================ */
 .index-page {
   overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-/* Safari specific height fix */
-@supports (-webkit-touch-callout: none) {
-
-  .index-page,
-  .app-view {
-    height: -webkit-fill-available !important;
-  }
+  height: 100dvh;
+  width: 100vw;
+  /* Main scrollbar handled by views on index page */
 }
 
 #app-viewport {
   display: flex;
   width: 200vw;
-  height: 100%;
+  height: 100dvh;
   transition: transform 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99);
   will-change: transform;
+  touch-action: pan-y;
+  /* Prevent horizontal swipe */
 }
 
 .app-view {
   width: 100vw;
-  height: 100%;
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  /* Momentum scroll for Safari */
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-  /* Prevent jittery bounce at edges */
-  overscroll-behavior-y: none;
+  /* Smooth scrolling */
   scroll-behavior: smooth;
-
-  /* Safari Safe Areas */
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  -webkit-overflow-scrolling: touch;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99),
+    visibility 1.0s step-start;
 }
+
+.app-view[aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99),
+    visibility 1.0s step-end;
+}
+
 
 /* Home View Layout - Uses existing classes but confined */
 .portfolio-wrapper {

@@ -1,111 +1,80 @@
 # Typical Issues & Solutions: Unicorn Studio Interactions
 
-This document captures common interaction issues encountered when integrating Unicorn Studio (JSON/Lottie-based interactive backgrounds) into complex layouts, specifically when using nested scroll containers and tabbed views.
+This document captures the final implemented solutions for integrating Unicorn Studio (JSON/Lottie-based interactive backgrounds) into the portfolio's nested scroll and carousel architecture.
 
 ## 1. Interaction Dead Zones (Nested Scroll)
 
 ### The Problem
-Unicorn Studio SDK often relies on `window` level scroll listeners to determine element visibility and sync mouse coordinate mapping. When the website uses a nested scrollable container (e.g., `.app-view { overflow-y: auto; }`), the `window` scroll position remains constant (0, 0), causing the SDK's internal interaction loop to "miss" elements or fail to update their state as they scroll into view.
+Unicorn Studio SDK relies on `window` level scroll listeners. In this project, elements are nested inside `.app-view { overflow-y: auto; }`, which prevents the global `window.scrollY` from changing, causing elements to appear "dead" or misaligned when scrolled.
 
-### The Solution: Scroll Proxying
-Implement a bridge to proxy the nested scroll events to the `window`.
+### The Solution: Throttled Scroll Proxying
+Implement a bridge to proxy nested scroll events to the `window`. **Note:** Use `requestAnimationFrame` to prevent excessive event firing which can break carousels.
 
 ```javascript
-// main.js
+// themes/folio/source/js/main.js
 document.querySelectorAll('.app-view').forEach(view => {
+  let ticking = false;
   view.addEventListener('scroll', () => {
-    // Manually trigger window scroll to notify global SDK listeners
-    window.dispatchEvent(new Event('scroll'));
-  });
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('scroll'));
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
 });
 ```
 
 ---
 
-## 2. Unresponsive Elements on View Switch
+## 2. Interaction Overlays
 
 ### The Problem
-When switching between views (e.g., Home to Playground) via `translateX` or similar CSS transitions, elements that were hidden or off-screen might lose their interaction state. The SDK may pause its loop for performance when it thinks the element is not visible or at correct coordinates.
-
-### The Solution: Manual Wake-Up
-Trigger a global re-sync once the transition finishes.
-
-```javascript
-// Tab switching logic
-setTimeout(() => {
-    // Force many SDKs to recalculate layouts/buffers
-    window.dispatchEvent(new Event('resize'));
-    
-    // Dispatch a dummy mousemove to wake the interaction loop
-    window.dispatchEvent(new MouseEvent('mousemove', {
-        clientX: window.innerWidth / 2,
-        clientY: window.innerHeight / 2,
-        bubbles: true
-    }));
-}, 1050); // Delay slightly longer than CSS transition time
-```
-
----
-
-## 3. Interaction Overlays
-
-### The Problem
-Floating controls or background decorative elements (like `gradient-blobs`) can inadvertently "capture" mouse events even if they have `opacity: 0` or are semi-transparent. This prevents the mouse movement from reaching the interactive JSON container below.
+Floating overlays like the tab navigation and theme toggle (`.floating-controls`) can inadvertently capture mouse events even in empty areas, preventing the mouse from reaching interactive backgrounds below.
 
 ### The Solution: Pointer-Events Management
-Use `pointer-events: none` on wrapper containers while explicitly enabling it on their interactive children.
+Apply `pointer-events: none` to the wrapper container and `pointer-events: auto` only to the interactive children.
 
 ```css
-/* style.css */
+/* themes/folio/source/css/style.css */
 .floating-controls {
-  pointer-events: none; /* Mouse events pass through the container */
+  pointer-events: none; /* Let background events pass through */
 }
 
-.floating-controls button {
-  pointer-events: auto; /* Buttons remain interactive */
+.content-tabs, .theme-toggle {
+  pointer-events: auto; /* Re-enable for controls */
 }
 ```
 
 ---
 
-## 4. Canvas Pointer-Events Conflict
+## 3. Canvas Pointer-Events Conflict
 
 ### The Problem
-Manually setting `pointer-events: auto` on the `<canvas>` element inside a `.unicorn-btn` can sometimes steal events from the parent `<a>` tag where the SDK is actually listening for interaction tracking.
+If the internal `<canvas>` or overlay text captures the mouse, the parent container might not correctly track the interaction for the SDK loop.
 
 ### The Solution: SDK-Standard Interaction
-Revert the canvas to `pointer-events: none` and let the SDK handle the interaction on the parent container (e.g., the `.unicorn-btn` / `<a>` tag). Ensure the button text also has `pointer-events: none` if it sits above the interactive area.
+Force `pointer-events: none !important` on internal components to ensure the parent (e.g., `.unicorn-btn`) handles the tracking.
 
 ```css
-.unicorn-btn canvas {
-  pointer-events: none !important;
-}
-
+.unicorn-btn canvas,
 .unicorn-btn .btn-text {
-  pointer-events: none; /* Let clicks pass to the button container */
+  pointer-events: none !important;
 }
 ```
 
 ---
 
-## 5. Interaction Restart in Sliders
+## 4. Carousel Compatibility (Avoid Snapping)
 
 ### The Problem
-Elements inside carousels (Embla/Slick) might not resume their animation or interaction loop when the slide becomes active after being hidden.
+Dispatching a `window.dispatchEvent(new Event('resize'))` when an element enters the viewport (via `IntersectionObserver`) can cause Embla Carousel to `reInit()`, resulting in immediate snapping back during a drag operation.
 
-### The Solution: Carousel Select "Wake-up"
-Explicitly wake up scenes when they become the active slide.
+### The Solution: Selective Waking
+Remove redundant `resize` events and only use `mouseenter` or `mousemove` events to "wake up" the interactive components without re-initializing the layout.
 
 ```javascript
-embla.on('select', () => {
-  const selectedIndex = embla.selectedScrollSnap();
-  const activeSlide = embla.slideNodes()[selectedIndex];
-  const scenes = activeSlide.querySelectorAll('.unicorn-scene');
-  
-  scenes.forEach(scene => {
-    // Dispatch mouseenter/mousemove on the scene element to re-sync SDK loop
-    scene.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-    window.dispatchEvent(new Event('resize'));
-  });
-});
+// Trigger mouse interaction without forcing a layout re-init
+scene.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
 ```
