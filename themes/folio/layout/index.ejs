@@ -1,435 +1,448 @@
 <div class="gradient-blobs">
     <div class="blob-violet"></div>
 </div>
-<div class="portfolio-wrapper">
-    <% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) - (a.order
-        || 0)); %>
-        <!-- Left Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-content">
-                <div class="sidebar-hero">
-                    <span class="project-link-item" style="text-transform: lowercase; border-bottom: none;">Michal
-                        Sambora — sambø</span>
-                </div>
-                <h1 class="sidebar-title">
-                    <%= theme.hero_title || "I'm  Michal Sambora" %>
-                </h1>
 
-                <!-- Work Links (Collapsible) -->
-                <div class="project-links">
-                    <button class="project-links-toggle" aria-expanded="false" aria-controls="work-list">
-                        <span class="project-links-label">Selected Work</span>
-                        <span class="toggle-arrow">↓</span>
-                    </button>
-                    <div class="project-links-list collapsed" id="work-list">
-                        <% projects.forEach(function(project, index) { %>
-                            <a href="#project-<%= index %>" class="project-link-item">
-                                <%= project.title %>
-                            </a>
-                            <% }); %>
-                    </div>
-                </div>
+<div id="app-viewport">
+    <!-- VIEW 1: HOME (Sidebar + Work) -->
+    <div id="home-view" class="app-view">
+        <div class="portfolio-wrapper">
+            <% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) -
+                (a.order || 0)); %>
 
-                <hr class="sidebar-separator">
+                <!-- Left Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-content">
+                        <div class="sidebar-hero">
+                            <span class="project-link-item"
+                                style="text-transform: lowercase; border-bottom: none;">Michal Sambora — sambø</span>
+                        </div>
+                        <h1 class="sidebar-title">
+                            <%= theme.hero_title || "I'm  Michal Sambora" %>
+                        </h1>
 
-                <!-- Navigation Links -->
-                <div class="nav-links">
-                    <% if (theme.experience) { %>
-                        <a href="#experience" class="project-link-item">Experience</a>
-                        <% } %>
-                            <a href="#connect" class="project-link-item">Let's connect</a>
-                </div>
-            </div>
+                        <!-- Work Links (Collapsible) -->
+                        <div class="project-links">
+                            <button class="project-links-toggle" aria-expanded="false" aria-controls="work-list">
+                                <span class="project-links-label">Selected Work</span>
+                                <span class="toggle-arrow">↓</span>
+                            </button>
+                            <div class="project-links-list collapsed" id="work-list">
+                                <% projects.forEach(function(project, index) { %>
+                                    <a href="#project-<%= index %>" class="project-link-item">
+                                        <%= project.title %>
+                                    </a>
+                                    <% }); %>
+                            </div>
+                        </div>
 
-            <div class="sidebar-footer">
-                <div class="social-icons">
-                    <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>" target="_blank">𝕏</a>
-                        <% } %>
-                            <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
-                                    target="_blank">in</a>
+                        <hr class="sidebar-separator">
+
+                        <!-- Navigation Links -->
+                        <div class="nav-links">
+                            <% if (theme.experience) { %>
+                                <a href="#experience" class="project-link-item">Experience</a>
                                 <% } %>
-                                    <% if (theme.social?.dribbble) { %><a href="<%= theme.social.dribbble %>"
-                                            target="_blank">◉</a>
+                                    <a href="#connect" class="project-link-item">Let's connect</a>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-footer">
+                        <div class="social-icons">
+                            <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>"
+                                    target="_blank">𝕏</a>
+                                <% } %>
+                                    <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
+                                            target="_blank">in</a>
                                         <% } %>
-                                            <% if (theme.social?.behance) { %><a href="<%= theme.social.behance %>"
-                                                    target="_blank">Bē</a>
+                                            <% if (theme.social?.dribbble) { %><a href="<%= theme.social.dribbble %>"
+                                                    target="_blank">◉</a>
                                                 <% } %>
-                                                    <% if (theme.social?.gumroad) { %><a
-                                                            href="<%= theme.social.gumroad %>" target="_blank">G</a>
+                                                    <% if (theme.social?.behance) { %><a
+                                                            href="<%= theme.social.behance %>" target="_blank">Bē</a>
                                                         <% } %>
-                </div>
+                                                            <% if (theme.social?.gumroad) { %><a
+                                                                    href="<%= theme.social.gumroad %>"
+                                                                    target="_blank">G</a>
+                                                                <% } %>
+                        </div>
 
-                <div class="sidebar-contact">
-                    <a href="mailto:michal@maise.io" class="sidebar-email">michal@maise.io</a>
-                </div>
-            </div>
-        </aside>
+                        <div class="sidebar-contact">
+                            <a href="mailto:michal@maise.io" class="sidebar-email">michal@maise.io</a>
+                        </div>
+                    </div>
+                </aside>
 
-        <!-- Right Content - Projects -->
-        <main class="projects-column" id="projects">
-            <!-- Floating Navigation Pill (Moved to bottom) -->
+                <!-- Right Content - Projects -->
+                <main class="projects-column" id="projects">
+                    <% projects.forEach(function(project, pindex) { %>
+                        <% const carouselStyle=[ project.carousel_aspect_ratio ?
+                            `\--carousel-aspect-ratio:${project.carousel_aspect_ratio};` : '' ,
+                            project.carousel_object_fit ? `\--carousel-object-fit:${project.carousel_object_fit};` : ''
+                            , project.carousel_object_position ?
+                            `\--carousel-object-position:${project.carousel_object_position};` : '' ,
+                            project.carousel_image_scale ? `\--carousel-image-scale:${project.carousel_image_scale};`
+                            : '' , project.carousel_image_height ?
+                            `\--carousel-image-height:${project.carousel_image_height};` : '' ,
+                            project.carousel_image_top ? `\--carousel-image_top:${project.carousel_image_top};` : '' ,
+                            ].join(''); %>
+                            <section class="project-section" id="project-<%= pindex %>"
+                                data-project-index="<%= pindex %>" <% if (carouselStyle) { %> style="<%- carouselStyle
+                                    %>"<% } %>>
+                                        <div class="project-carousel-wrapper" <% if (project.disable_parallax) { %>
+                                            data-disable-parallax="true" <% } %>>
+                                                <!-- Navigation Zones -->
+                                                <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev">
+                                                </div>
+                                                <div class="carousel-nav-zone carousel-nav-zone--right" data-nav="next">
+                                                </div>
 
-            <div id="home-content" class="tab-content active">
-                <% projects.forEach(function(project, pindex) { %>
-                    <% const carouselStyle=[ project.carousel_aspect_ratio ?
-                        `--carousel-aspect-ratio:${project.carousel_aspect_ratio};` : '' , project.carousel_object_fit ?
-                        `--carousel-object-fit:${project.carousel_object_fit};` : '' , project.carousel_object_position
-                        ? `--carousel-object-position:${project.carousel_object_position};` : '' ,
-                        project.carousel_image_scale ? `--carousel-image-scale:${project.carousel_image_scale};` : '' ,
-                        project.carousel_image_height ? `--carousel-image-height:${project.carousel_image_height};` : ''
-                        , project.carousel_image_top ? `--carousel-image_top:${project.carousel_image_top};` : '' ,
-                        ].join(''); %>
-                        <section class="project-section" id="project-<%= pindex %>" data-project-index="<%= pindex %>"
-                            <% if (carouselStyle) { %> style="<%- carouselStyle %>"<% } %>>
-                                    <div class="project-carousel-wrapper" <% if (project.disable_parallax) { %>
-                                        data-disable-parallax="true" <% } %>>
-                                            <!-- Navigation Zones -->
-                                            <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev">
-                                            </div>
-                                            <div class="carousel-nav-zone carousel-nav-zone--right" data-nav="next">
-                                            </div>
-
-                                            <div class="embla">
-                                                <div class="embla__viewport">
-                                                    <div class="embla__container">
-                                                        <% if (project.carousel && project.carousel.length) { %>
-                                                            <% project.carousel.forEach(function(imgUrl, slideIndex) {
-                                                                %>
-                                                                <% const
-                                                                    firstStyle=(project.carousel_first_object_position
-                                                                    && slideIndex===0) ? `
-                                                                    style="--carousel-object-position:${project.carousel_first_object_position};"
-                                                                    ` : '' ; %>
-                                                                    <div class="embla__slide" <%=firstStyle %>>
-                                                                        <div class="project-slide-item">
-                                                                            <% if (imgUrl.endsWith('.json')) { %>
-                                                                                <div class="unicorn-scene"
-                                                                                    data-us-project-src="<%- url_for(imgUrl) %>"
-                                                                                    data-us-scale="1" data-us-dpi="1.5"
-                                                                                    data-us-lazyload="<%= pindex === 0 ? 'false' : 'true' %>"
-                                                                                    <%=pindex> 0 ?
-                                                                                    'data-background-lazy-us="true"' :
-                                                                                    '' %>
-                                                                                    data-us-production="true">
-                                                                                    <div class="unicorn-scene-skeleton">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <% } else { %>
-                                                                                    <div class="image-container">
-                                                                                        <div class="image-skeleton">
+                                                <div class="embla">
+                                                    <div class="embla__viewport">
+                                                        <div class="embla__container">
+                                                            <% if (project.carousel && project.carousel.length) { %>
+                                                                <% project.carousel.forEach(function(imgUrl, slideIndex)
+                                                                    { %>
+                                                                    <% const
+                                                                        firstStyle=(project.carousel_first_object_position
+                                                                        && slideIndex===0) ?
+                                                                        `style="\--carousel-object-position:${project.carousel_first_object_position};"
+                                                                        ` : '' ; %>
+                                                                        <div class="embla__slide" <%=firstStyle %>>
+                                                                            <div class="project-slide-item">
+                                                                                <% if (imgUrl.endsWith('.json')) { %>
+                                                                                    <div class="unicorn-scene"
+                                                                                        data-us-project-src="<%- url_for(imgUrl) %>"
+                                                                                        data-us-scale="1"
+                                                                                        data-us-dpi="1.5"
+                                                                                        data-us-lazyload="<%= pindex === 0 ? 'false' : 'true' %>"
+                                                                                        <%=pindex> 0 ?
+                                                                                        'data-background-lazy-us="true"'
+                                                                                        : '' %>
+                                                                                        data-us-production="true">
+                                                                                        <div
+                                                                                            class="unicorn-scene-skeleton">
                                                                                         </div>
-                                                                                        <% if (project.blur) { %>
-                                                                                            <div class="image-placeholder"
-                                                                                                style="background-image: url('<%- url_for(project.blur) %>');">
-                                                                                            </div>
-                                                                                            <% } %>
-                                                                                                <img src="<%- url_for(imgUrl) %>"
-                                                                                                    alt="<%= project.title %>"
-                                                                                                    loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
-                                                                                                    <%=pindex===0
-                                                                                                    ? 'fetchpriority="high"'
-                                                                                                    : '' %>
-                                                                                                draggable="false"
-                                                                                                onload="this.parentElement.classList.add('loaded')">
                                                                                     </div>
-                                                                                    <% } %>
-                                                                        </div>
-                                                                    </div>
-                                                                    <% }); %>
-                                                                        <% } else if (project.cover) { %>
-                                                                            <div class="embla__slide">
-                                                                                <div class="project-slide-item">
-                                                                                    <div class="image-container">
-                                                                                        <div class="image-skeleton">
-                                                                                        </div>
-                                                                                        <% if (project.blur) { %>
-                                                                                            <div class="image-placeholder"
-                                                                                                style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                    <% } else { %>
+                                                                                        <div class="image-container">
+                                                                                            <div class="image-skeleton">
                                                                                             </div>
-                                                                                            <% } %>
-                                                                                                <img src="<%- url_for(project.cover) %>"
-                                                                                                    alt="<%= project.title %>"
-                                                                                                    loading="lazy"
+                                                                                            <% if (project.blur) { %>
+                                                                                                <div class="image-placeholder"
+                                                                                                    style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                                </div>
+                                                                                                <% } %>
+                                                                                                    <img src="<%- url_for(imgUrl) %>"
+                                                                                                        alt="<%= project.title %>"
+                                                                                                        loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                        <%=pindex===0
+                                                                                                        ? 'fetchpriority="high"'
+                                                                                                        : '' %>
                                                                                                     draggable="false"
                                                                                                     onload="this.parentElement.classList.add('loaded')">
+                                                                                        </div>
+                                                                                        <% } %>
+                                                                            </div>
+                                                                        </div>
+                                                                        <% }); %>
+                                                                            <% } else if (project.cover) { %>
+                                                                                <div class="embla__slide">
+                                                                                    <div class="project-slide-item">
+                                                                                        <div class="image-container">
+                                                                                            <div class="image-skeleton">
+                                                                                            </div>
+                                                                                            <% if (project.blur) { %>
+                                                                                                <div class="image-placeholder"
+                                                                                                    style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                                </div>
+                                                                                                <% } %>
+                                                                                                    <img src="<%- url_for(project.cover) %>"
+                                                                                                        alt="<%= project.title %>"
+                                                                                                        loading="lazy"
+                                                                                                        draggable="false"
+                                                                                                        onload="this.parentElement.classList.add('loaded')">
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <% } %>
+                                                                                <% } %>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <span class="carousel-scroll-hint" aria-hidden="true">Scroll ↔</span>
-                                    </div>
-                                    <div class="project-carousel-progress" aria-hidden="true">
-                                        <span></span>
-                                    </div>
-                                    <div class="project-info">
-                                        <div class="project-info-header">
-                                            <div class="project-text-container">
-                                                <div class="project-title-row">
-                                                    <h3 class="project-title">
-                                                        <% if (project.website) { %>
-                                                            <a href="<%= project.website %>" target="_blank"
-                                                                class="project-title-link">
-                                                                <%= project.title %>
-                                                                    <svg class="world-icon" viewBox="0 0 24 24"
-                                                                        fill="none" stroke="currentColor"
-                                                                        stroke-width="2" stroke-linecap="round"
-                                                                        stroke-linejoin="round">
-                                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                                                        <path
-                                                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                                                        </path>
-                                                                    </svg>
-                                                            </a>
-                                                            <% } else { %>
-                                                                <%= project.title %>
-                                                                    <% } %>
-                                                    </h3>
-                                                </div>
-                                                <% if (project.intro) { %>
-                                                    <p class="project-subtitle">
-                                                        <%= project.intro %>
-                                                    </p>
-                                                    <% } %>
-                                            </div>
-                                            <div class="project-actions">
-                                                <a href="<%- url_for(project.path) %>" class="project-pill-button">
-                                                    <span>View Project</span>
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2.5" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <line x1="7" y1="17" x2="17" y2="7"></line>
-                                                        <polyline points="7 7 17 7 17 17"></polyline>
-                                                    </svg>
-                                                </a>
-                                            </div>
+                                                <span class="carousel-scroll-hint" aria-hidden="true">Scroll ↔</span>
                                         </div>
-                                        <% if (project.description) { %>
-                                            <div class="project-description">
-                                                <p class="project-info-text">
-                                                    <%= project.description %>
-                                                </p>
+                                        <div class="project-carousel-progress" aria-hidden="true"><span></span></div>
+
+                                        <div class="project-info">
+                                            <div class="project-info-header">
+                                                <div class="project-text-container">
+                                                    <div class="project-title-row">
+                                                        <h3 class="project-title">
+                                                            <% if (project.website) { %>
+                                                                <a href="<%= project.website %>" target="_blank"
+                                                                    class="project-title-link">
+                                                                    <%= project.title %>
+                                                                        <svg class="world-icon" viewBox="0 0 24 24"
+                                                                            fill="none" stroke="currentColor"
+                                                                            stroke-width="2" stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <circle cx="12" cy="12" r="10"></circle>
+                                                                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                                                                            <path
+                                                                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                                                            </path>
+                                                                        </svg>
+                                                                </a>
+                                                                <% } else { %>
+                                                                    <%= project.title %>
+                                                                        <% } %>
+                                                        </h3>
+                                                    </div>
+                                                    <% if (project.intro) { %>
+                                                        <p class="project-subtitle">
+                                                            <%= project.intro %>
+                                                        </p>
+                                                        <% } %>
+                                                </div>
+                                                <div class="project-actions">
+                                                    <a href="<%- url_for(project.path) %>" class="project-pill-button">
+                                                        <span>View Project</span>
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2.5" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                                                            <polyline points="7 7 17 7 17 17"></polyline>
+                                                        </svg>
+                                                    </a>
+                                                </div>
                                             </div>
-                                            <% } else if (project.problem || project.solution) { %>
+                                            <% if (project.description) { %>
                                                 <div class="project-description">
                                                     <p class="project-info-text">
-                                                        <%= project.problem %>
-                                                            <% if (project.problem && project.solution) { %>
-                                                                <% } %>
-                                                                    <%= project.solution %>
+                                                        <%= project.description %>
                                                     </p>
                                                 </div>
-                                                <% } %>
-                                                    <div class="project-meta-row">
-                                                        <% if (project.scope && project.scope.length) { %>
-                                                            <div class="project-scope-tags">
-                                                                <% project.scope.forEach(function(item, idx) { %>
-                                                                    <span class="scope-tag">
-                                                                        <%= item %>
-                                                                    </span>
-                                                                    <% if (idx < project.scope.length - 1) { %><span
-                                                                            class="scope-separator">·</span>
-                                                                        <% } %>
-                                                                            <% }); %>
-                                                            </div>
-                                                            <% } %>
-                                                                <span class="project-year">
-                                                                    <%= project.when || project.date_label ||
-                                                                        project.year || '—' %>
-                                                                </span>
+                                                <% } else if (project.problem || project.solution) { %>
+                                                    <div class="project-description">
+                                                        <p class="project-info-text">
+                                                            <%= project.problem %>
+                                                                <%= project.solution %>
+                                                        </p>
                                                     </div>
-                                    </div>
-                        </section>
+                                                    <% } %>
+                                                        <div class="project-meta-row">
+                                                            <% if (project.scope && project.scope.length) { %>
+                                                                <div class="project-scope-tags">
+                                                                    <% project.scope.forEach(function(item, idx) { %>
+                                                                        <span class="scope-tag">
+                                                                            <%= item %>
+                                                                        </span>
+                                                                        <% if (idx < project.scope.length - 1) { %><span
+                                                                                class="scope-separator">·</span>
+                                                                            <% } %>
+                                                                                <% }); %>
+                                                                </div>
+                                                                <% } %>
+                                                                    <span class="project-year">
+                                                                        <%= project.when || project.date_label ||
+                                                                            project.year || '—' %>
+                                                                    </span>
+                                                        </div>
+                                        </div>
+                            </section>
+                            <% }); %>
+
+                                <!-- EXPERIENCE SECTION -->
+                                <% if (theme.experience) { %>
+                                    <section class="content-section" id="experience">
+                                        <div class="section-header">
+                                            <h2 class="project-title">The Journey</h2>
+                                        </div>
+                                        <div class="experience-intro" id="experience-intro">
+                                            <%= theme.experience.intro_variants[0] %>
+                                        </div>
+                                        <script>(function () { const variants =<% - JSON.stringify(theme.experience.intro_variants) %>; const randomIndex = Math.floor(Math.random() * variants.length); document.getElementById('experience-intro').textContent = variants[randomIndex]; })();</script>
+                                        <div class="experience-timeline">
+                                            <% theme.experience.timeline.forEach(function(item) { %>
+                                                <div class="timeline-item">
+                                                    <div class="timeline-marker"></div>
+                                                    <div class="timeline-content">
+                                                        <div class="timeline-header">
+                                                            <span class="timeline-milestone">
+                                                                <%= item.milestone %>
+                                                            </span>
+                                                            <h4 class="timeline-title">
+                                                                <%= item.title %>
+                                                            </h4>
+                                                        </div>
+                                                        <p class="timeline-text">
+                                                            <%= item.content %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% }); %>
+                                        </div>
+                                        <div class="resume-lists-grid">
+                                            <% if (theme.speaking) { %>
+                                                <div class="resume-list-column">
+                                                    <h2 class="resume-section-heading">Speaking</h2>
+                                                    <ul class="resume-list">
+                                                        <% theme.speaking.forEach(function(item) { %>
+                                                            <li class="resume-list-item" <% if (item.image) { %>
+                                                                data-preview-image="<%= url_for(item.image) %>" <% } %>
+                                                                        <% if (item.description) { %>
+                                                                            data-preview-description="<%=
+                                                                                item.description %>" <% } %>
+                                                                                    data-preview-title="<%= item.title
+                                                                                        %>" data-preview-year="<%=
+                                                                                            item.year %>">
+                                                                                            <span
+                                                                                                class="resume-item-title">
+                                                                                                <%= item.title %>
+                                                                                            </span>
+                                                                                            <span
+                                                                                                class="resume-item-year">
+                                                                                                <%= item.year %>
+                                                                                            </span>
+                                                            </li>
+                                                            <% }); %>
+                                                    </ul>
+                                                </div>
+                                                <% } %>
+                                                    <% if (theme.events) { %>
+                                                        <div class="resume-list-column">
+                                                            <h2 class="resume-section-heading">Events</h2>
+                                                            <ul class="resume-list">
+                                                                <% theme.events.forEach(function(item) { %>
+                                                                    <li class="resume-list-item" <% if (item.image) { %>
+                                                                        data-preview-image="<%= url_for(item.image) %>"
+                                                                            <% } %>
+                                                                                <% if (item.description) { %>
+                                                                                    data-preview-description="<%=
+                                                                                        item.description %>" <% } %>
+                                                                                            data-preview-title="<%=
+                                                                                                item.title %>"
+                                                                                                data-preview-year="<%=
+                                                                                                    item.year %>">
+                                                                                                    <span
+                                                                                                        class="resume-item-title">
+                                                                                                        <%= item.title
+                                                                                                            %>
+                                                                                                    </span>
+                                                                                                    <span
+                                                                                                        class="resume-item-year">
+                                                                                                        <%= item.year %>
+                                                                                                    </span>
+                                                                    </li>
+                                                                    <% }); %>
+                                                            </ul>
+                                                        </div>
+                                                        <% } %>
+                                        </div>
+                                    </section>
+                                    <% } %>
+
+                                        <!-- CONNECT SECTION -->
+                                        <% if (theme.connect) { %>
+                                            <section class="content-section" id="connect">
+                                                <div class="connect-wrapper">
+                                                    <h2 class="project-title">
+                                                        <%= theme.connect.title %>
+                                                    </h2>
+                                                    <div class="connect-content">
+                                                        <div class="connect-main">
+                                                            <p class="project-info-text section-intro">
+                                                                <%= theme.connect.intro %>
+                                                            </p>
+                                                            <a href="<%= theme.connect.cta.link %>" class="unicorn-btn"
+                                                                data-us-project-src="/button.json" data-us-scale="1"
+                                                                data-us-dpi="1.5" data-us-production="true"
+                                                                target="_blank" rel="noopener">
+                                                                <span class="btn-text">
+                                                                    <%= theme.connect.cta.text %>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="connect-side">
+                                                            <div class="connect-secondary">
+                                                                <p class="project-info-text">
+                                                                    <%= theme.connect.secondary_text %>
+                                                                </p>
+                                                                <a href="<%= theme.connect.guide_link.link %>"
+                                                                    class="connect-link">
+                                                                    <%= theme.connect.guide_link.text %>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="connect-footer-bottom">
+                                                        <a href="mailto:<%= theme.connect.email %>"
+                                                            class="connect-footer-email">
+                                                            <%= theme.connect.email %>
+                                                        </a>
+                                                        <div class="connect-footer-socials">
+                                                            <% if (theme.social?.twitter) { %><a
+                                                                    href="<%= theme.social.twitter %>"
+                                                                    target="_blank">Twitter</a>
+                                                                <% } %>
+                                                                    <% if (theme.social?.linkedin) { %><a
+                                                                            href="<%= theme.social.linkedin %>"
+                                                                            target="_blank">Linkedin</a>
+                                                                        <% } %>
+                                                                            <% if (theme.social?.dribbble) { %><a
+                                                                                    href="<%= theme.social.dribbble %>"
+                                                                                    target="_blank">Dribbble</a>
+                                                                                <% } %>
+                                                                                    <% if (theme.social?.behance) { %><a
+                                                                                            href="<%= theme.social.behance %>"
+                                                                                            target="_blank">Behance</a>
+                                                                                        <% } %>
+                                                                                            <% if
+                                                                                                (theme.social?.gumroad)
+                                                                                                { %><a
+                                                                                                    href="<%= theme.social.gumroad %>"
+                                                                                                    target="_blank">Gumroad</a>
+                                                                                                <% } %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <% } %>
+                </main>
+        </div>
+    </div>
+
+    <!-- VIEW 2: PLAYGROUND -->
+    <div id="playground-view" class="app-view">
+        <div class="playground-wrapper">
+            <div class="playground-header">
+                <h1 class="playground-title">Playground</h1>
+                <p class="playground-description">A collection of experimental work, motion studies, and creative
+                    explorations.</p>
+            </div>
+            <div class="playground-grid">
+                <% const playgroundVideos=[ '3TnVVtbRGc81oG7i-spotify6.mp4'
+                    , '6luiGS6HomsrGqhP-spline-globe-fin-new.mp4' , '8pjaPeYtdRZiNOnh-twist3.mp4'
+                    , 'CooeBgvmvFYvDAoO-telegram.mp4' , 'DkFBhbq1rQM99H24-gameon-foil-render.mp4'
+                    , 'EMYd2V3C1F9o9RjP-chair-final4.mp4' , 'LUrt7ghywo6GtBFD-glass-crazy.mp4'
+                    , 'NmRHgrXKOmLOiV5g-fons-test-final4.mp4' , 'QgXyYGOsO8VgS1lz-kubi.mp4'
+                    , 'S1YWUlCGLZu4o183-notion-3-d.mp4' , 'TxmuoDsqqh0dn2G9-eau-du-splinette-final.mp4'
+                    , 'XHRHjinz7k6GiXSf-microbe-socials-final.mp4'
+                    , 'agRuxl4cYCYi4Mox-Screen%20Recording%202023-07-18%20at%2022.34.09.mov'
+                    , 'arD7ErUOeHCIsLnT-blob4.mp4' , 'gieWCHmqJESUhGwF-apple-wallet-white-3.mp4'
+                    , 'hdL9DcDVbO32TSTP-game-onifinal.mp4' , 'lr2iA8EjKcRhDg1U-metal3-final.mp4'
+                    , 'lwnHB7Q7y8bpx2iF-glass-cube3.mp4' , 'nTmzl5CzTR2qZPkV-layers2.mp4'
+                    , 'nYD88DI5nHVCVQll-new-blob2.mp4' , 'yZ0EA9h6EVQWPbPT-arc.mp4' ]; %>
+                    <% playgroundVideos.forEach(function(video) { %>
+                        <div class="playground-item" data-video-src="<%- url_for('playground/' + video) %>">
+                            <div class="video-placeholder"></div>
+                            <video loop muted playsinline preload="metadata">
+                                <!-- src will be set by JS for lazy loading -->
+                            </video>
+                        </div>
                         <% }); %>
             </div>
-
-            <div id="playground-content" class="tab-content">
-                <div class="playground-header">
-                    <h1 class="playground-title">Playground</h1>
-                    <p class="playground-description">A collection of experimental work, motion studies, and creative
-                        explorations.</p>
-                </div>
-                <div class="playground-grid">
-                    <% const playgroundVideos=[ '3TnVVtbRGc81oG7i-spotify6.mp4'
-                        , '6luiGS6HomsrGqhP-spline-globe-fin-new.mp4' , '8pjaPeYtdRZiNOnh-twist3.mp4'
-                        , 'CooeBgvmvFYvDAoO-telegram.mp4' , 'DkFBhbq1rQM99H24-gameon-foil-render.mp4'
-                        , 'EMYd2V3C1F9o9RjP-chair-final4.mp4' , 'LUrt7ghywo6GtBFD-glass-crazy.mp4'
-                        , 'NmRHgrXKOmLOiV5g-fons-test-final4.mp4' , 'QgXyYGOsO8VgS1lz-kubi.mp4'
-                        , 'S1YWUlCGLZu4o183-notion-3-d.mp4' , 'TxmuoDsqqh0dn2G9-eau-du-splinette-final.mp4'
-                        , 'XHRHjinz7k6GiXSf-microbe-socials-final.mp4'
-                        , 'agRuxl4cYCYi4Mox-Screen%20Recording%202023-07-18%20at%2022.34.09.mov'
-                        , 'arD7ErUOeHCIsLnT-blob4.mp4' , 'gieWCHmqJESUhGwF-apple-wallet-white-3.mp4'
-                        , 'hdL9DcDVbO32TSTP-game-onifinal.mp4' , 'lr2iA8EjKcRhDg1U-metal3-final.mp4'
-                        , 'lwnHB7Q7y8bpx2iF-glass-cube3.mp4' , 'nTmzl5CzTR2qZPkV-layers2.mp4'
-                        , 'nYD88DI5nHVCVQll-new-blob2.mp4' , 'yZ0EA9h6EVQWPbPT-arc.mp4' ]; %>
-                        <% playgroundVideos.forEach(function(video) { %>
-                            <div class="playground-item" data-video-src="<%- url_for('playground/' + video) %>">
-                                <div class="video-placeholder"></div>
-                                <video loop muted playsinline preload="metadata">
-                                    <!-- src will be set by JS for lazy loading -->
-                                </video>
-                            </div>
-                            <% }); %>
-                </div>
-            </div>
-
-            <!-- EXPERIENCE SECTION -->
-            <% if (theme.experience) { %>
-                <section class="content-section" id="experience">
-                    <div class="section-header">
-                        <h2 class="project-title">The Journey</h2>
-                    </div>
-                    <div class="experience-intro" id="experience-intro">
-                        <!-- JS will populate this -->
-                        <%= theme.experience.intro_variants[0] %>
-                    </div>
-                    <script>
-                        (function () {
-                            const variants = <% - JSON.stringify(theme.experience.intro_variants) %>;
-                            const randomIndex = Math.floor(Math.random() * variants.length);
-                            document.getElementById('experience-intro').textContent = variants[randomIndex];
-                        })();
-                    </script>
-
-                    <div class="experience-timeline">
-                        <% theme.experience.timeline.forEach(function(item) { %>
-                            <div class="timeline-item">
-                                <div class="timeline-marker"></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-header">
-                                        <span class="timeline-milestone">
-                                            <%= item.milestone %>
-                                        </span>
-                                        <h4 class="timeline-title">
-                                            <%= item.title %>
-                                        </h4>
-                                    </div>
-                                    <p class="timeline-text">
-                                        <%= item.content %>
-                                    </p>
-                                </div>
-                            </div>
-                            <% }); %>
-                    </div>
-
-                    <div class="resume-lists-grid">
-                        <% if (theme.speaking) { %>
-                            <div class="resume-list-column">
-                                <h2 class="resume-section-heading">Speaking</h2>
-                                <ul class="resume-list">
-                                    <% theme.speaking.forEach(function(item) { %>
-                                        <li class="resume-list-item" <% if (item.image) { %>
-                                            data-preview-image="<%= url_for(item.image) %>" <% } %>
-                                                    <% if (item.description) { %> data-preview-description="
-                                                        <%= item.description %>" <% } %>
-                                                                data-preview-title="<%= item.title %>"
-                                                                    data-preview-year="<%= item.year %>">
-                                                                        <span class="resume-item-title">
-                                                                            <%= item.title %>
-                                                                        </span>
-                                                                        <span class="resume-item-year">
-                                                                            <%= item.year %>
-                                                                        </span>
-                                        </li>
-                                        <% }); %>
-                                </ul>
-                            </div>
-                            <% } %>
-
-                                <% if (theme.events) { %>
-                                    <div class="resume-list-column">
-                                        <h2 class="resume-section-heading">Events</h2>
-                                        <ul class="resume-list">
-                                            <% theme.events.forEach(function(item) { %>
-                                                <li class="resume-list-item" <% if (item.image) { %>
-                                                    data-preview-image="<%= url_for(item.image) %>" <% } %>
-                                                            <% if (item.description) { %>
-                                                                data-preview-description="<%= item.description %>" <% }
-                                                                        %>
-                                                                        data-preview-title="<%= item.title %>"
-                                                                            data-preview-year="<%= item.year %>">
-                                                                                <span class="resume-item-title">
-                                                                                    <%= item.title %>
-                                                                                </span>
-                                                                                <span class="resume-item-year">
-                                                                                    <%= item.year %>
-                                                                                </span>
-                                                </li>
-                                                <% }); %>
-                                        </ul>
-                                    </div>
-                                    <% } %>
-                    </div>
-                </section>
-                <% } %>
-
-                    <!-- CONNECT SECTION -->
-                    <% if (theme.connect) { %>
-                        <section class="content-section" id="connect">
-                            <div class="connect-wrapper">
-                                <h2 class="project-title">
-                                    <%= theme.connect.title %>
-                                </h2>
-                                <div class="connect-content">
-                                    <div class="connect-main">
-                                        <p class="project-info-text section-intro">
-                                            <%= theme.connect.intro %>
-                                        </p>
-
-                                        <a href="<%= theme.connect.cta.link %>" class="unicorn-btn"
-                                            data-us-project-src="/button.json" data-us-scale="1" data-us-dpi="1.5"
-                                            data-us-production="true" target="_blank" rel="noopener">
-                                            <span class="btn-text">
-                                                <%= theme.connect.cta.text %>
-                                            </span>
-                                        </a>
-                                    </div>
-
-                                    <div class="connect-side">
-                                        <div class="connect-secondary">
-                                            <p class="project-info-text">
-                                                <%= theme.connect.secondary_text %>
-                                            </p>
-                                            <a href="<%= theme.connect.guide_link.link %>" class="connect-link">
-                                                <%= theme.connect.guide_link.text %>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="connect-footer-bottom">
-                                    <a href="mailto:<%= theme.connect.email %>" class="connect-footer-email">
-                                        <%= theme.connect.email %>
-                                    </a>
-                                    <div class="connect-footer-socials">
-                                        <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>"
-                                                target="_blank">Twitter</a>
-                                            <% } %>
-                                                <% if (theme.social?.linkedin) { %><a
-                                                        href="<%= theme.social.linkedin %>" target="_blank">Linkedin</a>
-                                                    <% } %>
-                                                        <% if (theme.social?.dribbble) { %><a
-                                                                href="<%= theme.social.dribbble %>"
-                                                                target="_blank">Dribbble</a>
-                                                            <% } %>
-                                                                <% if (theme.social?.behance) { %><a
-                                                                        href="<%= theme.social.behance %>"
-                                                                        target="_blank">Behance</a>
-                                                                    <% } %>
-                                                                        <% if (theme.social?.gumroad) { %><a
-                                                                                href="<%= theme.social.gumroad %>"
-                                                                                target="_blank">Gumroad</a>
-                                                                            <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <% } %>
-        </main>
-
+        </div>
+    </div>
 </div>
 
 <div class="floating-controls">
@@ -458,144 +471,193 @@
         </svg>
     </button>
 </div>
-</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const viewport = document.getElementById('app-viewport');
+        const homeView = document.getElementById('home-view');
+        const playgroundView = document.getElementById('playground-view');
         const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
         const tabIndicator = document.querySelector('.tab-indicator');
         const floatControls = document.querySelector('.floating-controls');
         const isMobile = () => window.innerWidth <= 768;
 
-        // Function to update tab indicator
+        // --- View & Scroll Management ---
+        let activeView = homeView;
+        let scrollListeners = new Map();
+
+        // Register hover handler for controls
+        floatControls.addEventListener('mouseenter', () => {
+            floatControls.classList.remove('controls-hidden');
+            const handler = scrollListeners.get(activeView);
+            if (handler) {
+                clearTimeout(handler.timer);
+            }
+        });
+
+        // Scroll handler factory
+        const createScrollHandler = (viewElement) => {
+            let lastScrollY = 0;
+            let scrollTimer = null;
+
+            const handler = () => {
+                const currentScrollY = viewElement.scrollTop;
+
+                // If scrolling down, hide
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    floatControls.classList.add('controls-hidden');
+                } else {
+                    // If scrolling up or near top, show
+                    floatControls.classList.remove('controls-hidden');
+                }
+
+                lastScrollY = currentScrollY;
+
+                // Show after scrolling stops
+                clearTimeout(scrollTimer);
+                handler.timer = setTimeout(() => {
+                    floatControls.classList.remove('controls-hidden');
+                }, 800);
+            };
+            handler.timer = null;
+            return handler;
+        };
+
+        // Initialize scroll handlers for both views
+        [homeView, playgroundView].forEach(view => {
+            const handler = createScrollHandler(view);
+            scrollListeners.set(view, handler);
+            // Verify: Should we listen on 'scroll' for both? Yes.
+            // But we only want the active one to affect the controls? 
+            // Or both? For now, let's attach to both but maybe only active matters?
+            // Simpler: attach to both. If you scroll the hidden one (inactive), 
+            // it might hide controls which is weird but rare (momentum).
+            // Let's attach actively when switching.
+        });
+
+        const attachScrollListener = (view) => {
+            [homeView, playgroundView].forEach(v => {
+                const h = scrollListeners.get(v);
+                v.removeEventListener('scroll', h);
+            });
+            const handler = scrollListeners.get(view);
+            view.addEventListener('scroll', handler, { passive: true });
+        };
+
+        // Start with Home
+        attachScrollListener(homeView);
+
+        // --- Navigation Logic ---
         const updateIndicator = (activeBtn) => {
             if (!tabIndicator || !activeBtn) return;
             const rect = activeBtn.getBoundingClientRect();
             const parentRect = activeBtn.parentElement.getBoundingClientRect();
-
             tabIndicator.style.width = `${rect.width}px`;
             tabIndicator.style.transform = `translateX(${rect.left - parentRect.left}px)`;
         };
 
-        // Initialize indicator position
-        const activeTab = document.querySelector('.tab-button.active');
-        if (activeTab) {
-            // Wait for fonts to be ready to get accurate widths
+        // Initial indicator
+        const initialActive = document.querySelector('.tab-button.active');
+        if (initialActive) {
             document.fonts.ready.then(() => {
-                requestAnimationFrame(() => {
-                    updateIndicator(activeTab);
-
-                    // Initial sidebar state
-                    const sidebar = document.querySelector('.sidebar');
-                    const portfolioWrapper = document.querySelector('.portfolio-wrapper');
-                    if (activeTab.dataset.tab === 'playground') {
-                        sidebar.classList.add('sidebar-hidden');
-                        portfolioWrapper.classList.add('sidebar-hidden');
-                    }
-                });
+                setTimeout(() => updateIndicator(initialActive), 100);
             });
         }
 
-        window.addEventListener('resize', () => {
-            const currentActive = document.querySelector('.tab-button.active');
-            if (currentActive) updateIndicator(currentActive);
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                const currentActiveBtn = document.querySelector('.tab-button.active');
+                if (currentActiveBtn === button) return;
+
+                // Update Buttons
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                updateIndicator(button);
+
+                // Slide Viewport
+                if (tab === 'playground') {
+                    viewport.style.transform = 'translateX(-50%)'; // Move to show 2nd half (100vw to 200vw) which is at 50% of 200vw
+                    activeView = playgroundView;
+
+                    // Wake up playground
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                        // Trigger mousemove to wake unicorn
+                        window.dispatchEvent(new MouseEvent('mousemove', {
+                            clientX: window.innerWidth / 2,
+                            clientY: window.innerHeight / 2,
+                            bubbles: true
+                        }));
+                    }, 1050); // > 1.0s transition
+                } else {
+                    viewport.style.transform = 'translateX(0)';
+                    activeView = homeView;
+                }
+
+                // Update Scroll Listener
+                attachScrollListener(activeView);
+                // Ensure controls are visible when switching
+                floatControls.classList.remove('controls-hidden');
+            });
         });
 
-        // Scroll Visibility
-        let lastScrollY = window.scrollY;
-        let scrollTimer = null;
+        window.addEventListener('resize', () => {
+            const btn = document.querySelector('.tab-button.active');
+            if (btn) updateIndicator(btn);
+        });
 
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
 
-            // If scrolling down, hide
-            if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                floatControls.classList.add('controls-hidden');
-            } else {
-                // If scrolling up or near top, show
-                floatControls.classList.remove('controls-hidden');
-            }
-
-            lastScrollY = currentScrollY;
-
-            // Show after scrolling stops
-            clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(() => {
-                floatControls.classList.remove('controls-hidden');
-            }, 800);
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-
-        // Function to load video
+        // --- Video Lazy Loading (Playground) ---
         const loadVideo = (item) => {
             const video = item.querySelector('video');
             const src = item.dataset.videoSrc;
-
             if (video && !video.src) {
                 video.src = src;
                 video.load();
-
                 const checkLoaded = () => {
                     if (video.readyState >= 2) {
                         video.classList.add('loaded');
                         video.removeEventListener('loadeddata', checkLoaded);
                     }
                 };
-
-                if (video.readyState >= 2) {
-                    checkLoaded();
-                } else {
-                    video.addEventListener('loadeddata', checkLoaded);
-                }
+                if (video.readyState >= 2) checkLoaded();
+                else video.addEventListener('loadeddata', checkLoaded);
             }
         };
 
-        // Lazy load observer
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadVideo(entry.target);
-                }
+                if (entry.isIntersecting) loadVideo(entry.target);
             });
-        }, {
-            root: null,
-            rootMargin: '200px',
-            threshold: 0.01
-        });
+        }, { root: playgroundView, rootMargin: '200px', threshold: 0.01 }); // Root is now playgroundView? Or null? relative to viewport yes.
 
-        // Mobile "In Focus" playback observer
+        // Mobile Focus
         const mobileFocusObserver = new IntersectionObserver((entries) => {
             if (!isMobile()) return;
             entries.forEach(entry => {
                 const video = entry.target.querySelector('video');
                 if (video) {
-                    if (entry.isIntersecting) {
-                        video.play().catch(() => { });
-                    } else {
+                    if (entry.isIntersecting) video.play().catch(() => { });
+                    else {
                         video.pause();
                         video.currentTime = 0;
                     }
                 }
             });
-        }, {
-            threshold: 0.7 // Significant portion must be visible
-        });
+        }, { root: playgroundView, threshold: 0.7 });
 
         const videoItems = document.querySelectorAll('.playground-item');
         videoItems.forEach(item => {
             videoObserver.observe(item);
             mobileFocusObserver.observe(item);
 
-            // Desktop Hover
             item.addEventListener('mouseenter', () => {
                 if (isMobile()) return;
                 const video = item.querySelector('video');
                 if (video) {
-                    if (video.readyState >= 2) {
-                        video.play().catch(() => { });
-                    } else {
+                    if (video.readyState >= 2) video.play().catch(() => { });
+                    else {
                         loadVideo(item);
                         video.addEventListener('loadeddata', () => {
                             video.play().catch(() => { });
@@ -603,7 +665,6 @@
                     }
                 }
             });
-
             item.addEventListener('mouseleave', () => {
                 if (isMobile()) return;
                 const video = item.querySelector('video');
@@ -612,70 +673,13 @@
                     video.currentTime = 0;
                 }
             });
-
-            // Mobile Tap to toggle
-            item.addEventListener('click', (e) => {
+            item.addEventListener('click', () => {
                 if (!isMobile()) return;
                 const video = item.querySelector('video');
                 if (video) {
-                    if (video.paused) {
-                        video.play().catch(() => { });
-                    } else {
-                        video.pause();
-                    }
+                    if (video.paused) video.play().catch(() => { });
+                    else video.pause();
                 }
-            });
-        });
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tab = button.dataset.tab;
-
-                // 1. Immediate Visual Feedback
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                updateIndicator(button);
-
-                // 2. Defer heavy logic to avoid blocking the transition
-                requestAnimationFrame(() => {
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === tab + '-content') {
-                            content.classList.add('active');
-                            if (tab === 'playground') {
-                                // Re-trigger observer for playground items
-                                document.querySelectorAll('.playground-item').forEach(item => {
-                                    videoObserver.unobserve(item);
-                                    videoObserver.observe(item);
-                                    if (isMobile()) {
-                                        mobileFocusObserver.unobserve(item);
-                                        mobileFocusObserver.observe(item);
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-                    // 3. Trigger resize and sidebar state
-                    const sidebar = document.querySelector('.sidebar');
-                    const portfolioWrapper = document.querySelector('.portfolio-wrapper');
-
-                    if (tab === 'playground') {
-                        sidebar.classList.add('sidebar-hidden');
-                        portfolioWrapper.classList.add('sidebar-hidden');
-                    } else {
-                        sidebar.classList.remove('sidebar-hidden');
-                        portfolioWrapper.classList.remove('sidebar-hidden');
-                    }
-
-                    // Wake up complex elements
-                    window.dispatchEvent(new Event('resize'));
-                    window.dispatchEvent(new MouseEvent('mousemove', {
-                        clientX: window.innerWidth / 2,
-                        clientY: window.innerHeight / 2,
-                        bubbles: true
-                    }));
-                });
             });
         });
     });

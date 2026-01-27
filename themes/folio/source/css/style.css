@@ -80,6 +80,18 @@
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 300ms ease;
+
+  /* Border Radii */
+  --radius-xl: 2.5rem;
+  /* Main sections (Experience, Connect) */
+  --radius-l: 1.5rem;
+  /* Main containers (Project sections, Playground items) */
+  --radius-m: 1rem;
+  /* Secondary containers (Carousels) */
+  --radius-s: 0.75rem;
+  /* Smaller items (Nested images, small cards) */
+  --radius-full: 999px;
+  /* Pills, circles */
 }
 
 [data-theme="dark"] {
@@ -239,7 +251,7 @@ body {
   font-size: var(--size-sm);
   color: var(--color-text-muted);
   padding: var(--space-xs) var(--space-sm);
-  border-radius: 1.25rem;
+  border-radius: var(--radius-l);
   transition: all var(--transition-fast);
 }
 
@@ -275,7 +287,7 @@ body {
   height: 5rem;
   aspect-ratio: 1 / 1;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   object-fit: var(--carousel-object-fit, cover);
   display: block;
   overflow: hidden;
@@ -287,7 +299,7 @@ body {
 }
 
 .unicorn-avatar canvas {
-  border-radius: 50%;
+  border-radius: var(--radius-full);
 }
 
 .sidebar-title {
@@ -481,7 +493,7 @@ body {
 .avatar {
   width: 3rem;
   height: 3rem;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   object-fit: cover;
   margin-bottom: var(--space-md);
 }
@@ -500,7 +512,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--color-bg-secondary);
   font-size: var(--size-sm);
   color: var(--color-text-muted);
@@ -552,7 +564,7 @@ body {
 .project-section {
   margin-bottom: var(--section-gap);
   background: var(--color-bg-secondary);
-  border-radius: 1.5rem;
+  border-radius: var(--radius-l);
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   border: 1px solid var(--color-border);
@@ -566,14 +578,14 @@ body {
 
 .project-section .project-carousel-wrapper {
   margin-bottom: 0px;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
 }
 
 .project-carousel-wrapper {
   display: block;
   position: relative;
   padding: 0.375rem;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   overflow: hidden;
   /* Fix for border-radius overflow clipping in some browsers */
   mask-image: radial-gradient(white, black);
@@ -608,7 +620,7 @@ body {
   right: 0.875rem;
   bottom: 0.875rem;
   padding: 0.35rem 0.6rem;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   font-size: var(--size-xs);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -640,7 +652,7 @@ body {
   width: 50%;
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
 }
 
 .project-carousel-progress span {
@@ -648,7 +660,7 @@ body {
   height: 100%;
   background: #9d9d9d;
   /* Black */
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   transform-origin: left center;
   transform: scaleX(0);
   transition: transform var(--progress-transition, 0.2s) ease;
@@ -662,7 +674,7 @@ body {
 .embla__viewport {
   overflow: hidden;
   width: 100%;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   /* Fix for border-radius overflow clipping */
   isolation: isolate;
   mask-image: radial-gradient(white, black);
@@ -679,7 +691,7 @@ body {
 .embla__slide {
   flex: 0 0 100%;
   min-width: 0;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   overflow: hidden;
   /* Fix for border-radius overflow clipping in some browsers */
   mask-image: radial-gradient(white, black);
@@ -827,7 +839,7 @@ body {
   padding: var(--space-lg) var(--space-lg) 2.625rem;
   padding-top: var(--project-info-padding-top, var(--space-lg));
   background: var(--color-bg-secondary);
-  border-radius: 12px;
+  border-radius: var(--radius-s);
   max-width: var(--max-project-width);
   /* Match slider max-width */
 }
@@ -869,7 +881,7 @@ body {
   padding: 0.75rem 1.75rem;
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: var(--color-text);
   text-decoration: none;
   font-size: 0.875rem;
@@ -1030,15 +1042,15 @@ body {
    ============================================ */
 .floating-controls {
   position: fixed;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
+  z-index: 9999;
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1),
+    opacity 0.6s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 .floating-controls.controls-hidden {
@@ -1055,7 +1067,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   position: relative;
@@ -1072,7 +1084,7 @@ body {
   bottom: 0.5rem;
   left: 0;
   background: var(--color-text);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
@@ -1085,7 +1097,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: none;
   background: transparent;
   color: var(--color-text-muted);
@@ -1110,7 +1122,7 @@ body {
 .theme-toggle {
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
@@ -1163,20 +1175,45 @@ body {
   transform: rotate(90deg) scale(0.5);
 }
 
+.projects-column {
+  overflow-x: hidden;
+}
+
 .tab-content {
-  display: none;
-  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  overflow: hidden;
+  transition: transform 1s cubic-bezier(0.45, 0, 0.55, 1);
+  will-change: transform;
+  z-index: 1;
+}
+
+/* Initial/Exit positions */
+.tab-content[data-tab="home"] {
+  transform: translateX(-100%);
+}
+
+.tab-content[data-tab="playground"] {
+  transform: translateX(100%);
 }
 
 .tab-content.active {
-  display: block;
-  opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   position: relative;
   height: auto;
-  overflow: visible;
+  transform: translateX(0) !important;
+  z-index: 2;
+}
+
+.tab-content.exiting {
+  visibility: visible;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
 }
 
 /* Playground Bento Grid */
@@ -1229,7 +1266,7 @@ body {
 
 .playground-item {
   position: relative;
-  border-radius: 24px;
+  border-radius: var(--radius-l);
   overflow: hidden;
   background: var(--color-bg-secondary);
   cursor: pointer;
@@ -1284,7 +1321,7 @@ body {
 /* Experience section container */
 #experience {
   background: var(--color-bg-secondary);
-  border-radius: 2.5rem;
+  border-radius: var(--radius-xl);
   padding: 3.75rem 2.5rem;
   max-width: var(--max-project-width);
   margin-bottom: var(--section-gap);
@@ -1398,7 +1435,7 @@ body {
   background: #000;
   /* Dark premium background as requested */
   color: #fff;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   overflow: hidden;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
   will-change: transform, opacity;
@@ -1510,7 +1547,7 @@ body {
 #connect {
   background: #000;
   color: #fff;
-  border-radius: 2.5rem;
+  border-radius: var(--radius-xl);
   padding: 3.75rem;
   margin: 0;
   margin-bottom: var(--section-gap);
@@ -1647,7 +1684,7 @@ body {
 @media (max-width: 768px) {
   #connect {
     padding: 2.5rem 1.5rem;
-    border-radius: 1.5rem;
+    border-radius: var(--radius-l);
   }
 
   #connect .section-intro {
@@ -1668,7 +1705,7 @@ body {
   background: var(--color-text);
   color: var(--color-bg);
   padding: var(--space-sm) var(--space-xl);
-  border-radius: 62.4375rem;
+  border-radius: var(--radius-full);
   font-weight: 500;
   text-decoration: none;
   width: fit-content;
@@ -1795,7 +1832,7 @@ body {
     --project-carousel-to-info-gap: 0px;
   }
 
-  .index-page .project-section {
+  .project-section {
     border-radius: 0;
     border: none;
     box-shadow: none;
@@ -1803,7 +1840,7 @@ body {
     width: 100%;
   }
 
-  .index-page .project-carousel-wrapper {
+  .project-carousel-wrapper {
     padding: 0;
     border-radius: 0 !important;
     width: 100%;
@@ -1811,35 +1848,31 @@ body {
     -webkit-mask-image: none !important;
   }
 
-  .index-page .embla__viewport {
+  .embla__viewport {
     border-radius: 0 !important;
     mask-image: none !important;
     -webkit-mask-image: none !important;
   }
 
-  .index-page .embla__slide,
-  .index-page .project-info,
-  .index-page .image-container,
-  .index-page .image-skeleton,
-  .index-page .unicorn-scene,
-  .index-page .unicorn-scene canvas,
-  .index-page .unicorn-scene-skeleton,
-  .index-page .project-slide-item,
-  .index-page .project-carousel-item,
-  .index-page .project-section {
+  .embla__slide,
+  .project-info,
+  .image-container,
+  .image-skeleton,
+  .unicorn-scene,
+  .unicorn-scene canvas,
+  .unicorn-scene-skeleton,
+  .project-slide-item,
+  .project-carousel-item,
+  .project-section {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
   }
 
-  .index-page .project-year {
-    display: none;
-  }
-
   /* Keep the scroll pill rounded */
   .carousel-scroll-hint {
-    border-radius: 2rem !important;
+    border-radius: var(--radius-xl) !important;
   }
 
   .project-info {
@@ -1859,6 +1892,10 @@ body {
   .project-meta-row {
     margin-top: 0.25rem;
     padding-top: 0.75rem;
+  }
+
+  .project-meta-row .project-year {
+    display: none;
   }
 
   /* Disable heavy effects for better mobile performance */
@@ -1895,7 +1932,7 @@ body {
 
   .playground-item {
     aspect-ratio: 1 / 1;
-    border-radius: 16px;
+    border-radius: var(--radius-m);
   }
 
   .sidebar {
@@ -1912,7 +1949,15 @@ body {
   }
 
   .sidebar.sidebar-hidden {
-    display: none;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    pointer-events: none;
+    border-bottom-color: transparent;
   }
 
   .sidebar>* {
@@ -2123,7 +2168,7 @@ body.project-page {
 .project-page .carousel-item {
   flex: 0 0 85%;
   scroll-snap-align: center;
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   overflow: hidden;
   height: var(--project-page-carousel-height, 60vh);
   min-height: 25rem;
@@ -2192,14 +2237,14 @@ body.project-page {
 }
 
 .project-body img {
-  border-radius: 12px;
+  border-radius: var(--radius-s);
   margin: var(--space-lg) 0;
 }
 
 .project-testimonial {
   background: var(--color-bg-secondary);
   padding: var(--space-xl);
-  border-radius: 16px;
+  border-radius: var(--radius-m);
   margin: var(--space-xl) 0;
 }
 
@@ -2217,6 +2262,7 @@ body.project-page {
 
 /* More Work */
 .more-work {
+  display: none !important;
   padding: var(--space-2xl) var(--space-lg);
   max-width: var(--max-project-width);
   margin: 0 auto;
@@ -2242,7 +2288,7 @@ body.project-page {
 .related-project-card img {
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: var(--radius-s);
   margin-bottom: var(--space-sm);
 }
 
@@ -2441,7 +2487,7 @@ body.project-page {
   top: 0.375rem;
   width: 0.5625rem;
   height: 0.5625rem;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--color-text);
   box-shadow: 0 0 0 0.5rem var(--color-bg);
   /* clear space around marker */
@@ -2492,7 +2538,46 @@ body.project-page {
   overflow: hidden;
 }
 
-/* Skeleton loader for JSON scenes */
+/* ============================================
+   APP VIEWPORT & SLIDER ARCHITECTURE
+   ============================================ */
+body {
+  overflow: hidden;
+  /* Main scrollbar handled by views */
+}
+
+#app-viewport {
+  display: flex;
+  width: 200vw;
+  height: 100dvh;
+  transition: transform 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99);
+  will-change: transform;
+}
+
+.app-view {
+  width: 100vw;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Home View Layout - Uses existing classes but confined */
+.portfolio-wrapper {
+  /* It's now just a regular grid inside the scrollable view */
+  min-height: auto;
+  /* Let content dictate height */
+}
+
+/* Playground View specific */
+.playground-view-content {
+  max-width: 100%;
+  width: 100%;
+}
+
 .unicorn-scene-skeleton {
   position: absolute;
   inset: 0;
@@ -2526,7 +2611,7 @@ body.project-page {
   aspect-ratio: 16 / 9;
   background-color: var(--color-bg-secondary);
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--radius-s);
 }
 
 .image-container img {
@@ -2578,19 +2663,21 @@ body.project-page {
   }
 }
 
-/* Project Subpage Stacked Images */
-.project-image-stack {
+/* Project Subpage Stacked Images & Gallery */
+.project-image-stack,
+.project-gallery {
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
   margin: var(--space-xl) 0;
-  max-width: 1600px;
   width: 100%;
+  max-width: 1600px;
 }
 
-.project-image-stack .image-container {
+.project-image-stack .image-container,
+.project-gallery .image-container {
   aspect-ratio: auto;
-  border-radius: 12px;
+  border-radius: var(--radius-l);
   overflow: hidden;
   background: var(--color-bg-secondary);
 }
@@ -2609,7 +2696,7 @@ body.project-page {
   cursor: var(--slider-cursor, pointer);
   transition: transform 0.4s ease, filter 0.4s ease;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--radius-s);
 }
 
 .project-slide-link:hover {
@@ -2652,7 +2739,7 @@ body.project-page {
   aspect-ratio: 16 / 9 !important;
   /* Force aspect ratio for JSON/Images */
   background: var(--color-bg-secondary);
-  border-radius: 12px;
+  border-radius: var(--radius-l);
   overflow: hidden;
 }
 
@@ -2722,7 +2809,7 @@ body.project-page {
   padding: 0.7rem 1.6rem !important;
   background: var(--color-bg-secondary) !important;
   border: 1px solid var(--color-border) !important;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-text) !important;
@@ -2834,15 +2921,17 @@ body.project-page {
   /* Edge-to-edge images on mobile */
   .project-image-stack,
   .project-gallery {
-    margin-left: -16px;
-    margin-right: -16px;
-    width: calc(100% + 32px);
-    max-width: none;
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    width: calc(100% + 32px) !important;
+    padding: 0 !important;
   }
 
   .project-image-stack .image-container,
   .project-gallery .image-container {
-    border-radius: 0;
+    border-radius: 0 !important;
   }
 
   .project-info-grid {
