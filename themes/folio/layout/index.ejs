@@ -1,7 +1,3 @@
-<div class="gradient-blobs">
-    <div class="blob-violet"></div>
-</div>
-
 <div id="app-viewport">
     <!-- VIEW 1: HOME (Sidebar + Work) -->
     <div id="home-view" class="app-view">
@@ -412,7 +408,7 @@
     </div>
 
     <!-- VIEW 2: PLAYGROUND -->
-    <div id="playground-view" class="app-view">
+    <div id="playground-view" class="app-view" style="visibility: hidden;">
         <div class="playground-wrapper">
             <div class="playground-header">
                 <h1 class="playground-title">Playground</h1>
@@ -470,6 +466,22 @@
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
     </button>
+</div>
+
+<!-- Global Resume Hover Preview -->
+<div class="resume-hover-preview" aria-hidden="true">
+    <div class="preview-content">
+        <div class="preview-media">
+            <img src="" alt="" class="preview-image">
+        </div>
+        <div class="preview-text">
+            <div class="preview-header">
+                <span class="preview-year"></span>
+                <h4 class="preview-title"></h4>
+            </div>
+            <p class="preview-description"></p>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -577,11 +589,15 @@
 
                 // Slide Viewport
                 if (tab === 'playground') {
-                    viewport.style.transform = 'translateX(-50%)'; // Move to show 2nd half (100vw to 200vw) which is at 50% of 200vw
                     activeView = playgroundView;
+                    playgroundView.style.visibility = 'visible';
+                    viewport.style.transform = 'translateX(-50%)';
 
                     // Wake up playground
                     setTimeout(() => {
+                        if (activeView === playgroundView) {
+                            homeView.style.visibility = 'hidden';
+                        }
                         window.dispatchEvent(new Event('resize'));
                         // Trigger mousemove to wake unicorn
                         window.dispatchEvent(new MouseEvent('mousemove', {
@@ -591,11 +607,15 @@
                         }));
                     }, 1050); // > 1.0s transition
                 } else {
-                    viewport.style.transform = 'translateX(0)';
                     activeView = homeView;
+                    homeView.style.visibility = 'visible';
+                    viewport.style.transform = 'translateX(0)';
 
                     // Wake up home view (including the connect button)
                     setTimeout(() => {
+                        if (activeView === homeView) {
+                            playgroundView.style.visibility = 'hidden';
+                        }
                         window.dispatchEvent(new Event('resize'));
                         window.dispatchEvent(new MouseEvent('mousemove', {
                             clientX: window.innerWidth / 2,
@@ -640,9 +660,8 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) loadVideo(entry.target);
             });
-        }, { root: playgroundView, rootMargin: '200px', threshold: 0.01 }); // Root is now playgroundView? Or null? relative to viewport yes.
+        }, { root: null, rootMargin: '400px', threshold: 0.01 });
 
-        // Mobile Focus
         const mobileFocusObserver = new IntersectionObserver((entries) => {
             if (!isMobile()) return;
             entries.forEach(entry => {
@@ -655,7 +674,7 @@
                     }
                 }
             });
-        }, { root: playgroundView, threshold: 0.7 });
+        }, { root: null, threshold: 0.5 });
 
         const videoItems = document.querySelectorAll('.playground-item');
         videoItems.forEach(item => {

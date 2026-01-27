@@ -149,8 +149,10 @@ body {
   font-size: var(--size-base);
   line-height: 1.6;
   color: var(--color-text);
-  background: transparent;
+  background-color: var(--color-bg);
+  /* Use solid background on body for Safari transparency */
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   -webkit-font-smoothing: antialiased;
   transition: opacity 0.4s ease;
 }
@@ -168,6 +170,9 @@ body {
 
 .index-page .main-content {
   padding-top: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 /* ============================================
@@ -264,6 +269,7 @@ body {
 .sidebar-content {
   flex: 1;
   padding-top: var(--space-lg);
+  padding-top: calc(var(--space-lg) + env(safe-area-inset-top, 0px));
   padding-left: var(--sidebar-px);
   overflow: visible;
   width: 100%;
@@ -1227,7 +1233,7 @@ body {
 
 /* Playground Bento Grid */
 .playground-header {
-  padding: var(--section-gap) var(--space-xl) var(--space-xl);
+  padding: calc(var(--section-gap) + env(safe-area-inset-top, 0px)) var(--space-xl) var(--space-xl);
   max-width: var(--max-project-width);
   margin: 0 auto;
   text-align: center;
@@ -1847,7 +1853,7 @@ body {
   }
 
   .project-section {
-    border-radius: 0;
+    border-radius: var(--radius-l);
     border: none;
     box-shadow: none;
     margin-bottom: var(--section-gap);
@@ -1869,19 +1875,21 @@ body {
   }
 
   .embla__slide,
-  .project-info,
   .image-container,
   .image-skeleton,
   .unicorn-scene,
   .unicorn-scene canvas,
   .unicorn-scene-skeleton,
   .project-slide-item,
-  .project-carousel-item,
-  .project-section {
+  .project-carousel-item {
     border-radius: 0 !important;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+  }
+
+  .project-info {
+    border-radius: 0 0 var(--radius-l) var(--radius-l) !important;
   }
 
   /* Keep the scroll pill rounded */
@@ -2557,26 +2565,45 @@ body.project-page {
    ============================================ */
 .index-page {
   overflow: hidden;
-  /* Main scrollbar handled by views on index page */
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Safari specific height fix */
+@supports (-webkit-touch-callout: none) {
+
+  .index-page,
+  .app-view {
+    height: -webkit-fill-available !important;
+  }
 }
 
 #app-viewport {
   display: flex;
   width: 200vw;
-  height: 100dvh;
+  height: 100%;
   transition: transform 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99);
   will-change: transform;
 }
 
 .app-view {
   width: 100vw;
+  height: 100%;
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  /* Smooth scrolling */
-  scroll-behavior: smooth;
+  /* Momentum scroll for Safari */
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  /* Prevent jittery bounce at edges */
+  overscroll-behavior-y: none;
+  scroll-behavior: smooth;
+
+  /* Safari Safe Areas */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* Home View Layout - Uses existing classes but confined */
