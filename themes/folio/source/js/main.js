@@ -153,6 +153,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('resize', () => embla.reInit());
+
+    // --- Auto-reset when out of view ---
+    const resetObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // If the project section is completely out of view
+        if (!entry.isIntersecting) {
+          // Reset to first slide (index 0)
+          embla.scrollTo(0);
+        }
+      });
+    }, {
+      threshold: 0,
+      rootMargin: '100px 0px 100px 0px' // Slight buffer before resetting
+    });
+
+    resetObserver.observe(emblaNode);
   });
 
   // --- Loading States (Images & Unicorn Studio) ---

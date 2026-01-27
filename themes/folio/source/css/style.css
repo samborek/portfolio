@@ -1062,8 +1062,8 @@ body {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  height: 3.5rem;
-  padding: 0 0.5rem;
+  height: 3rem;
+  padding: 0 0.3rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -1080,8 +1080,8 @@ body {
 
 .tab-indicator {
   position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
+  top: 0.3rem;
+  bottom: 0.3rem;
   left: 0;
   background: var(--color-text);
   border-radius: var(--radius-full);
@@ -1092,7 +1092,7 @@ body {
 }
 
 .tab-button {
-  height: 2.5rem;
+  height: 2.4rem;
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
@@ -1120,8 +1120,8 @@ body {
 
 /* Theme Toggle Button (Separate) */
 .theme-toggle {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.7);
