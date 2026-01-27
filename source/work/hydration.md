@@ -26,7 +26,7 @@ scope:
   - Design System
   - Design Tokens
   - UI/UX Design
-when: 2024
+when: 2024/25
 website: https://next-hydration.netlify.app/
 ---
 

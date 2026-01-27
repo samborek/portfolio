@@ -593,6 +593,16 @@
                 } else {
                     viewport.style.transform = 'translateX(0)';
                     activeView = homeView;
+
+                    // Wake up home view (including the connect button)
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                        window.dispatchEvent(new MouseEvent('mousemove', {
+                            clientX: window.innerWidth / 2,
+                            clientY: window.innerHeight / 2,
+                            bubbles: true
+                        }));
+                    }, 1050); // > 1.0s transition
                 }
 
                 // Update Scroll Listener

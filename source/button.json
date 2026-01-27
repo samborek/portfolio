@@ -1,1 +1,120 @@
-{"history":[{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"chromab","usesPingPong":false,"speed":0,"trackMouse":1,"trackAxes":"xy","mouseMomentum":0,"texture":false,"parentLayer":"2c2f0170-9c89-44c8-800d-4bc6e5ba5ae2","animating":true,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform float uTime;uniform vec2 uMousePos;\nuniform vec2 uResolution;float ease (int easingFunc, float t) {\nreturn t * (2.0 - t);\n}out vec4 fragColor;\nconst float PI = 3.1415926;vec3 getAbberatedColor(vec3 color, vec3 left, vec3 center, vec3 right) {\nreturn vec3(left.r, mix(color.g, center.g, float(1)), right.b);\n}void main() {\nvec2 uv = vTextureCoord;\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 mPos = vec2(0.5142282507015903, 0.5788821328344247) + mix(vec2(0), (uMousePos-0.5), 1.0000);\nvec2 pos = vec2(0.5142282507015903, 0.5788821328344247);\nfloat angle = ((0.0000 + uTime * 0.05) * 360.0) * PI / 180.0;\nvec2 rotation = vec2(sin(angle), cos(angle));\nvec4 color = texture(uTexture, uv);float mDist = ease(2, max(0., 1. - distance(uv * vec2(aspectRatio, 1.), mPos * vec2(aspectRatio, 1.)) * 4. * (1. - 0.6800)));vec2 aberrated;aberrated = 3.0000 * rotation * 0.03 * mix(1.0, distance(uv, pos) * (1.0 + 0.0000), 0.0000);\naberrated *= mDist;float amt = length(aberrated);if(amt < 0.001) {\nfragColor = color;return;\n}vec4 left = vec4(0);\nvec4 right = vec4(0);\nvec4 center = vec4(0);float steps = max(2., min(float(19), 24.));\nfloat invSteps = 1.0 / (steps + 1.0);for (float i = 0.0; i <= steps; i++) {\nvec2 offset = aberrated * (i * invSteps);\nleft += texture(uTexture, uv - offset) * invSteps;\nright += texture(uTexture, uv + offset) * invSteps;\n}\nfor (float i = 0.0; i <= steps; i++) {\nvec2 offset = aberrated * ((i / steps) - 0.5);\ncenter += texture(uTexture, uv + offset) * invSteps;\n}\ncolor.rgb = getAbberatedColor(color.rgb, left.rgb, center.rgb, right.rgb);color.a = max(max(left.a, center.a), right.a);\nfragColor = color;}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"depth":false,"uniforms":{},"isBackground":false},"id":"chromatic_abb."},{"breakpoints":[],"aspectRatio":4.848484848484849,"userDownsample":1,"effects":["2c2f0170-9c89-44c8-800d-4bc6e5ba5ae2"],"anchorPoint":8,"mask":0,"maskDepthLayer":1,"states":{"appear":[],"scroll":[],"hover":[]},"layerType":"shape","width":0.8,"widthMode":0,"height":0.66,"heightMode":0,"left":0.48,"top":0.5,"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;vec3 getColor(int index) {\nswitch(index) {\ncase 0: return vec3(1, 1, 1);\ncase 1: return vec3(0, 0, 0);\ncase 2: return vec3(0, 0, 0);\ncase 3: return vec3(0, 0, 0);\ncase 4: return vec3(0, 0, 0);\ncase 5: return vec3(0, 0, 0);\ncase 6: return vec3(0, 0, 0);\ncase 7: return vec3(0, 0, 0);\ncase 8: return vec3(0, 0, 0);\ncase 9: return vec3(0, 0, 0);\ncase 10: return vec3(0, 0, 0);\ncase 11: return vec3(0, 0, 0);\ncase 12: return vec3(0, 0, 0);\ncase 13: return vec3(0, 0, 0);\ncase 14: return vec3(0, 0, 0);\ncase 15: return vec3(0, 0, 0);\ndefault: return vec3(0.0);\n}\n}uniform vec2 uArtboardResolution;uniform vec2 uMousePos;const float TAU = 6.28318530718;\nconst float PI = 3.14159265;out vec4 fragColor;vec2 rotate2D(vec2 p, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(p.x * c - p.y * s, p.x * s + p.y * c);\n}vec2 getAnchorOffsets() {\nreturn vec2(0.5, 0.5);\n}vec3 getFillColor(vec2 localPos, vec2 elementSize, float signedDist, float maxInset) {\nvec2 halfSize = elementSize * 0.5;\nvec2 p = localPos - halfSize;return getColor(0);\n}float sdBox(vec2 p, vec2 b) {\nvec2 d = abs(p) - b;\nreturn length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);\n}float sdRoundedBox(vec2 p, vec2 b, float r) {\nvec2 q = abs(p) - (b - vec2(r));\nreturn length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;\n}float sdShape(vec2 canvasPosPx, vec2 elementPosPx, vec2 elementSizePx, float rotationTurns) {\nvec2 p = vec2(0.0);\nvec2 halfSize = vec2(0.0);elementSizePx = abs(elementSizePx);vec2 centerPx = elementPosPx + elementSizePx * 0.5;\nvec2 rel = canvasPosPx - centerPx;\nvec2 local = rotate2D(rel, -rotationTurns * TAU) + elementSizePx * 0.5;\np = local - elementSizePx * 0.5;\nhalfSize = elementSizePx * 0.5;float radiusPx = 1.0000 * min(halfSize.x, halfSize.y);\nradiusPx = clamp(radiusPx, 0.0, min(halfSize.x, halfSize.y));\nreturn sdRoundedBox(p, halfSize, radiusPx);\nreturn sdBox(p, halfSize);\n}vec4 sampleShape(vec2 canvasUV) {\nvec2 canvasPosPx = vec2(canvasUV.x * uArtboardResolution.x, (1.0 - canvasUV.y) * uArtboardResolution.y);float absWidth = 0.8000 * uArtboardResolution.x;\nfloat absHeight = 0.6600 * uArtboardResolution.y;if (0 == 2) {\nabsWidth = absHeight * 4.8485;\n} else if (0 == 2) {\nabsHeight = absWidth / 4.8485;\n}vec2 elementSizePx = vec2(absWidth, absHeight);\nvec2 elementPosPx = vec2(0.4800, 0.5000) * uArtboardResolution - getAnchorOffsets() * elementSizePx;float dist = sdShape(canvasPosPx, elementPosPx, elementSizePx, 0.0000);\nfloat aa = max(length(vec2(dFdx(dist), dFdy(dist))), 0.75);float fillAlpha = 1.0 - smoothstep(mix(0.0, -150., 0.0000), mix(aa, 150., 0.0000), dist);\nvec2 localPos;\nlocalPos = rotate2D(canvasPosPx - (elementPosPx + elementSizePx * 0.5), 0.0000 * -TAU) + elementSizePx * 0.5;\nvec2 localSize;\nlocalSize = elementSizePx;\nvec2 centerPx;\ncenterPx = elementPosPx + elementSizePx * 0.5;\nfloat centerDist = sdShape(centerPx, elementPosPx, elementSizePx, 0.0000);\nfloat maxInset = max(-centerDist, 0.00001);vec3 fillRgb = getFillColor(localPos, localSize, dist, maxInset);\nfloat finalFillAlpha = fillAlpha * 1.0000;\nvec4 fill = vec4(fillRgb * finalFillAlpha, finalFillAlpha);float strokeAlpha = 0.0;\nvec4 stroke = vec4(vec3(0, 0, 0) * strokeAlpha, strokeAlpha);\nvec4 col = stroke + fill * (1.0 - stroke.a);\nreturn col;\n}vec4 getSourceOutput(vec2 uv) {\nreturn sampleShape(uv);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = (uMousePos - 0.5) * 0.0000;uv -= pos;fragColor = getSourceOutput(uv);\n}"],"compiledVertexShaders":["#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"uniforms":{"artboardResolution":{"name":"uArtboardResolution","type":"2f","value":{"type":"Vec2","_x":400,"_y":100}},"aspectRatio":{"name":"uAspectRatio","type":"1f","value":4.848484848484849}},"compositeShader":{"fragmentShader":"#version 300 es\nprecision highp float;\nin vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uBgTexture;\nuniform sampler2D uTexture;const float STEPS = 24.0;\nconst float PI = 3.1415926;out vec4 fragColor;vec4 getNormalOutput(vec4 color, vec4 background) {\nreturn mix(background, color + background * (1.0 - color.a), 1.0000);\n}vec4 getOutputByMode(vec4 color, vec4 background) {\nreturn getNormalOutput(color, background);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = vec2(0);uv -= pos;vec4 background = vec4(0);background = texture(uBgTexture, vTextureCoord);\nvec4 color = texture(uTexture, uv);vec4 col = getOutputByMode(color, background);fragColor = col;\n}","vertexShader":"#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"},"compositeUniforms":{"resolution":{"name":"uResolution","type":"2f","value":{"type":"Vec2","_x":1080,"_y":1080}},"opacity":{"name":"uOpacity","type":"1f","value":1},"mousePos":{"name":"uMousePos","type":"2f","value":{"type":"Vec2","_x":0.5,"_y":0.5}}}},"id":"shape"}],"options":{"name":"button","fps":60,"dpi":1.5,"scale":1,"includeLogo":false,"isProduction":false},"version":"2.0.2","id":"C7g3cExzMt7MpWJEeNpW"}
+{
+    "history": [
+        {
+            "breakpoints": [],
+            "visible": true,
+            "aspectRatio": 1,
+            "userDownsample": 1,
+            "layerType": "effect",
+            "type": "chromab",
+            "usesPingPong": false,
+            "speed": 0.13,
+            "trackMouse": 1,
+            "trackAxes": "xy",
+            "mouseMomentum": 0,
+            "texture": false,
+            "parentLayer": "2c2f0170-9c89-44c8-800d-4bc6e5ba5ae2",
+            "animating": true,
+            "isMask": 0,
+            "compiledFragmentShaders": [
+                "#version 300 es\nprecision highp float;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform float uTime;uniform vec2 uMousePos;\nuniform vec2 uResolution;float ease (int easingFunc, float t) {\nreturn t * (2.0 - t);\n}out vec4 fragColor;\nconst float PI = 3.1415926;vec3 getAbberatedColor(vec3 color, vec3 left, vec3 center, vec3 right) {\nreturn vec3(left.r, mix(color.g, center.g, float(1)), right.b);\n}void main() {\nvec2 uv = vTextureCoord;\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 mPos = vec2(0.5142282507015903, 0.5788821328344247) + mix(vec2(0), (uMousePos-0.5), 1.0000);\nvec2 pos = vec2(0.5142282507015903, 0.5788821328344247);\nfloat angle = ((0.0000 + uTime * 0.05) * 360.0) * PI / 180.0;\nvec2 rotation = vec2(sin(angle), cos(angle));\nvec4 color = texture(uTexture, uv);float mDist = ease(2, max(0., 1. - distance(uv * vec2(aspectRatio, 1.), mPos * vec2(aspectRatio, 1.)) * 4. * (1. - 0.6800)));vec2 aberrated;aberrated = 3.0000 * rotation * 0.03 * mix(1.0, distance(uv, pos) * (1.0 + 0.0000), 0.0000);\naberrated *= mDist;float amt = length(aberrated);if(amt < 0.001) {\nfragColor = color;return;\n}vec4 left = vec4(0);\nvec4 right = vec4(0);\nvec4 center = vec4(0);float steps = max(2., min(float(19), 24.));\nfloat invSteps = 1.0 / (steps + 1.0);for (float i = 0.0; i <= steps; i++) {\nvec2 offset = aberrated * (i * invSteps);\nleft += texture(uTexture, uv - offset) * invSteps;\nright += texture(uTexture, uv + offset) * invSteps;\n}\nfor (float i = 0.0; i <= steps; i++) {\nvec2 offset = aberrated * ((i / steps) - 0.5);\ncenter += texture(uTexture, uv + offset) * invSteps;\n}\ncolor.rgb = getAbberatedColor(color.rgb, left.rgb, center.rgb, right.rgb);color.a = max(max(left.a, center.a), right.a);\nfragColor = color;}"
+            ],
+            "compiledVertexShaders": [
+                "#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+            ],
+            "data": {
+                "depth": false,
+                "uniforms": {},
+                "isBackground": false
+            },
+            "id": "chromatic_abb."
+        },
+        {
+            "breakpoints": [],
+            "aspectRatio": 4.848484848484849,
+            "userDownsample": 1,
+            "effects": [
+                "2c2f0170-9c89-44c8-800d-4bc6e5ba5ae2"
+            ],
+            "anchorPoint": 8,
+            "mask": 0,
+            "maskDepthLayer": 1,
+            "states": {
+                "appear": [],
+                "scroll": [],
+                "hover": []
+            },
+            "layerType": "shape",
+            "width": 0.8,
+            "widthMode": 0,
+            "height": 0.66,
+            "heightMode": 0,
+            "left": 0.48,
+            "top": 0.5,
+            "compiledFragmentShaders": [
+                "#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;vec3 getColor(int index) {\nswitch(index) {\ncase 0: return vec3(1, 1, 1);\ncase 1: return vec3(0, 0, 0);\ncase 2: return vec3(0, 0, 0);\ncase 3: return vec3(0, 0, 0);\ncase 4: return vec3(0, 0, 0);\ncase 5: return vec3(0, 0, 0);\ncase 6: return vec3(0, 0, 0);\ncase 7: return vec3(0, 0, 0);\ncase 8: return vec3(0, 0, 0);\ncase 9: return vec3(0, 0, 0);\ncase 10: return vec3(0, 0, 0);\ncase 11: return vec3(0, 0, 0);\ncase 12: return vec3(0, 0, 0);\ncase 13: return vec3(0, 0, 0);\ncase 14: return vec3(0, 0, 0);\ncase 15: return vec3(0, 0, 0);\ndefault: return vec3(0.0);\n}\n}uniform vec2 uArtboardResolution;uniform vec2 uMousePos;const float TAU = 6.28318530718;\nconst float PI = 3.14159265;out vec4 fragColor;vec2 rotate2D(vec2 p, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(p.x * c - p.y * s, p.x * s + p.y * c);\n}vec2 getAnchorOffsets() {\nreturn vec2(0.5, 0.5);\n}vec3 getFillColor(vec2 localPos, vec2 elementSize, float signedDist, float maxInset) {\nvec2 halfSize = elementSize * 0.5;\nvec2 p = localPos - halfSize;return getColor(0);\n}float sdBox(vec2 p, vec2 b) {\nvec2 d = abs(p) - b;\nreturn length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);\n}float sdRoundedBox(vec2 p, vec2 b, float r) {\nvec2 q = abs(p) - (b - vec2(r));\nreturn length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;\n}float sdShape(vec2 canvasPosPx, vec2 elementPosPx, vec2 elementSizePx, float rotationTurns) {\nvec2 p = vec2(0.0);\nvec2 halfSize = vec2(0.0);elementSizePx = abs(elementSizePx);vec2 centerPx = elementPosPx + elementSizePx * 0.5;\nvec2 rel = canvasPosPx - centerPx;\nvec2 local = rotate2D(rel, -rotationTurns * TAU) + elementSizePx * 0.5;\np = local - elementSizePx * 0.5;\nhalfSize = elementSizePx * 0.5;float radiusPx = 1.0000 * min(halfSize.x, halfSize.y);\nradiusPx = clamp(radiusPx, 0.0, min(halfSize.x, halfSize.y));\nreturn sdRoundedBox(p, halfSize, radiusPx);\nreturn sdBox(p, halfSize);\n}vec4 sampleShape(vec2 canvasUV) {\nvec2 canvasPosPx = vec2(canvasUV.x * uArtboardResolution.x, (1.0 - canvasUV.y) * uArtboardResolution.y);float absWidth = 0.8000 * uArtboardResolution.x;\nfloat absHeight = 0.6600 * uArtboardResolution.y;if (0 == 2) {\nabsWidth = absHeight * 4.8485;\n} else if (0 == 2) {\nabsHeight = absWidth / 4.8485;\n}vec2 elementSizePx = vec2(absWidth, absHeight);\nvec2 elementPosPx = vec2(0.4800, 0.5000) * uArtboardResolution - getAnchorOffsets() * elementSizePx;float dist = sdShape(canvasPosPx, elementPosPx, elementSizePx, 0.0000);\nfloat aa = max(length(vec2(dFdx(dist), dFdy(dist))), 0.75);float fillAlpha = 1.0 - smoothstep(mix(0.0, -150., 0.0000), mix(aa, 150., 0.0000), dist);\nvec2 localPos;\nlocalPos = rotate2D(canvasPosPx - (elementPosPx + elementSizePx * 0.5), 0.0000 * -TAU) + elementSizePx * 0.5;\nvec2 localSize;\nlocalSize = elementSizePx;\nvec2 centerPx;\ncenterPx = elementPosPx + elementSizePx * 0.5;\nfloat centerDist = sdShape(centerPx, elementPosPx, elementSizePx, 0.0000);\nfloat maxInset = max(-centerDist, 0.00001);vec3 fillRgb = getFillColor(localPos, localSize, dist, maxInset);\nfloat finalFillAlpha = fillAlpha * 1.0000;\nvec4 fill = vec4(fillRgb * finalFillAlpha, finalFillAlpha);float strokeAlpha = 0.0;\nvec4 stroke = vec4(vec3(0, 0, 0) * strokeAlpha, strokeAlpha);\nvec4 col = stroke + fill * (1.0 - stroke.a);\nreturn col;\n}vec4 getSourceOutput(vec2 uv) {\nreturn sampleShape(uv);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = (uMousePos - 0.5) * 0.0000;uv -= pos;fragColor = getSourceOutput(uv);\n}"
+            ],
+            "compiledVertexShaders": [
+                "#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+            ],
+            "data": {
+                "uniforms": {
+                    "artboardResolution": {
+                        "name": "uArtboardResolution",
+                        "type": "2f",
+                        "value": {
+                            "type": "Vec2",
+                            "_x": 400,
+                            "_y": 100
+                        }
+                    },
+                    "aspectRatio": {
+                        "name": "uAspectRatio",
+                        "type": "1f",
+                        "value": 4.848484848484849
+                    }
+                },
+                "compositeShader": {
+                    "fragmentShader": "#version 300 es\nprecision highp float;\nin vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uBgTexture;\nuniform sampler2D uTexture;const float STEPS = 24.0;\nconst float PI = 3.1415926;out vec4 fragColor;vec4 getNormalOutput(vec4 color, vec4 background) {\nreturn mix(background, color + background * (1.0 - color.a), 1.0000);\n}vec4 getOutputByMode(vec4 color, vec4 background) {\nreturn getNormalOutput(color, background);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = vec2(0);uv -= pos;vec4 background = vec4(0);background = texture(uBgTexture, vTextureCoord);\nvec4 color = texture(uTexture, uv);vec4 col = getOutputByMode(color, background);fragColor = col;\n}",
+                    "vertexShader": "#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+                },
+                "compositeUniforms": {
+                    "resolution": {
+                        "name": "uResolution",
+                        "type": "2f",
+                        "value": {
+                            "type": "Vec2",
+                            "_x": 1080,
+                            "_y": 1080
+                        }
+                    },
+                    "opacity": {
+                        "name": "uOpacity",
+                        "type": "1f",
+                        "value": 1
+                    },
+                    "mousePos": {
+                        "name": "uMousePos",
+                        "type": "2f",
+                        "value": {
+                            "type": "Vec2",
+                            "_x": 0.5,
+                            "_y": 0.5
+                        }
+                    }
+                }
+            },
+            "id": "shape"
+        }
+    ],
+    "options": {
+        "name": "button",
+        "fps": 60,
+        "dpi": 1.5,
+        "scale": 1,
+        "includeLogo": false,
+        "isProduction": false
+    },
+    "version": "2.0.3",
+    "id": "C7g3cExzMt7MpWJEeNpW"
+}
