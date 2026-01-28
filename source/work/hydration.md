@@ -8,7 +8,8 @@ cover: /images/work/hydration_1.jpg
 hero_image: /images/work/hydration_1.jpg
 carousel:
   - /images/work/hydration.json
-  - /images/work/hydration_2.jpg
+  - light: /images/work/hydration_2.jpg
+    dark: /images/work/hydration_2_dark.jpg
   - /images/work/hydration_3.jpg
   - /images/work/hydration_4.jpg
   - /images/work/hydration_5.jpg

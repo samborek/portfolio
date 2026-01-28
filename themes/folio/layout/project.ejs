@@ -77,7 +77,7 @@
 
                 <% if (page.carousel && page.carousel.length) { %>
                     <div class="project-image-stack">
-                        <% page.carousel.forEach(function(imgUrl, index) { %>
+                        <% page.carousel.forEach(function(item, index) { %>
                             <div class="image-container">
                                 <div class="image-skeleton"></div>
                                 <% if (page.blur) { %>
@@ -85,20 +85,38 @@
                                         style="background-image: url(' <%- url_for(page.blur) %>');">
                                     </div>
                                     <% } %>
-                                        <% if (imgUrl.endsWith('.json')) { %>
-                                            <div class="unicorn-scene" data-us-project-src="<%- url_for(imgUrl) %>"
-                                                data-us-scale="1" data-us-dpi="1.5"
-                                                data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>" <%=index> 0 ?
-                                                'data-background-lazy-us="true"' : '' %>
-                                                data-us-production="true">
-                                                <div class="unicorn-scene-skeleton"></div>
-                                            </div>
-                                            <% } else { %>
-                                                <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %>"
-                                                    loading="<%= index === 0 ? 'eager' : 'lazy' %>" <%=index===0
-                                                    ? 'fetchpriority="high"' : '' %>
-                                                onload="this.parentElement.classList.add('loaded')">
-                                                <% } %>
+                                        <% const isObject=typeof item==='object' && item !==null; const
+                                            lightItem=isObject ? item.light : item; const darkItem=isObject ? item.dark
+                                            : null; const isJson=(lightItem && lightItem.endsWith('.json')); %>
+                                            <% if (isJson) { %>
+                                                <div class="unicorn-scene"
+                                                    data-us-project-src="<%- url_for(lightItem) %>" data-us-scale="1"
+                                                    data-us-dpi="1.5"
+                                                    data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>" <%=index> 0
+                                                    ?
+                                                    'data-background-lazy-us="true"' : '' %>
+                                                    data-us-production="true">
+                                                    <div class="unicorn-scene-skeleton"></div>
+                                                </div>
+                                                <% } else { %>
+                                                    <% if (darkItem) { %>
+                                                        <img src="<%- url_for(lightItem) %>" alt="<%= page.title %>"
+                                                            class="theme-light-only"
+                                                            loading="<%= index === 0 ? 'eager' : 'lazy' %>" <%=index===0
+                                                            ? 'fetchpriority="high"' : '' %>
+                                                        onload="this.parentElement.classList.add('loaded')">
+                                                        <img src="<%- url_for(darkItem) %>" alt="<%= page.title %>"
+                                                            class="theme-dark-only"
+                                                            loading="<%= index === 0 ? 'eager' : 'lazy' %>" <%=index===0
+                                                            ? 'fetchpriority="high"' : '' %>
+                                                        onload="this.parentElement.classList.add('loaded')">
+                                                        <% } else { %>
+                                                            <img src="<%- url_for(lightItem) %>" alt="<%= page.title %>"
+                                                                loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                                                                <%=index===0 ? 'fetchpriority="high"' : '' %>
+                                                            onload="this.parentElement.classList.add('loaded')">
+                                                            <% } %>
+                                                                <% } %>
                             </div>
                             <% }); %>
                     </div>
@@ -110,8 +128,22 @@
                                     <div class="image-placeholder"
                                         style="background-image: url('<%- url_for(page.blur) %>');"></div>
                                     <% } %>
-                                        <img src="<%- url_for(page.hero_image) %>" alt="<%= page.title %>"
-                                            loading="lazy" onload="this.parentElement.classList.add('loaded')">
+                                        <% const heroIsObject=typeof page.hero_image==='object' && page.hero_image
+                                            !==null; const heroLight=heroIsObject ? page.hero_image.light :
+                                            page.hero_image; const heroDark=heroIsObject ? page.hero_image.dark : null;
+                                            %>
+                                            <% if (heroDark) { %>
+                                                <img src="<%- url_for(heroLight) %>" alt="<%= page.title %>"
+                                                    class="theme-light-only" loading="lazy"
+                                                    onload="this.parentElement.classList.add('loaded')">
+                                                <img src="<%- url_for(heroDark) %>" alt="<%= page.title %>"
+                                                    class="theme-dark-only" loading="lazy"
+                                                    onload="this.parentElement.classList.add('loaded')">
+                                                <% } else { %>
+                                                    <img src="<%- url_for(heroLight) %>" alt="<%= page.title %>"
+                                                        loading="lazy"
+                                                        onload="this.parentElement.classList.add('loaded')">
+                                                    <% } %>
                             </div>
                         </div>
                         <% } %>
@@ -122,8 +154,18 @@
                                         <figure class="gallery-item">
                                             <div class="image-container">
                                                 <div class="image-skeleton"></div>
-                                                <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>"
-                                                    loading="lazy" onload="this.parentElement.classList.add('loaded')">
+                                                <% if (image.dark) { %>
+                                                    <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>"
+                                                        class="theme-light-only" loading="lazy"
+                                                        onload="this.parentElement.classList.add('loaded')">
+                                                    <img src="<%- url_for(image.dark) %>" alt="<%= image.alt || '' %>"
+                                                        class="theme-dark-only" loading="lazy"
+                                                        onload="this.parentElement.classList.add('loaded')">
+                                                    <% } else { %>
+                                                        <img src="<%- url_for(image.src) %>"
+                                                            alt="<%= image.alt || '' %>" loading="lazy"
+                                                            onload="this.parentElement.classList.add('loaded')">
+                                                        <% } %>
                                             </div>
                                             <% if (image.caption) { %>
                                                 <figcaption>

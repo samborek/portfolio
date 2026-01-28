@@ -110,6 +110,19 @@
   --color-accent: #ffffff;
 }
 
+/* Theme-specific visibility utilities */
+.theme-dark-only {
+  display: none !important;
+}
+
+[data-theme='dark'] .theme-dark-only {
+  display: block !important;
+}
+
+[data-theme='dark'] .theme-light-only {
+  display: none !important;
+}
+
 @media (max-width: 900px) {
   :root {
     --space-xl: 1.5rem;

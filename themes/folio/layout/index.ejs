@@ -109,39 +109,73 @@
                                                                         ` : '' ; %>
                                                                         <div class="embla__slide" <%=firstStyle %>>
                                                                             <div class="project-slide-item">
-                                                                                <% if (imgUrl.endsWith('.json')) { %>
-                                                                                    <div class="unicorn-scene"
-                                                                                        data-us-project-src="<%- url_for(imgUrl) %>"
-                                                                                        data-us-scale="1"
-                                                                                        data-us-dpi="1.5"
-                                                                                        data-us-lazyload="<%= pindex === 0 ? 'false' : 'true' %>"
-                                                                                        <%=pindex> 0 ?
-                                                                                        'data-background-lazy-us="true"'
-                                                                                        : '' %>
-                                                                                        data-us-production="true">
-                                                                                        <div
-                                                                                            class="unicorn-scene-skeleton">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <% } else { %>
-                                                                                        <div class="image-container">
-                                                                                            <div class="image-skeleton">
+                                                                                <% const isObject=typeof
+                                                                                    imgUrl==='object' && imgUrl !==null;
+                                                                                    const lightItem=isObject ?
+                                                                                    imgUrl.light : imgUrl; const
+                                                                                    darkItem=isObject ? imgUrl.dark :
+                                                                                    null; const isJson=(lightItem &&
+                                                                                    lightItem.endsWith('.json')); %>
+                                                                                    <% if (isJson) { %>
+                                                                                        <div class="unicorn-scene"
+                                                                                            data-us-project-src="<%- url_for(lightItem) %>"
+                                                                                            data-us-scale="1"
+                                                                                            data-us-dpi="1.5"
+                                                                                            data-us-lazyload="<%= pindex === 0 ? 'false' : 'true' %>"
+                                                                                            <%=pindex> 0 ?
+                                                                                            'data-background-lazy-us="true"'
+                                                                                            : '' %>
+                                                                                            data-us-production="true">
+                                                                                            <div
+                                                                                                class="unicorn-scene-skeleton">
                                                                                             </div>
-                                                                                            <% if (project.blur) { %>
-                                                                                                <div class="image-placeholder"
-                                                                                                    style="background-image: url('<%- url_for(project.blur) %>');">
-                                                                                                </div>
-                                                                                                <% } %>
-                                                                                                    <img src="<%- url_for(imgUrl) %>"
-                                                                                                        alt="<%= project.title %>"
-                                                                                                        loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
-                                                                                                        <%=pindex===0
-                                                                                                        ? 'fetchpriority="high"'
-                                                                                                        : '' %>
-                                                                                                    draggable="false"
-                                                                                                    onload="this.parentElement.classList.add('loaded')">
                                                                                         </div>
-                                                                                        <% } %>
+                                                                                        <% } else { %>
+                                                                                            <div
+                                                                                                class="image-container">
+                                                                                                <div
+                                                                                                    class="image-skeleton">
+                                                                                                </div>
+                                                                                                <% if (project.blur) {
+                                                                                                    %>
+                                                                                                    <div class="image-placeholder"
+                                                                                                        style="background-image: url('<%- url_for(project.blur) %>');">
+                                                                                                    </div>
+                                                                                                    <% } %>
+                                                                                                        <% if (darkItem)
+                                                                                                            { %>
+                                                                                                            <img src="<%- url_for(lightItem) %>"
+                                                                                                                alt="<%= project.title %>"
+                                                                                                                class="theme-light-only"
+                                                                                                                loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                                <%=pindex===0
+                                                                                                                ? 'fetchpriority="high"'
+                                                                                                                : '' %>
+                                                                                                            draggable="false"
+                                                                                                            onload="this.parentElement.classList.add('loaded')">
+                                                                                                            <img src="<%- url_for(darkItem) %>"
+                                                                                                                alt="<%= project.title %>"
+                                                                                                                class="theme-dark-only"
+                                                                                                                loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                                <%=pindex===0
+                                                                                                                ? 'fetchpriority="high"'
+                                                                                                                : '' %>
+                                                                                                            draggable="false"
+                                                                                                            onload="this.parentElement.classList.add('loaded')">
+                                                                                                            <% } else {
+                                                                                                                %>
+                                                                                                                <img src="<%- url_for(lightItem) %>"
+                                                                                                                    alt="<%= project.title %>"
+                                                                                                                    loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                                    <%=pindex===0
+                                                                                                                    ? 'fetchpriority="high"'
+                                                                                                                    : ''
+                                                                                                                    %>
+                                                                                                                draggable="false"
+                                                                                                                onload="this.parentElement.classList.add('loaded')">
+                                                                                                                <% } %>
+                                                                                            </div>
+                                                                                            <% } %>
                                                                             </div>
                                                                         </div>
                                                                         <% }); %>
@@ -260,7 +294,7 @@
                                         <div class="experience-intro" id="experience-intro">
                                             <%= theme.experience.intro_variants[0] %>
                                         </div>
-                                        <script>(function () { const variants =<% - JSON.stringify(theme.experience.intro_variants) %>; const randomIndex = Math.floor(Math.random() * variants.length); document.getElementById('experience-intro').textContent = variants[randomIndex]; })();</script>
+                                        <script>(function () { const variants =<%- JSON.stringify(theme.experience.intro_variants) %>; const randomIndex = Math.floor(Math.random() * variants.length); document.getElementById('experience-intro').textContent = variants[randomIndex]; })();</script>
                                         <div class="experience-timeline">
                                             <% theme.experience.timeline.forEach(function(item) { %>
                                                 <div class="timeline-item">
