@@ -12,189 +12,209 @@
                                     <%= page.back_label || theme.back_label || 'Back' %>
                                 </span>
                             </a>
-                            <div class="project-meta-details">
-                                <span class="project-category">
-                                    <%= page.category || 'Project' %>
-                                </span>
-                            </div>
                         </div>
                         <% if (page.scope) { %>
-                            <div class="project-scope">
-                                <%= Array.isArray(page.scope) ? page.scope.join(' , ') : (page.scope || '') %>
-                </div>
-            <% } %>
-        </div>
-        <h1 class="project-title"><%= page.title %></h1>
-        <p class="project-intro"><%= page.intro || '' %></p>
-    </header>
-
-
-    <div class="project-content">
-        <div class="project-body">
-            <%- page.content %>
-
-            <% if (page.problem || page.solution) { %>
-                <div class="project-details--top">
-                    <% if (page.problem) { %>
-                        <div class="detail">
-                            <h4>Problem</h4>
-                            <p><%= page.problem %></p>
-                        </div>
-                    <% } %>
-                    <% if (page.solution) { %>
-                        <div class="detail">
-                            <h4>Solution</h4>
-                            <p><%= page.solution %></p>
-                        </div>
-                    <% } %>
-                </div>
-            <% } %>
-        </div>
-    </div>
-
-    <% if (page.carousel && page.carousel.length) { %>
-        <div class="project-image-stack">
-            <% page.carousel.forEach(function(imgUrl, index) { %>
-                <div class="image-container">
-                    <div class="image-skeleton"></div>
-                    <% if (page.blur) { %>
-                        <div class="image-placeholder" style="background-image: url(' <%- url_for(page.blur) %>');">
+                            <div class="project-scope desktop-only">
+                                <% const scopes=Array.isArray(page.scope) ? page.scope : (page.scope || '' ).split(',');
+                                    %>
+                                    <% scopes.forEach(function(scope) { %>
+                                        <span class="scope-pill">
+                                            <%= scope.trim() %>
+                                        </span>
+                                        <% }); %>
                             </div>
                             <% } %>
-                                <% if (imgUrl.endsWith('.json')) { %>
-                                    <div class="unicorn-scene" data-us-project-src="<%- url_for(imgUrl) %>"
-                                        data-us-scale="1" data-us-dpi="1.5"
-                                        data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>" <%=index> 0 ?
-                                        'data-background-lazy-us="true"' : '' %>
-                                        data-us-production="true">
-                                        <div class="unicorn-scene-skeleton"></div>
-                                    </div>
-                                    <% } else { %>
-                                        <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %>"
-                                            loading="<%= index === 0 ? 'eager' : 'lazy' %>" <%=index===0
-                                            ? 'fetchpriority="high"' : '' %>
-                                        onload="this.parentElement.classList.add('loaded')">
-                                        <% } %>
                     </div>
-                    <% }); %>
-                        </div>
-                        <% } else if (page.hero_image) { %>
-                            <div class="project-image-stack">
-                                <div class="image-container">
-                                    <div class="image-skeleton"></div>
-                                    <% if (page.blur) { %>
-                                        <div class="image-placeholder"
-                                            style="background-image: url('<%- url_for(page.blur) %>');"></div>
-                                        <% } %>
-                                            <img src="<%- url_for(page.hero_image) %>" alt="<%= page.title %>"
-                                                loading="lazy" onload="this.parentElement.classList.add('loaded')">
-                                </div>
-                            </div>
-                            <% } %>
 
-                                <% if (page.gallery && page.gallery.length) { %>
-                                    <div class="project-gallery">
-                                        <% page.gallery.forEach(function(image) { %>
-                                            <figure class="gallery-item">
-                                                <div class="image-container">
-                                                    <div class="image-skeleton"></div>
-                                                    <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>"
-                                                        loading="lazy"
-                                                        onload="this.parentElement.classList.add('loaded')">
+                    <div class="project-category-top">
+                        <%= page.category || 'Project' %>
+                    </div>
+                    <h1 class="project-title">
+                        <%= page.title %>
+                    </h1>
+                    <p class="project-intro">
+                        <%= page.intro || '' %>
+                    </p>
+                    <% if (page.scope) { %>
+                        <div class="project-scope mobile-only">
+                            <% const scopes=Array.isArray(page.scope) ? page.scope : (page.scope || '' ).split(','); %>
+                                <% scopes.forEach(function(scope) { %>
+                                    <span class="scope-pill">
+                                        <%= scope.trim() %>
+                                    </span>
+                                    <% }); %>
+                        </div>
+                        <% } %>
+                </header>
+
+
+                <div class="project-content">
+                    <div class="project-body">
+                        <%- page.content %>
+
+                            <% if (page.problem || page.solution) { %>
+                                <div class="project-details--top">
+                                    <% if (page.problem) { %>
+                                        <div class="detail">
+                                            <h4>Problem</h4>
+                                            <p>
+                                                <%= page.problem %>
+                                            </p>
+                                        </div>
+                                        <% } %>
+                                            <% if (page.solution) { %>
+                                                <div class="detail">
+                                                    <h4>Solution</h4>
+                                                    <p>
+                                                        <%= page.solution %>
+                                                    </p>
                                                 </div>
-                                                <% if (image.caption) { %>
-                                                    <figcaption>
-                                                        <%= image.caption %>
-                                                    </figcaption>
-                                                    <% } %>
-                                            </figure>
-                                            <% }); %>
+                                                <% } %>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+
+                <% if (page.carousel && page.carousel.length) { %>
+                    <div class="project-image-stack">
+                        <% page.carousel.forEach(function(imgUrl, index) { %>
+                            <div class="image-container">
+                                <div class="image-skeleton"></div>
+                                <% if (page.blur) { %>
+                                    <div class="image-placeholder"
+                                        style="background-image: url(' <%- url_for(page.blur) %>');">
                                     </div>
                                     <% } %>
+                                        <% if (imgUrl.endsWith('.json')) { %>
+                                            <div class="unicorn-scene" data-us-project-src="<%- url_for(imgUrl) %>"
+                                                data-us-scale="1" data-us-dpi="1.5"
+                                                data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>" <%=index> 0 ?
+                                                'data-background-lazy-us="true"' : '' %>
+                                                data-us-production="true">
+                                                <div class="unicorn-scene-skeleton"></div>
+                                            </div>
+                                            <% } else { %>
+                                                <img src="<%- url_for(imgUrl) %>" alt="<%= page.title %>"
+                                                    loading="<%= index === 0 ? 'eager' : 'lazy' %>" <%=index===0
+                                                    ? 'fetchpriority="high"' : '' %>
+                                                onload="this.parentElement.classList.add('loaded')">
+                                                <% } %>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% } else if (page.hero_image) { %>
+                        <div class="project-image-stack">
+                            <div class="image-container">
+                                <div class="image-skeleton"></div>
+                                <% if (page.blur) { %>
+                                    <div class="image-placeholder"
+                                        style="background-image: url('<%- url_for(page.blur) %>');"></div>
+                                    <% } %>
+                                        <img src="<%- url_for(page.hero_image) %>" alt="<%= page.title %>"
+                                            loading="lazy" onload="this.parentElement.classList.add('loaded')">
+                            </div>
+                        </div>
+                        <% } %>
 
-                                        <div class="floating-controls">
-                                            <a href="<%- page.back_url || theme.back_url || url_for('/') %>"
-                                                class="content-tabs nav-back-btn"
-                                                style="text-decoration: none; padding: 0 1.5rem; color: var(--color-text); font-weight: 500; font-size: 0.9rem;">
-                                                <span
-                                                    style="font-size: 1.2em; line-height: 0; margin-right: 0.4rem; transform: translateY(-1px);">←</span>
-                                                Back
-                                            </a>
+                            <% if (page.gallery && page.gallery.length) { %>
+                                <div class="project-gallery">
+                                    <% page.gallery.forEach(function(image) { %>
+                                        <figure class="gallery-item">
+                                            <div class="image-container">
+                                                <div class="image-skeleton"></div>
+                                                <img src="<%- url_for(image.src) %>" alt="<%= image.alt || '' %>"
+                                                    loading="lazy" onload="this.parentElement.classList.add('loaded')">
+                                            </div>
+                                            <% if (image.caption) { %>
+                                                <figcaption>
+                                                    <%= image.caption %>
+                                                </figcaption>
+                                                <% } %>
+                                        </figure>
+                                        <% }); %>
+                                </div>
+                                <% } %>
 
-                                            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-                                                <svg class="moon-icon" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                                                </svg>
-                                                <svg class="sun-icon" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <circle cx="12" cy="12" r="5"></circle>
-                                                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                                                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                                                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
+                                    <div class="floating-controls">
+                                        <a href="<%- page.back_url || theme.back_url || url_for('/') %>"
+                                            class="content-tabs nav-back-btn"
+                                            style="text-decoration: none; padding: 0 1.5rem; color: var(--color-text); font-weight: 500; font-size: 0.9rem;">
+                                            <span
+                                                style="font-size: 1.2em; line-height: 0; margin-right: 0.4rem; transform: translateY(-1px);">←</span>
+                                            Back
+                                        </a>
 
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', () => {
-                                                const floatControls = document.querySelector('.floating-controls');
-                                                let lastScrollY = window.scrollY;
-                                                let timer = null;
+                                        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                                            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                            </svg>
+                                            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="5"></circle>
+                                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
 
-                                                // Show on hover
-                                                floatControls.addEventListener('mouseenter', () => {
-                                                    floatControls.classList.remove('controls-hidden');
-                                                    clearTimeout(timer);
-                                                });
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', () => {
+                                            const floatControls = document.querySelector('.floating-controls');
+                                            let lastScrollY = window.scrollY;
+                                            let timer = null;
 
-                                                const onScroll = () => {
-                                                    const currentScrollY = window.scrollY;
-                                                    const scrollDiff = Math.abs(currentScrollY - lastScrollY);
-
-                                                    if (scrollDiff < 10) return;
-
-                                                    // Scroll down -> hide, Scroll up -> show
-                                                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                                                        floatControls.classList.add('controls-hidden');
-                                                    } else if (currentScrollY < lastScrollY) {
-                                                        floatControls.classList.remove('controls-hidden');
-                                                    }
-
-                                                    // Always show at top
-                                                    if (currentScrollY <= 10) {
-                                                        floatControls.classList.remove('controls-hidden');
-                                                    }
-
-                                                    lastScrollY = currentScrollY;
-
-                                                    // Auto-show after stop
-                                                    clearTimeout(timer);
-                                                    timer = setTimeout(() => {
-                                                        floatControls.classList.remove('controls-hidden');
-                                                    }, 1200);
-                                                };
-
-                                                window.addEventListener('scroll', onScroll, { passive: true });
+                                            // Show on hover
+                                            floatControls.addEventListener('mouseenter', () => {
+                                                floatControls.classList.remove('controls-hidden');
+                                                clearTimeout(timer);
                                             });
-                                        </script>
 
-                                        <% if (page.testimonial) { %>
-                                            <blockquote class="project-testimonial">
-                                                <p>"<%= page.testimonial.quote %>"</p>
-                                                <% if (page.testimonial.author) { %>
-                                                    <cite>&mdash; <%= page.testimonial.author %>
-                                                            <% if (page.testimonial.role) { %>, <%=
-                                                                    page.testimonial.role %>
-                                                                    <% } %></cite>
-                                                    <% } %>
-                                            </blockquote>
-                                            <% } %>
+                                            const onScroll = () => {
+                                                const currentScrollY = window.scrollY;
+                                                const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+
+                                                if (scrollDiff < 10) return;
+
+                                                // Scroll down -> hide, Scroll up -> show
+                                                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                                                    floatControls.classList.add('controls-hidden');
+                                                } else if (currentScrollY < lastScrollY) {
+                                                    floatControls.classList.remove('controls-hidden');
+                                                }
+
+                                                // Always show at top
+                                                if (currentScrollY <= 10) {
+                                                    floatControls.classList.remove('controls-hidden');
+                                                }
+
+                                                lastScrollY = currentScrollY;
+
+                                                // Auto-show after stop
+                                                clearTimeout(timer);
+                                                timer = setTimeout(() => {
+                                                    floatControls.classList.remove('controls-hidden');
+                                                }, 1200);
+                                            };
+
+                                            window.addEventListener('scroll', onScroll, { passive: true });
+                                        });
+                                    </script>
+
+                                    <% if (page.testimonial) { %>
+                                        <blockquote class="project-testimonial">
+                                            <p>"<%= page.testimonial.quote %>"</p>
+                                            <% if (page.testimonial.author) { %>
+                                                <cite>&mdash; <%= page.testimonial.author %>
+                                                        <% if (page.testimonial.role) { %>, <%= page.testimonial.role %>
+                                                                <% } %></cite>
+                                                <% } %>
+                                        </blockquote>
+                                        <% } %>
     </article>

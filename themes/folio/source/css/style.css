@@ -2,6 +2,12 @@
    FOLIO THEME - Minimal 2-Column Portfolio
    ============================================ */
 
+/* DESIGN STANDARDS:
+   - Use CSS variables for all spacing, colors, and typography.
+   - Avoid hardcoded pixel values (e.g., 20px) in layout properties.
+   - Prefer rem units for consistent scaling.
+*/
+
 /* Custom Fonts */
 @font-face {
   font-family: 'Gazpacho';
@@ -70,6 +76,7 @@
   --space-2xl: 4rem;
   --section-gap: 2rem;
   /* Gap between major sections */
+
 
   /* Layout */
   --sidebar-width: 20rem;
@@ -2123,12 +2130,15 @@ body {
   body.project-page {
     /* Full width for detail pages */
     --max-project-width: 100%;
-    /* Scroll fix: Override global body { position: fixed } */
-    position: relative !important;
-    overflow-y: auto !important;
-    height: auto !important;
-    width: 100%;
   }
+}
+
+body.project-page {
+  /* Scroll fix: Override global body { position: fixed } */
+  position: relative !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  width: 100%;
 }
 
 .project-page {
@@ -2205,6 +2215,40 @@ body.project-page {
   display: inline-flex;
   align-items: center;
   gap: var(--space-md);
+}
+
+.project-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.project-category-top {
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+}
+
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .project-header-top {
+    margin-bottom: var(--space-lg);
+  }
 }
 
 .project-page .project-title {
@@ -2316,6 +2360,7 @@ body.project-page {
   padding: var(--space-xl);
   border-radius: var(--radius-m);
   margin: var(--space-xl) 0;
+  box-sizing: border-box;
 }
 
 .project-testimonial p {
@@ -2873,7 +2918,7 @@ body.project-page {
   align-items: center;
   width: 100%;
   padding-bottom: 2rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: 1.5rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -2929,11 +2974,25 @@ body.project-page {
 }
 
 .project-scope {
-  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Only add margin when below the intro */
+.project-scope.mobile-only {
+  margin-top: 1rem;
+}
+
+.scope-pill {
+  font-size: var(--size-xs);
   color: var(--color-text-muted);
   font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
   line-height: 1;
-  white-space: nowrap;
 }
 
 .project-info-grid {
@@ -2974,39 +3033,42 @@ body.project-page {
     width: 100%;
   }
 
-  .project-scope {
-    width: 100%;
-    text-align: left;
+  .project-scope.mobile-only {
+    justify-content: flex-start;
   }
 }
 
 @media (max-width: 768px) {
   .project-page {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: var(--space-xl);
   }
 
-  .project-info-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
+  .project-header,
+  .project-content,
+  .project-testimonial,
+  .project-page .site-footer {
+    padding-left: var(--space-md) !important;
+    padding-right: var(--space-md) !important;
+    box-sizing: border-box;
   }
-}
 
-/* --- Mobile Edge-to-Edge and Lightbox Zoom --- */
-@media (max-width: 768px) {
-  .project-page {
-    padding-left: 16px;
-    padding-right: 16px;
+  /* Testimonial needs to account for its own padding vs container padding */
+  .project-testimonial {
+    margin-left: var(--space-md);
+    margin-right: var(--space-md);
+    padding: var(--space-lg) !important;
+    width: calc(100% - (var(--space-md) * 2));
   }
 
   /* Edge-to-edge images on mobile */
   .project-image-stack,
   .project-gallery {
-    width: 100vw !important;
+    width: 100% !important;
     max-width: none !important;
-    margin-left: -16px !important;
-    margin-right: -16px !important;
-    width: calc(100% + 32px) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     padding: 0 !important;
   }
 
