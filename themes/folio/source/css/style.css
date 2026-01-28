@@ -3122,6 +3122,8 @@ body.project-page {
   opacity: 0;
   animation: fadeInOut 5s ease-in-out forwards;
   animation-delay: 1s;
+  display: none;
+  /* Hide tooltip but keep element for pulse trigger */
   z-index: 100;
 }
 
