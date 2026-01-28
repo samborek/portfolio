@@ -1371,7 +1371,7 @@ body {
   color: var(--color-text-muted);
   line-height: 1.5;
   margin-bottom: var(--space-xl);
-  max-width: 50rem;
+  max-width: 1000px;
 }
 
 /* Experience */
@@ -1380,7 +1380,7 @@ body {
   line-height: 1.5;
   color: var(--color-text);
   margin-bottom: var(--space-2xl);
-  max-width: 50rem;
+  max-width: 1000px;
   margin-top: var(--space-sm);
   opacity: 0.8;
 }
@@ -1401,12 +1401,17 @@ body {
 .resume-lists-grid {
   display: grid;
   grid-template-columns: 1fr;
-  /* Single column until we have 2 columns back */
   gap: var(--space-2xl);
   border-top: 1px solid var(--color-border);
   padding-top: 0px;
   padding-bottom: 0px;
-  max-width: 50rem;
+  max-width: none;
+}
+
+@media (min-width: 1200px) {
+  .resume-lists-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Match the experience-timeline width */
@@ -2109,19 +2114,30 @@ body {
 /* ============================================
    PROJECT DETAIL PAGE (keep existing styles)
    ============================================ */
+@media (min-width: 1024px) {
+  .project-page {
+    padding: var(--project-page-padding-y, var(--space-2xl)) 40px;
+    max-width: 100%;
+  }
+
+  body.project-page {
+    /* Full width for detail pages */
+    --max-project-width: 100%;
+    /* Scroll fix: Override global body { position: fixed } */
+    position: relative !important;
+    overflow-y: auto !important;
+    height: auto !important;
+    width: 100%;
+  }
+}
+
 .project-page {
-  padding: var(--project-page-padding-y, var(--space-2xl)) var(--space-lg);
-  max-width: var(--max-project-width);
   margin: 0 auto;
 }
 
 body.project-page {
   padding-top: 0;
   padding-bottom: 0;
-  /* Larger max-width for detail pages */
-  --max-project-width: 137.5rem;
-  /* 2200px */
-  /* Tighter, more connected project-page spacing */
   --project-page-padding-y: var(--space-xl);
   --project-page-header-gap: var(--space-lg);
   --project-page-block-gap: var(--space-lg);
@@ -2130,6 +2146,11 @@ body.project-page {
 
 .project-header {
   margin-bottom: var(--project-page-header-gap, var(--space-xl));
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
 }
 
 .project-meta {
@@ -2139,6 +2160,49 @@ body.project-page {
   gap: var(--space-sm);
   flex-wrap: wrap;
   margin-bottom: var(--space-sm);
+}
+
+.project-breakdown {
+  max-width: 1400px;
+  margin: var(--space-2xl) auto;
+  padding: 0 var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+@media (min-width: 1024px) {
+  .breakdown-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-3xl);
+  }
+}
+
+.breakdown-item h4 {
+  font-family: var(--font-display);
+  font-size: var(--size-2xl);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+}
+
+.breakdown-item p {
+  font-size: var(--size-md);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: 100%;
+}
+
+.scope-item {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-xl);
+  margin-top: var(--space-lg);
 }
 
 .project-meta span {
@@ -2230,6 +2294,11 @@ body.project-page {
   grid-template-columns: 17.5rem 1fr;
   gap: var(--project-page-content-gap, var(--space-xl));
   margin-top: var(--project-page-block-gap, var(--space-xl));
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
 }
 
 .project-details {
@@ -2303,14 +2372,6 @@ body.project-page {
   font-style: normal;
 }
 
-/* More Work */
-.more-work {
-  display: none !important;
-  padding: var(--space-2xl) var(--space-lg);
-  max-width: var(--max-project-width);
-  margin: 0 auto;
-  border-top: 1px solid var(--color-border);
-}
 
 .more-work h2 {
   font-size: var(--size-xl);
@@ -2510,7 +2571,7 @@ body.project-page {
   padding-left: 2rem;
   /* Use margin (not padding) to separate from Events - margin doesn't extend the border */
   margin-bottom: var(--space-xl);
-  max-width: 50rem;
+  max-width: none;
 }
 
 .timeline-item {
@@ -2722,20 +2783,23 @@ body.project-page {
   gap: var(--space-xl);
   margin: var(--space-xl) 0;
   width: 100%;
-  max-width: 1600px;
+  max-width: none;
 }
 
 .project-image-stack .image-container,
 .project-gallery .image-container {
-  aspect-ratio: auto;
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius-l);
   overflow: hidden;
-  background: var(--color-bg-secondary);
+  position: relative;
+  width: 100%;
 }
 
-.project-image-stack .image-container img {
-  position: relative;
-  height: auto;
+.project-image-stack .image-container img,
+.project-gallery .image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
@@ -2770,6 +2834,17 @@ body.project-page {
   border-bottom: 1px solid var(--color-border);
 }
 
+.more-work {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+}
+
 .project-details--top .detail h4 {
   font-size: var(--size-xs);
   text-transform: uppercase;
@@ -2784,15 +2859,6 @@ body.project-page {
 }
 
 /* Fix JSON Scene sizing in image stack */
-.project-image-stack .image-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9 !important;
-  /* Force aspect ratio for JSON/Images */
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-l);
-  overflow: hidden;
-}
 
 .project-image-stack .unicorn-scene {
   position: absolute;
@@ -2801,11 +2867,6 @@ body.project-page {
   height: 100%;
 }
 
-.project-image-stack .image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 /* Project Page Content Adjustments */
 .project-page .project-content {
@@ -2889,8 +2950,7 @@ body.project-page {
   line-height: 1;
 }
 
-.project-category,
-.project-year {
+.project-category {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;

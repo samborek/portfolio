@@ -16,11 +16,6 @@
                                 <span class="project-category">
                                     <%= page.category || 'Project' %>
                                 </span>
-                                <% if (page.year) { %>
-                                    <span class="project-year">
-                                        <%= page.year %>
-                                    </span>
-                                    <% } %>
                             </div>
                         </div>
                         <% if (page.scope) { %>
@@ -33,6 +28,30 @@
         <p class="project-intro"><%= page.intro || '' %></p>
     </header>
 
+    <% if (page.problem || page.solution) { %>
+        <section class="project-breakdown">
+            <div class="breakdown-grid">
+                <% if (page.problem) { %>
+                    <div class="breakdown-item">
+                        <h4>Problem</h4>
+                        <p><%= page.problem %></p>
+                    </div>
+                <% } %>
+                <% if (page.solution) { %>
+                    <div class="breakdown-item">
+                        <h4>Solution</h4>
+                        <p><%= page.solution %></p>
+                    </div>
+                <% } %>
+            </div>
+            <% if (page.scope) { %>
+                <div class="breakdown-item scope-item">
+                    <h4>Scope</h4>
+                    <p><%= Array.isArray(page.scope) ? page.scope.join(' , ') : page.scope %></p>
+                </div>
+            <% } %>
+        </section>
+    <% } %>
 
     <div class="project-content">
         <div class="project-body">
@@ -112,27 +131,3 @@
                                             </blockquote>
                                             <% } %>
     </article>
-
-    <section class="more-work">
-        <h2>More Work</h2>
-        <div class="related-projects">
-            <% const otherProjects=site.pages.filter(function(p) { return p.layout==='project' && p.path !==page.path;
-                }).slice(0, 2); otherProjects.forEach(function(project) { %>
-                <a href="<%- url_for(project.path) %>" class="related-project-card">
-                    <% if (project.cover) { %>
-                        <div class="image-container">
-                            <div class="image-skeleton"></div>
-                            <img src="<%- url_for(project.cover) %>" alt="<%= project.title %>" loading="lazy"
-                                onload="this.parentElement.classList.add('loaded')">
-                        </div>
-                        <% } %>
-                            <span class="related-category">
-                                <%= project.category || 'Project' %>
-                            </span>
-                            <h3>
-                                <%= project.title %>
-                            </h3>
-                </a>
-                <% }); %>
-        </div>
-    </section>
