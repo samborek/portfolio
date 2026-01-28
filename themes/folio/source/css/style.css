@@ -2162,48 +2162,6 @@ body.project-page {
   margin-bottom: var(--space-sm);
 }
 
-.project-breakdown {
-  max-width: 1400px;
-  margin: var(--space-2xl) auto;
-  padding: 0 var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xl);
-}
-
-.breakdown-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-xl);
-}
-
-@media (min-width: 1024px) {
-  .breakdown-grid {
-    grid-template-columns: 1fr 1fr;
-    column-gap: var(--space-3xl);
-  }
-}
-
-.breakdown-item h4 {
-  font-family: var(--font-display);
-  font-size: var(--size-2xl);
-  font-weight: 500;
-  margin-bottom: var(--space-xs);
-  color: var(--color-text);
-}
-
-.breakdown-item p {
-  font-size: var(--size-md);
-  color: var(--color-text-muted);
-  line-height: 1.6;
-  max-width: 100%;
-}
-
-.scope-item {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-xl);
-  margin-top: var(--space-lg);
-}
 
 .project-meta span {
   font-size: var(--size-xs);
@@ -2826,12 +2784,20 @@ body.project-page {
 
 /* Refined Project Subpage Header & Details */
 .project-details--top {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-xl);
+  margin-top: var(--space-2xl);
   margin-bottom: var(--space-2xl);
-  padding-bottom: var(--space-xl);
-  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+@media (min-width: 1024px) {
+  .project-details--top {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;
+  }
 }
 
 .more-work {
@@ -2846,16 +2812,20 @@ body.project-page {
 }
 
 .project-details--top .detail h4 {
-  font-size: var(--size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--size-2xl);
+  font-weight: 500;
   margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .project-details--top .detail p {
   font-size: var(--size-md);
-  font-weight: 500;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  font-weight: normal;
 }
 
 /* Fix JSON Scene sizing in image stack */

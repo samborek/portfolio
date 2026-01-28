@@ -31,7 +31,7 @@ testimonial:
   role: "Founder, Gold Rush Beverages"
 ---
 
-## The Challenge
+
 
 Gold Rush Beverages needed a product line that would stand out in the crowded energy drink market while connecting with the crypto and tech community. They wanted packaging that felt premium, bold, and unmistakably modern.
 

@@ -28,34 +28,27 @@
         <p class="project-intro"><%= page.intro || '' %></p>
     </header>
 
-    <% if (page.problem || page.solution) { %>
-        <section class="project-breakdown">
-            <div class="breakdown-grid">
-                <% if (page.problem) { %>
-                    <div class="breakdown-item">
-                        <h4>Problem</h4>
-                        <p><%= page.problem %></p>
-                    </div>
-                <% } %>
-                <% if (page.solution) { %>
-                    <div class="breakdown-item">
-                        <h4>Solution</h4>
-                        <p><%= page.solution %></p>
-                    </div>
-                <% } %>
-            </div>
-            <% if (page.scope) { %>
-                <div class="breakdown-item scope-item">
-                    <h4>Scope</h4>
-                    <p><%= Array.isArray(page.scope) ? page.scope.join(' , ') : page.scope %></p>
-                </div>
-            <% } %>
-        </section>
-    <% } %>
 
     <div class="project-content">
         <div class="project-body">
             <%- page.content %>
+
+            <% if (page.problem || page.solution) { %>
+                <div class="project-details--top">
+                    <% if (page.problem) { %>
+                        <div class="detail">
+                            <h4>Problem</h4>
+                            <p><%= page.problem %></p>
+                        </div>
+                    <% } %>
+                    <% if (page.solution) { %>
+                        <div class="detail">
+                            <h4>Solution</h4>
+                            <p><%= page.solution %></p>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
         </div>
     </div>
 
@@ -118,6 +111,80 @@
                                             <% }); %>
                                     </div>
                                     <% } %>
+
+                                        <div class="floating-controls">
+                                            <a href="<%- page.back_url || theme.back_url || url_for('/') %>"
+                                                class="content-tabs nav-back-btn"
+                                                style="text-decoration: none; padding: 0 1.5rem; color: var(--color-text); font-weight: 500; font-size: 0.9rem;">
+                                                <span
+                                                    style="font-size: 1.2em; line-height: 0; margin-right: 0.4rem; transform: translateY(-1px);">←</span>
+                                                Back
+                                            </a>
+
+                                            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                                                <svg class="moon-icon" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                                </svg>
+                                                <svg class="sun-icon" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="5"></circle>
+                                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', () => {
+                                                const floatControls = document.querySelector('.floating-controls');
+                                                let lastScrollY = window.scrollY;
+                                                let timer = null;
+
+                                                // Show on hover
+                                                floatControls.addEventListener('mouseenter', () => {
+                                                    floatControls.classList.remove('controls-hidden');
+                                                    clearTimeout(timer);
+                                                });
+
+                                                const onScroll = () => {
+                                                    const currentScrollY = window.scrollY;
+                                                    const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+
+                                                    if (scrollDiff < 10) return;
+
+                                                    // Scroll down -> hide, Scroll up -> show
+                                                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                                                        floatControls.classList.add('controls-hidden');
+                                                    } else if (currentScrollY < lastScrollY) {
+                                                        floatControls.classList.remove('controls-hidden');
+                                                    }
+
+                                                    // Always show at top
+                                                    if (currentScrollY <= 10) {
+                                                        floatControls.classList.remove('controls-hidden');
+                                                    }
+
+                                                    lastScrollY = currentScrollY;
+
+                                                    // Auto-show after stop
+                                                    clearTimeout(timer);
+                                                    timer = setTimeout(() => {
+                                                        floatControls.classList.remove('controls-hidden');
+                                                    }, 1200);
+                                                };
+
+                                                window.addEventListener('scroll', onScroll, { passive: true });
+                                            });
+                                        </script>
 
                                         <% if (page.testimonial) { %>
                                             <blockquote class="project-testimonial">

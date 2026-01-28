@@ -30,35 +30,7 @@ testimonial:
   role: "Product Lead, Plaant"
 ---
 
-## The Vision
+
 
 Plaant aims to bridge the gap between urban living and nature. The goal was to create a brand that feels alive and breathable, moving away from sterile industrial aesthetics toward a "living" design language.
 
-<div class="parallax-section rounded">
-  <div class="parallax-image-container" data-parallax="0.15">
-    <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&q=80&w=2670" alt="Lush Greenery">
-  </div>
-</div>
-
-## Typography & Color
-
-We selected a clean, rounded sans-serif typeface to convey friendliness and accessibility. The color palette is rooted in nature—using varying shades of moss green, sage, and warm earth tones to create a calming, organic atmosphere.
-
-<div class="image-block with-parallax">
-  <img src="https://images.unsplash.com/photo-1592150621344-78439b734d47?auto=format&fit=crop&q=80&w=2670" alt="Plant Detail" data-parallax="0.1">
-</div>
-
-## Digital Application
-
-The mobile app serves as the brain of the system. We prioritized high-contrast data visualization for plant health and growth patterns, ensuring that light and nutrient levels are easily understood at a glance.
-
-<div class="project-gallery">
-  <div class="gallery-item">
-     <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=2670" alt="Smart Home App">
-     <figcaption>Growth Analytics</figcaption>
-  </div>
-   <div class="gallery-item">
-     <img src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?auto=format&fit=crop&q=80&w=2670" alt="Plant Monitoring">
-     <figcaption>Nutrient Control</figcaption>
-  </div>
-</div>
