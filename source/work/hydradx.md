@@ -10,6 +10,10 @@ carousel:
   - /images/work/hydra_1_1.jpg
   - /images/work/hydra_2.jpg
   - /images/work/hydra_3.jpg
+  - /images/work/hydra_4.jpg
+  - /images/work/hydra_5.jpg
+  - /images/work/hydra_6.jpg
+  - /images/work/hydra_7.jpg
 carousel_object_fit: cover
 carousel_object_position: "top center"
 carousel_image_scale: 1.1

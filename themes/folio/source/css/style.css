@@ -688,8 +688,8 @@ body {
   /* Black */
   border-radius: var(--radius-m);
   transform-origin: left center;
-  transform: scaleX(0);
-  transition: transform var(--progress-transition, 0.2s) ease;
+  /* transform: scaleX(0); */
+  /* transition: transform var(--progress-transition, 0.2s) ease; */
 }
 
 /* Embla Carousel */
@@ -710,7 +710,8 @@ body {
 .embla__container {
   display: flex;
   touch-action: pan-y pinch-zoom;
-  gap: var(--carousel-slide-gap, 1.25rem);
+  gap: 0;
+  /* alignment fix: using margin on slide instead of flex-gap */
   will-change: transform;
 }
 
@@ -725,6 +726,8 @@ body {
   position: relative;
   display: grid;
   place-items: stretch;
+  margin-right: var(--carousel-slide-gap, 1.25rem);
+  flex-shrink: 0;
 }
 
 /* No more next slide peek, always single slide in focus */
@@ -744,8 +747,8 @@ body {
   object-fit: cover;
   object-position: var(--carousel-object-position, center);
   /* Parallax: translateY shifts image within container, scale provides overflow room */
-  transform: scale(var(--carousel-image-scale, 1)) translateY(var(--parallax-y, 0%));
-  transform-origin: center;
+  /* Parallax removed as requested */
+  transform: none !important;
   -webkit-user-drag: none;
   z-index: 0;
   will-change: transform;
@@ -2822,10 +2825,6 @@ body.project-page {
   filter: brightness(1.05);
 }
 
-.embla__slide {
-  overflow: visible !important;
-  /* Allow scale hover without clipping */
-}
 
 /* Refined Project Subpage Header & Details */
 .project-details--top {

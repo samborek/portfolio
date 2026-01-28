@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const carouselWrappers = document.querySelectorAll('.project-carousel-wrapper');
     if (!carouselWrappers.length) return;
 
-    const PARALLAX_STRENGTH = 3;
+    const PARALLAX_STRENGTH = 0;
     const visibleWrappers = new Set();
     const mediaCache = new Map();
 
