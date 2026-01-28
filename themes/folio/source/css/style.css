@@ -712,9 +712,7 @@ body {
   min-width: 0;
   border-radius: var(--radius-m);
   overflow: hidden;
-  /* Fix for border-radius overflow clipping in some browsers */
-  mask-image: radial-gradient(white, black);
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  /* Redundant mask removed to improve repaint performance */
   aspect-ratio: var(--carousel-aspect-ratio, 16 / 9);
   background: var(--color-bg-secondary);
   position: relative;
@@ -2653,6 +2651,8 @@ body.project-page {
 .image-container:has(.unicorn-scene.loaded) .image-placeholder {
   opacity: 0;
   pointer-events: none;
+  animation: none !important;
+  /* Stop shimmer when loaded */
 }
 
 /* Image container & placeholder for carousel and related projects */

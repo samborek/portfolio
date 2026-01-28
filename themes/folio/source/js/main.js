@@ -67,6 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (progressBar) {
       let lastProgress = 0;
+      let lastDuration = '';
+
       const updateProgress = () => {
         const totalSlides = embla.slideNodes().length;
         if (totalSlides === 0) return;
@@ -87,8 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         progress = Math.min(Math.max(progress, 1 / totalSlides), 1);
-        const duration = progress > lastProgress ? 0.4 : 0.15;
-        progressBar.style.setProperty('--progress-transition', `${duration}s`);
+
+        const duration = (progress > lastProgress ? '0.4s' : '0.15s');
+        if (duration !== lastDuration) {
+          progressBar.style.transitionDuration = duration;
+          lastDuration = duration;
+        }
+
         progressBar.style.transform = `scaleX(${progress})`;
         lastProgress = progress;
       };
@@ -255,15 +262,46 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // --- Interactive Button Wake-up ---
+    // Apply the same interaction wake-up logic to .unicorn-btn
+    document.querySelectorAll('.unicorn-btn').forEach(btn => {
+      const wakeUpButton = () => {
+        const rect = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
+          btn.dispatchEvent(new MouseEvent(type, {
+            clientX: centerX,
+            clientY: centerY,
+            bubbles: true
+          }));
+        });
+      };
+
+      const btnObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            requestAnimationFrame(wakeUpButton);
+          }
+        });
+      }, { threshold: 0.1 });
+      btnObserver.observe(btn);
+    });
+
     // --- Scroll Proxying for Nested Containers ---
     // Proxies nested scroll events to window so global SDK listeners (like Unicorn Studio)
     // can track element visibility and mouse mapping correctly.
+    const scrollHandler = () => {
+      window.dispatchEvent(new Event('scroll'));
+    };
+
     document.querySelectorAll('.app-view').forEach(view => {
       let ticking = false;
       view.addEventListener('scroll', () => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
-            window.dispatchEvent(new Event('scroll'));
+            scrollHandler();
             ticking = false;
           });
           ticking = true;
@@ -366,36 +404,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const carouselWrappers = document.querySelectorAll('.project-carousel-wrapper');
     if (!carouselWrappers.length) return;
 
-    // Parallax intensity: how much the image moves (percentage of container height)
-    const PARALLAX_STRENGTH = 3; // ±3% movement
+    const PARALLAX_STRENGTH = 3;
+    const visibleWrappers = new Set();
+    const mediaCache = new Map();
+
+    // Use IntersectionObserver to only track carousels in viewport
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          visibleWrappers.add(entry.target);
+          if (!mediaCache.has(entry.target)) {
+            mediaCache.set(entry.target, entry.target.querySelectorAll('.embla__slide img, .embla__slide .unicorn-scene canvas'));
+          }
+        } else {
+          visibleWrappers.delete(entry.target);
+        }
+      });
+    }, { threshold: 0 });
+
+    carouselWrappers.forEach(wrapper => observer.observe(wrapper));
 
     const updateParallax = () => {
-      carouselWrappers.forEach(wrapper => {
+      const viewportHeight = window.innerHeight;
+      const viewportCenter = viewportHeight / 2;
+
+      visibleWrappers.forEach(wrapper => {
         if (wrapper.dataset.disableParallax === 'true') return;
 
         const rect = wrapper.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
 
-        // Calculate how far through the viewport the element is (0 = top, 1 = bottom)
+        // Element center relative to viewport
         const elementCenter = rect.top + rect.height / 2;
-        const viewportCenter = viewportHeight / 2;
         const progress = (elementCenter - viewportCenter) / viewportHeight;
-
-        // Clamp progress to -1 to 1 range
         const clampedProgress = Math.max(-1, Math.min(1, progress));
-
-        // Convert to parallax offset (when element is above center, image shifts up; below, shifts down)
         const parallaxY = clampedProgress * PARALLAX_STRENGTH;
 
-        // Apply to all images and canvases in this carousel
-        const media = wrapper.querySelectorAll('.embla__slide img, .embla__slide .unicorn-scene canvas');
-        media.forEach(el => {
-          el.style.setProperty('--parallax-y', `${parallaxY}%`);
-        });
+        const media = mediaCache.get(wrapper);
+        if (media) {
+          media.forEach(el => {
+            el.style.setProperty('--parallax-y', `${parallaxY}%`);
+          });
+        }
       });
     };
 
-    // Throttled scroll handler
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
@@ -408,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    updateParallax(); // Initial call
+    updateParallax();
   };
 
   initParallax();
