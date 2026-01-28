@@ -3102,4 +3102,68 @@ body.project-page {
   }
 }
 
-/* Theme Toggle */
+/* Theme Hint Tooltip & Animation */
+.theme-hint-tooltip {
+  position: absolute;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(128, 128, 128, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-text);
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeInOut 5s ease-in-out forwards;
+  animation-delay: 1s;
+  z-index: 100;
+}
+
+/* Triangle removed for minimal pill look */
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 5px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -5px);
+  }
+}
+
+/* Pulse animation for the button */
+.theme-toggle-wrapper:has(.theme-hint-tooltip) .theme-toggle {
+  animation: pulseRing 2s infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(128, 128, 128, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(128, 128, 128, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(128, 128, 128, 0);
+  }
+}
