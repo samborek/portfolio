@@ -13,8 +13,10 @@ carousel:
   - /images/work/hydration_3.jpg
   - light: /images/work/hydration_4.jpg
     dark: /images/work/hydration_4_dark.jpg
-  - /images/work/hydration_5.jpg
-  - /images/work/hydration_6.jpg
+  - light: /images/work/hydration_5.jpg
+    dark: /images/work/hydration_5_dark.jpg
+  - light: /images/work/hydration_6.jpg
+    dark: /images/work/hydration_6_dark.jpg
 carousel_object_fit: cover
 disable_parallax: true
 carousel_image_scale: 1
