@@ -11,7 +11,8 @@ carousel:
   - light: /images/work/hydration_2.jpg
     dark: /images/work/hydration_2_dark.jpg
   - /images/work/hydration_3.jpg
-  - /images/work/hydration_4.jpg
+  - light: /images/work/hydration_4.jpg
+    dark: /images/work/hydration_4_dark.jpg
   - /images/work/hydration_5.jpg
   - /images/work/hydration_6.jpg
 carousel_object_fit: cover
