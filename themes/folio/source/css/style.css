@@ -1629,6 +1629,22 @@ body {
 
 .resume-item-title {
   color: var(--color-text);
+  font-weight: 500;
+}
+
+.resume-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resume-item-description {
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  opacity: 1;
+  /* Was getting color from muted parent */
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* Floating Resume Hover Preview */

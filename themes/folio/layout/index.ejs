@@ -385,7 +385,7 @@
                                                             <h2 class="resume-section-heading">Events</h2>
                                                             <ul class="resume-list">
                                                                 <% theme.events.forEach(function(item) { %>
-                                                                    <li class="resume-list-item" <% if (item.image) { %>
+                                                                    <li class="" <% if (item.image) { %>
                                                                         data-preview-image="<%= url_for(item.image) %>"
                                                                             <% } %>
                                                                                 <% if (item.description) { %>
@@ -395,11 +395,23 @@
                                                                                                 item.title %>"
                                                                                                 data-preview-year="<%=
                                                                                                     item.year %>">
-                                                                                                    <span
-                                                                                                        class="resume-item-title">
-                                                                                                        <%= item.title
-                                                                                                            %>
-                                                                                                    </span>
+                                                                                                    <div
+                                                                                                        class="resume-item-details">
+                                                                                                        <span
+                                                                                                            class="resume-item-title">
+                                                                                                            <%= item.title
+                                                                                                                %>
+                                                                                                        </span>
+                                                                                                        <% if
+                                                                                                            (item.description)
+                                                                                                            { %>
+                                                                                                            <p
+                                                                                                                class="resume-item-description">
+                                                                                                                <%= item.description
+                                                                                                                    %>
+                                                                                                            </p>
+                                                                                                            <% } %>
+                                                                                                    </div>
                                                                                                     <span
                                                                                                         class="resume-item-year">
                                                                                                         <%= item.year %>
