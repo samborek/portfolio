@@ -312,24 +312,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Sidebar & ScrollSpy ---
+  const homeView = document.getElementById('home-view');
   const sections = document.querySelectorAll('section[id^="project-"], #experience, #clients, #connect');
   const navLinks = document.querySelectorAll('.project-link-item, .footer-link-item');
+
+  const observerOptions = {
+    root: homeView,
+    rootMargin: '-20% 0px -70% 0px'
+  };
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      // Find the link that matches this section
-      const links = document.querySelectorAll(`a[href="#${entry.target.id}"]`);
-
       if (entry.isIntersecting) {
-        // When a section enters the specified zone, highlight it
-        navLinks.forEach(l => l.classList.remove('active'));
-        links.forEach(link => {
-          if (link.classList.contains('project-link-item') || link.classList.contains('footer-link-item')) {
-            link.classList.add('active');
-          }
-        });
+        const id = entry.target.id;
+        const matchingLinks = document.querySelectorAll(`a[href="#${id}"]`);
+
+        if (matchingLinks.length > 0) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          matchingLinks.forEach(link => {
+            if (link.classList.contains('project-link-item') || link.classList.contains('footer-link-item')) {
+              link.classList.add('active');
+            }
+          });
+        }
       }
     });
-  }, { rootMargin: '-20% 0px -60% 0px' });
+  }, observerOptions);
   sections.forEach(s => observer.observe(s));
 
   // Work section toggle
