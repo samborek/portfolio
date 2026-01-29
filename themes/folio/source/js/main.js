@@ -379,6 +379,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     revealElements.forEach(el => revealObserver.observe(el));
+
+    // Staggered reveal for the first two projects on load to ensure movement is visible
+    setTimeout(() => {
+      revealElements.forEach((el, index) => {
+        if (index < 2 && !el.classList.contains('revealed')) {
+          setTimeout(() => {
+            el.classList.add('revealed');
+            revealObserver.unobserve(el);
+          }, index * 150); // Stagger the first two
+        }
+      });
+    }, 200); // Wait for page to settle
   }
 
   // Work section toggle
