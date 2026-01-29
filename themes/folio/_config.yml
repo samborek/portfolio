@@ -5,38 +5,6 @@ email: hello@example.com
 
 # Hero section
 hero_title: "I love building digital products and exploring technology"
-hero_subtitle: "Creative Developer"
-hero_avatar: "/images/work/avatar.png"
-
-# About Preview (homepage)
-about_preview:
-  title: "About Me"
-  text: "I'm a creative designer specializing in 3D visualization, brand identity, and digital experiences. With a passion for blending technology and artistry, I help brands tell their story through stunning visuals."
-  image: "/images/work/avatar.png"
-  link_text: "Learn more about me →"
-
-# Services (homepage)
-services:
-  - title: "3D Design"
-    icon: "🎨"
-    description: "Photorealistic product renders and immersive 3D environments that bring your vision to life."
-  - title: "Brand Identity"
-    icon: "✨"
-    description: "Strategic visual systems that differentiate your brand and connect with your audience."
-  - title: "Web Development"
-    icon: "💻"
-    description: "Modern, performant websites built with the latest technologies and best practices."
-  - title: "Creative Direction"
-    icon: "🎬"
-    description: "End-to-end creative strategy and execution for campaigns and product launches."
-
-# Featured Testimonial (homepage)
-featured_testimonial:
-  quote: "They captured the energy and excitement of our brand perfectly. The 3D renders exceeded all our expectations."
-  author: "Alex Chen"
-  role: "Founder, Gold Rush Beverages"
-
-# Experience Section
 # Experience Section
 experience:
   intro_variants:
@@ -72,20 +40,6 @@ events:
     description: "The beginning of a journey: shareable insights on building unique design communities."
   - title: "KID Mobile UI Challenge Workshop"
     year: "2017"
-
-# Clients Section
-clients:
-  intro: "Startups are my bread and butter. I've had the pleasure of working with a bunch — lemon.markets, Courted, Kafene, and many more. But I'm not limited to early-stage ventures. I've also helped a few bigger players along the way — Twilio Segment, Chili Piper, Swan, and more."
-  list:
-    - "lemon.markets"
-    - "Courted"
-    - "Kafene"
-    - "Twilio Segment"
-    - "Chili Piper"
-    - "Swan"
-    - "Grafit"
-    - "Wonderstruck"
-    - "Callstack"
 
 # Connect Section
 connect:

@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Portfolio
+title: Michal Sambora // Design portfolio
 subtitle: 'Creative Developer'
-description: 'Building digital experiences that inspire and engage.'
-keywords: portfolio, design, development
-author: Michal 
+description: 'Digital Product Designer & Creative Developer specializing in crafting immersive digital experiences, 3D visualization, and brand identity for startups and established brands.'
+keywords: Michal Sambora, Product Designer, Creative Developer, Design Portfolio, 3D Design, Brand Identity, Web Development, Fintech Designer, Crypto Designer
+author: Michal Sambora
 language: en
 timezone: 'Europe/Warsaw'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: http://samborek.xyz/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:

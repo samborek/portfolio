@@ -18,9 +18,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>
-        <%= page.title ? page.title + ' | ' + config.title : config.title %>
+        <%= page.title ? page.title + ' // ' + config.title : config.title %>
     </title>
     <meta name="description" content="<%= page.description || config.description %>">
+    <meta name="keywords" content="<%= config.keywords %>">
+    <meta name="author" content="<%= config.author %>">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= config.url %><%= url_for(page.path) %>">
+    <meta property="og:title" content="<%= page.title ? page.title + ' // ' + config.title : config.title %>">
+    <meta property="og:description" content="<%= page.description || config.description %>">
+    <meta property="og:image" content="<%= config.url %>/images/avatar.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<%= config.url %><%= url_for(page.path) %>">
+    <meta name="twitter:title" content="<%= page.title ? page.title + ' // ' + config.title : config.title %>">
+    <meta name="twitter:description" content="<%= page.description || config.description %>">
+    <meta name="twitter:image" content="<%= config.url %>/images/avatar.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
