@@ -313,13 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Sidebar & ScrollSpy ---
   const sections = document.querySelectorAll('section[id^="project-"], #experience, #clients, #connect');
-  const navLinks = document.querySelectorAll('.project-link-item');
+  const navLinks = document.querySelectorAll('.project-link-item, .footer-link-item');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         navLinks.forEach(l => l.classList.remove('active'));
-        const link = document.querySelector(`.project-link-item[href="#${entry.target.id}"]`);
-        if (link) link.classList.add('active');
+        const activeLinks = document.querySelectorAll(`.project-link-item[href="#${entry.target.id}"], .footer-link-item[href="#${entry.target.id}"]`);
+        activeLinks.forEach(link => link.classList.add('active'));
       }
     });
   }, { rootMargin: '-40% 0px -60% 0px' });
