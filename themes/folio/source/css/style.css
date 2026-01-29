@@ -401,7 +401,7 @@ body {
   top: 0;
   height: 100dvh;
   background: var(--color-bg);
-  padding: 3rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -465,26 +465,16 @@ body {
   width: 100% !important;
   height: 100% !important;
   display: block;
+  /* Invert to make button dark on light mode (default is white lines) */
+  filter: invert(1);
 }
 
 [data-theme="dark"] .sidebar .unicorn-btn canvas {
-  /* If the button is white by default in dark mode, this might flip it to black? 
-      Or if it's black by default, this makes it white.
-      User asked: "change it's color to black on dark mode"
-      If defaults are black-on-light, they might be white-on-dark.
-      If I want black-on-dark, I might need to un-invert or force filter. 
-      Let's assume standard behavior is fine but user wants SPECIFIC control.
-   */
+  /* Keep dark/black on dark mode - no inversion needed */
   filter: none !important;
 }
 
-/* Force text to black in dark mode if requested, but contrast might be an issue */
-[data-theme="dark"] .sidebar .unicorn-btn .btn-text {
-  color: #000000;
-  font-weight: 500;
-  /* thicker to see */
-}
-
+/* Text styling for both modes */
 .sidebar .unicorn-btn .btn-text {
   position: absolute;
   inset: 0;
@@ -495,6 +485,14 @@ body {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  color: #ffffff;
+  /* White text on dark button in light mode */
+}
+
+[data-theme="dark"] .sidebar .unicorn-btn .btn-text {
+  color: #000000;
+  /* Black text on dark mode */
+  font-weight: 500;
 }
 
 .sidebar-footer {
