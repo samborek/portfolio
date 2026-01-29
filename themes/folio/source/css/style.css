@@ -503,9 +503,10 @@ body {
 
 .footer-link-item {
   font-size: 0.875rem;
-  color: var(--color-text-dim);
+  color: var(--color-text-muted);
+  opacity: 0.5;
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .footer-link-item:hover,
@@ -519,12 +520,15 @@ body {
   margin-top: 0.5rem;
   display: block;
   font-size: 0.875rem;
-  color: var(--color-text-dim);
+  color: var(--color-text-muted);
+  opacity: 0.5;
   text-decoration: none;
+  transition: all var(--transition-fast);
 }
 
 .sidebar-email:hover {
   color: var(--color-text);
+  opacity: 1;
 }
 
 .avatar {

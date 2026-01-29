@@ -316,13 +316,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.project-link-item, .footer-link-item');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+      // Find the link that matches this section
+      const links = document.querySelectorAll(`a[href="#${entry.target.id}"]`);
+
       if (entry.isIntersecting) {
+        // When a section enters the specified zone, highlight it
         navLinks.forEach(l => l.classList.remove('active'));
-        const activeLinks = document.querySelectorAll(`.project-link-item[href="#${entry.target.id}"], .footer-link-item[href="#${entry.target.id}"]`);
-        activeLinks.forEach(link => link.classList.add('active'));
+        links.forEach(link => {
+          if (link.classList.contains('project-link-item') || link.classList.contains('footer-link-item')) {
+            link.classList.add('active');
+          }
+        });
       }
     });
-  }, { rootMargin: '-40% 0px -60% 0px' });
+  }, { rootMargin: '-20% 0px -60% 0px' });
   sections.forEach(s => observer.observe(s));
 
   // Work section toggle
