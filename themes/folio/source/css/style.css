@@ -211,6 +211,16 @@
   /* Very tight */
 }
 
+/* Gazpacho No-Caps Variant */
+[data-font="gazpacho"] .project-title,
+[data-font="gazpacho"] .project-title-centered,
+[data-font="gazpacho"] .centered-meta,
+[data-font="gazpacho"] .centered-intro {
+  text-transform: lowercase;
+  letter-spacing: -0.01em;
+  /* Tighter for lowercase Display font */
+}
+
 /* Centered Mode Layout Overrides */
 [data-header-style="centered"] .project-header {
   margin-bottom: 0;
@@ -3069,7 +3079,7 @@ body.project-page {
 .project-page .project-content {
   display: block;
   margin-top: 0;
-  margin-bottom: var(--space-2xl);
+  margin-bottom: 6rem;
 }
 
 .project-page .project-body {
