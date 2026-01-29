@@ -119,8 +119,9 @@
   --font-display: var(--font-display-quablo);
 }
 
-/* Font Switcher UI */
-.font-switcher {
+/* Font & Header Switcher UI */
+.font-switcher,
+.header-switcher {
   display: flex;
   gap: 4px;
   background: var(--color-bg-secondary);
@@ -130,7 +131,8 @@
   align-items: center;
 }
 
-.font-switch-btn {
+.font-switch-btn,
+.header-switch-btn {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -146,9 +148,64 @@
   transition: all var(--transition-fast);
 }
 
-.font-switch-btn.active {
+.font-switch-btn.active,
+.header-switch-btn.active {
   background: var(--color-text);
   color: var(--color-bg);
+}
+
+/* Centered Header Styles */
+.header-content-centered {
+  display: none;
+  /* Hidden by default */
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-xl) 0;
+}
+
+[data-header-style="centered"] .header-content-default {
+  display: none;
+}
+
+[data-header-style="centered"] .header-content-centered {
+  display: flex;
+}
+
+.centered-meta {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-body);
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.project-title-centered {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  /* Scalable huge size */
+  line-height: 0.95;
+  margin: 0 0 var(--space-sm);
+  /* Reduced margin */
+  text-transform: uppercase;
+  max-width: 900px;
+}
+
+.centered-intro-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.centered-intro {
+  font-family: var(--font-body);
+  font-size: var(--size-base);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0;
 }
 
 .sidebar-hero {

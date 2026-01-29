@@ -17,6 +17,13 @@
                                 <button class="font-switch-btn active" data-font="quablo">Q</button>
                                 <button class="font-switch-btn" data-font="gazpacho">G</button>
                             </div>
+                            <!-- Header Switcher -->
+                            <div class="header-switcher" style="margin-left: var(--space-xs);">
+                                <button class="header-switch-btn" data-header="default"
+                                    title="Default Layout">←</button>
+                                <button class="header-switch-btn" data-header="centered"
+                                    title="Centered Layout">↔</button>
+                            </div>
                         </div>
                         <% if (page.scope) { %>
                             <div class="project-scope desktop-only">
@@ -31,15 +38,37 @@
                             <% } %>
                     </div>
 
-                    <div class="project-category-top">
-                        <%= page.category || 'Project' %>
+                    <!-- Default Header Content -->
+                    <div class="header-content-default">
+                        <div class="project-category-top">
+                            <%= page.category || 'Project' %>
+                        </div>
+                        <h1 class="project-title">
+                            <%= page.title %>
+                        </h1>
+                        <p class="project-intro">
+                            <%= page.intro || '' %>
+                        </p>
                     </div>
-                    <h1 class="project-title">
-                        <%= page.title %>
-                    </h1>
-                    <p class="project-intro">
-                        <%= page.intro || '' %>
-                    </p>
+
+                    <!-- Centered Header Content -->
+                    <div class="header-content-centered">
+                        <div class="centered-meta">
+                            <span class="meta-item">EST. <%= page.year || '2024' %></span>
+                            <span class="meta-item">
+                                <%= page.location || 'GLOBAL' %>
+                            </span>
+                        </div>
+                        <h1 class="project-title-centered">
+                            <%= page.title %>
+                        </h1>
+                        <div class="centered-intro-wrapper">
+                            <p class="centered-intro">
+                                <%= page.intro || '' %>
+                            </p>
+                        </div>
+                    </div>
+
                     <% if (page.scope) { %>
                         <div class="project-scope mobile-only">
                             <% const scopes=Array.isArray(page.scope) ? page.scope : (page.scope || '' ).split(','); %>

@@ -46,6 +46,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // --- Header Style Toggle ---
+  const headerBtns = document.querySelectorAll('.header-switch-btn');
+  const projectPage = document.querySelector('.project-page');
+
+  if (projectPage && headerBtns.length) {
+    const storedHeader = localStorage.getItem('header-style') || 'default';
+
+    const updateHeader = (style) => {
+      projectPage.setAttribute('data-header-style', style);
+      localStorage.setItem('header-style', style);
+      headerBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.header === style);
+      });
+    };
+
+    // Initialize header style
+    updateHeader(storedHeader);
+
+    headerBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        updateHeader(btn.dataset.header);
+      });
+    });
+  }
+
   // --- Mobile Navigation ---
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
   const sidebar = document.querySelector('.sidebar');
