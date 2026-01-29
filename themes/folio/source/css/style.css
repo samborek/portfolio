@@ -2379,7 +2379,7 @@ body.project-page {
   grid-template-columns: 17.5rem 1fr;
   gap: var(--project-page-content-gap, var(--space-xl));
   margin-top: var(--project-page-block-gap, var(--space-xl));
-  max-width: 1400px;
+  max-width: 60rem;
   margin-left: auto;
   margin-right: auto;
   padding-left: var(--space-lg);
@@ -2420,6 +2420,7 @@ body.project-page {
 
 .project-body {
   font-size: var(--size-lg);
+  text-align: center;
   line-height: 1.8;
 }
 
