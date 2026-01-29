@@ -211,10 +211,10 @@
   /* Very tight */
 }
 
-/* Gazpacho Sentence-Case Variant & Headline Constraints */
+/* Gazpacho Title-Case Variant & Headline Constraints */
 [data-font="gazpacho"] .project-title,
 [data-font="gazpacho"] .project-title-centered {
-  text-transform: lowercase;
+  text-transform: capitalize;
   letter-spacing: -0.01em;
   /* Tighter for Display font */
   max-width: 650px;
@@ -223,20 +223,12 @@
   margin-right: auto;
 }
 
-[data-font="gazpacho"] .project-title::first-letter,
-[data-font="gazpacho"] .project-title-centered::first-letter {
-  text-transform: uppercase;
-}
 
 [data-font="gazpacho"] .centered-meta,
 [data-font="gazpacho"] .centered-intro {
-  text-transform: lowercase;
+  text-transform: capitalize;
 }
 
-[data-font="gazpacho"] .centered-meta::first-letter,
-[data-font="gazpacho"] .centered-intro::first-letter {
-  text-transform: uppercase;
-}
 
 /* Centered Mode Layout Overrides */
 [data-header-style="centered"] .project-header {
