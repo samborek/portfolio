@@ -213,16 +213,29 @@
 
 /* Gazpacho Title-Case Variant & Headline Constraints */
 [data-font="gazpacho"] .project-title,
-[data-font="gazpacho"] .project-title-centered {
+[data-font="gazpacho"] .project-title-centered,
+[data-font="gazpacho"] .project-body h2,
+[data-font="gazpacho"] .project-body h3 {
   text-transform: capitalize;
   letter-spacing: -0.01em;
   /* Tighter for Display font */
   max-width: 650px;
   /* Force break into two lines */
-  margin-left: auto;
-  margin-right: auto;
 }
 
+/* Ensure Gazpacho headers in default layout stay left-aligned */
+[data-font="gazpacho"] .project-title {
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* Only center when explicitly intended (centered layout) */
+[data-font="gazpacho"] .project-title-centered {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
 [data-font="gazpacho"] .centered-meta,
 [data-font="gazpacho"] .centered-intro {
