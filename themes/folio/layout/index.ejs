@@ -385,7 +385,7 @@
                                                             <h2 class="resume-section-heading">Events</h2>
                                                             <ul class="resume-list">
                                                                 <% theme.events.forEach(function(item) { %>
-                                                                    <li class="" <% if (item.image) { %>
+                                                                    <li class="resume-list-item" <% if (item.image) { %>
                                                                         data-preview-image="<%= url_for(item.image) %>"
                                                                             <% } %>
                                                                                 <% if (item.description) { %>
