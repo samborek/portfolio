@@ -488,7 +488,7 @@ body {
 }
 
 .sidebar-title {
-  font-family: var(--font-display);
+  font-family: 'Gazpacho', serif;
   font-size: var(--size-2xl);
   font-weight: 500;
   line-height: 1.2;
