@@ -1,5 +1,5 @@
 ---
-title: Hydration Redesign
+title: Hydration
 short_title: Hydration
 layout: project
 category: DeFi

@@ -1,5 +1,5 @@
 ---
-title: Basilisk App
+title: Basilisk
 short_title: Basilisk
 layout: project
 category: Blockchain

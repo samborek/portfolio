@@ -1,5 +1,5 @@
 ---
-title: HydraDX Omnipool
+title: HydraDX
 short_title: HydraDX
 layout: project
 category: Blockchain
