@@ -426,9 +426,8 @@ body {
 
 .sidebar-logo {
   font-family: 'Gazpacho', serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
   line-height: 0.9;
-  text-transform: uppercase;
   margin: 0;
   letter-spacing: -0.02em;
 }
@@ -443,15 +442,37 @@ body {
 }
 
 .sidebar-description {
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.5;
-  color: var(--color-text-dim);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
-.btn-sm {
-  padding: 0.6rem 1.25rem;
+.sidebar-cta-wrapper {
+  margin-top: auto;
+}
+
+/* Scaled Unicorn button for sidebar */
+.sidebar .unicorn-btn {
+  width: 15rem;
+  height: 3.75rem;
+  margin-left: -1.25rem;
+}
+
+.sidebar .unicorn-btn canvas {
+  width: 15rem !important;
+  height: 3.75rem !important;
+}
+
+.sidebar .unicorn-btn .btn-text {
+  left: 1.25rem;
+  top: 0.625rem;
   font-size: 0.875rem;
+  width: 12.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-footer {
