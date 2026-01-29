@@ -319,25 +319,36 @@ document.addEventListener('DOMContentLoaded', () => {
   if (homeView && sections.length && navLinks.length) {
     const observerOptions = {
       root: homeView,
-      threshold: [0, 0.1],
-      rootMargin: '-15% 0px -45% 0px' // Larger window for more stable tracking
+      threshold: [0, 0.1, 0.2, 0.5, 0.8, 1.0],
+      rootMargin: '-25% 0px -45% 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
-      // Find sections currently in the detection zone
-      const visibleEntries = entries.filter(e => e.isIntersecting);
+      // Find the entry with the largest visible height in the detection window
+      let bestEntry = null;
+      let maxIntersectHeight = 0;
 
-      if (visibleEntries.length > 0) {
-        // If multiple are visible, pick the one that's most prominent
-        const bestEntry = visibleEntries.reduce((prev, current) =>
-          (current.intersectionRatio >= prev.intersectionRatio) ? current : prev
-        );
+      // We need to check ALL sections currently intersecting
+      // IntersectionObserver only gives us ones that CHANGED.
+      // So we should maintain a state or just check all visible ones.
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const viewRect = homeView.getBoundingClientRect();
+        const winTop = viewRect.top + (viewRect.height * 0.25);
+        const winBot = viewRect.top + (viewRect.height * 0.55);
+        const intersectHeight = Math.max(0, Math.min(rect.bottom, winBot) - Math.max(rect.top, winTop));
 
-        const id = bestEntry.target.id;
+        if (intersectHeight > maxIntersectHeight) {
+          maxIntersectHeight = intersectHeight;
+          bestEntry = section;
+        }
+      });
+
+      if (bestEntry) {
+        const id = bestEntry.id;
         const matchingLinks = document.querySelectorAll(`a[href="#${id}"]`);
 
         if (matchingLinks.length > 0) {
-          // Update classes
           navLinks.forEach(link => link.classList.remove('active'));
           matchingLinks.forEach(link => {
             if (link.classList.contains('project-link-item') || link.classList.contains('footer-link-item')) {
