@@ -2846,6 +2846,19 @@ body.project-page {
   filter: brightness(1.05);
 }
 
+/* Section Entrance Animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 /* Refined Project Subpage Header & Details */
 .project-details--top {

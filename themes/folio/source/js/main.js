@@ -358,8 +358,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }, observerOptions);
+    sections.forEach(section => observer.observe(section));
+  }
 
-    sections.forEach(s => observer.observe(s));
+  // --- Reveal on Scroll ---
+  const revealElements = document.querySelectorAll('.reveal-on-scroll');
+  if (revealElements.length > 0 && homeView) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          // Once revealed, we don't need to observe it anymore
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: homeView,
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
   }
 
   // Work section toggle
