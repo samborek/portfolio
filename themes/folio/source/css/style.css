@@ -582,6 +582,8 @@ body {
     border-bottom: none;
     padding: 0;
     /* Remove padding to allow edge-to-edge elements */
+    padding-top: 3rem;
+    /* Improved padding top */
     padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -594,11 +596,18 @@ body {
     padding-left: var(--space-md);
     padding-right: var(--space-md);
     width: 100%;
+    text-align: center;
+    /* Center Michal sambora and description */
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
 
   .sidebar-footer {
     width: 100%;
     padding-top: 1rem;
+    text-align: left;
+    /* Keep navigation items left aligned */
   }
 
   .footer-grid {
