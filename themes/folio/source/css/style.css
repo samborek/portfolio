@@ -508,8 +508,11 @@ body {
   transition: color var(--transition-fast);
 }
 
-.footer-link-item:hover {
+.footer-link-item:hover,
+.footer-link-item.active,
+.project-link-item.active {
   color: var(--color-text);
+  opacity: 1;
 }
 
 .sidebar-email {

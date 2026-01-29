@@ -1,5 +1,6 @@
 ---
 title: Plaant
+short_title: Plaant
 layout: project
 category: Lifestyle
 year: 2022

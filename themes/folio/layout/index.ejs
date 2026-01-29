@@ -36,9 +36,10 @@
                                 <nav class="footer-nav">
                                     <% projects.forEach(function(project, index) { %>
                                         <a href="#project-<%= index %>" class="footer-link-item project-link-item">
-                                            <%= project.title %>
+                                            <%= project.short_title || project.title %>
                                         </a>
                                         <% }); %>
+                                            <a href="#experience" class="footer-link-item">More</a>
                                 </nav>
                             </div>
                             <div class="footer-col">

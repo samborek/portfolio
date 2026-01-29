@@ -1,5 +1,6 @@
 ---
 title: Hydration Redesign
+short_title: Hydration
 layout: project
 category: DeFi
 year: 2024

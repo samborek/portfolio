@@ -1,0 +1,3 @@
+# Project Rules
+
+- **Git Usage**: Do not push to Git unless explicitly and precisely asked to do so by the user. Committing locally is fine, but pushing should be a manual or specifically requested step.

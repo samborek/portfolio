@@ -1,5 +1,6 @@
 ---
 title: Basilisk App
+short_title: Basilisk
 layout: project
 category: Blockchain
 year: 2022
