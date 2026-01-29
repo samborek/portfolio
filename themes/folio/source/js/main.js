@@ -404,6 +404,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Footer Accordion Toggle (Mobile)
+  document.querySelectorAll('.footer-col-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', !isExpanded);
+      const nav = toggle.nextElementSibling;
+      if (nav && nav.classList.contains('footer-nav-collapsible')) {
+        nav.classList.toggle('expanded', !isExpanded);
+      }
+    });
+  });
+
   // --- Project-by-Project Sequencer ---
   // Batches loading per project to prevent network congestion while ensuring readiness.
   const initProjectSequencer = () => {

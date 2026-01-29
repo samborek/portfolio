@@ -31,8 +31,11 @@
                     <div class="sidebar-footer">
                         <div class="footer-grid">
                             <div class="footer-col">
-                                <h3 class="footer-col-title">INDEX</h3>
-                                <nav class="footer-nav">
+                                <button class="footer-col-toggle" aria-expanded="false">
+                                    <h3 class="footer-col-title">INDEX</h3>
+                                    <span class="footer-toggle-icon">+</span>
+                                </button>
+                                <nav class="footer-nav footer-nav-collapsible">
                                     <% projects.forEach(function(project, index) { %>
                                         <a href="#project-<%= index %>" class="footer-link-item project-link-item">
                                             <%= project.short_title || project.title %>
@@ -43,8 +46,11 @@
                                 </nav>
                             </div>
                             <div class="footer-col">
-                                <h3 class="footer-col-title">Connect</h3>
-                                <nav class="footer-nav">
+                                <button class="footer-col-toggle" aria-expanded="false">
+                                    <h3 class="footer-col-title">Connect</h3>
+                                    <span class="footer-toggle-icon">+</span>
+                                </button>
+                                <nav class="footer-nav footer-nav-collapsible">
                                     <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>"
                                             target="_blank" class="footer-link-item">Twitter</a>
                                         <% } %>

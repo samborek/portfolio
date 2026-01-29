@@ -538,6 +538,67 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Mobile Accordion Toggle Button */
+.footer-col-toggle {
+  display: none;
+  /* Hidden on desktop */
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.footer-col-toggle .footer-col-title {
+  margin-bottom: 0;
+}
+
+.footer-toggle-icon {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  transition: transform var(--transition-fast);
+}
+
+.footer-col-toggle[aria-expanded="true"] .footer-toggle-icon {
+  transform: rotate(45deg);
+}
+
+/* Collapsible nav on mobile */
+.footer-nav-collapsible {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Mobile styles */
+@media (max-width: 1024px) {
+  .footer-col-toggle {
+    display: flex;
+  }
+
+  .footer-col>.footer-col-title {
+    display: none;
+    /* Hide standalone title when using toggle */
+  }
+
+  .footer-nav-collapsible {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+    margin-top: 0;
+  }
+
+  .footer-nav-collapsible.expanded {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 0.5rem;
+  }
+}
+
 .footer-nav {
   display: flex;
   flex-direction: column;
