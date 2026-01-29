@@ -454,9 +454,9 @@ body {
 
 /* Scaled Unicorn button for sidebar */
 .sidebar .unicorn-btn {
-  width: 100%;
-  height: 3.75rem;
-  margin-left: 0;
+  width: 125%;
+  height: 5rem;
+  margin-left: -1.4rem;
   display: block;
   position: relative;
 }
@@ -468,21 +468,14 @@ body {
 }
 
 [data-theme="dark"] .sidebar .unicorn-btn canvas {
-  /* If the button is white by default in dark mode, this might flip it to black? 
-      Or if it's black by default, this makes it white.
-      User asked: "change it's color to black on dark mode"
-      If defaults are black-on-light, they might be white-on-dark.
-      If I want black-on-dark, I might need to un-invert or force filter. 
-      Let's assume standard behavior is fine but user wants SPECIFIC control.
-   */
+  /* Keep it natural */
   filter: none !important;
 }
 
-/* Force text to black in dark mode if requested, but contrast might be an issue */
+/* Force text to black in dark mode if requested */
 [data-theme="dark"] .sidebar .unicorn-btn .btn-text {
   color: #000000;
   font-weight: 500;
-  /* thicker to see */
 }
 
 .sidebar .unicorn-btn .btn-text {
@@ -491,6 +484,8 @@ body {
   font-size: 0.875rem;
   width: 100%;
   height: 100%;
+  padding-left: 1.4rem;
+  /* Offset the margin-left to center optically if needed, or just center relative to button */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -505,7 +500,24 @@ body {
 .footer-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 1rem;
+  /* Reduced gap since columns have padding now */
+}
+
+.footer-col {
+  background-color: var(--color-bg-secondary);
+  /* Or a subtle surface color */
+  padding: 1.25rem;
+  border-radius: var(--radius-l);
+}
+
+/* Ensure secondary bg exists or fallback */
+:root {
+  --color-bg-secondary: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] {
+  --color-bg-secondary: rgba(255, 255, 255, 0.05);
 }
 
 .footer-col-title {
