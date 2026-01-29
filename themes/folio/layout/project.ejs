@@ -70,7 +70,7 @@
                     </div>
 
                     <% if (page.scope) { %>
-                        <div class="project-scope mobile-only">
+                        <div class="project-scope mobile-only centered-scope">
                             <% const scopes=Array.isArray(page.scope) ? page.scope : (page.scope || '' ).split(','); %>
                                 <% scopes.forEach(function(scope) { %>
                                     <span class="scope-pill">
