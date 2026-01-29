@@ -62,7 +62,7 @@
   /* Typography */
   --font-display-gazpacho: 'Gazpacho', Georgia, serif;
   --font-display-quablo: 'Quablo', 'Gazpacho', Georgia, serif;
-  --font-display: var(--font-display-quablo);
+  --font-display: var(--font-display-gazpacho);
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
 
