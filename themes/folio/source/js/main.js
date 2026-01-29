@@ -319,25 +319,25 @@ document.addEventListener('DOMContentLoaded', () => {
   if (homeView && sections.length && navLinks.length) {
     const observerOptions = {
       root: homeView,
-      threshold: [0, 0.1, 0.5],
-      rootMargin: '-10% 0px -60% 0px' // Slightly more generous top margin
+      threshold: [0, 0.1],
+      rootMargin: '-15% 0px -45% 0px' // Larger window for more stable tracking
     };
 
     const observer = new IntersectionObserver((entries) => {
-      // Find the "most" intersecting section
+      // Find sections currently in the detection zone
       const visibleEntries = entries.filter(e => e.isIntersecting);
+
       if (visibleEntries.length > 0) {
-        // Sort by how much of the section is visible or just pick the first one from the top
-        // But IntersectionObserver gives us entry for each section that changed.
-        // Simplest: only handle the one with the highest intersectionRatio OR the one closest to top
+        // If multiple are visible, pick the one that's most prominent
         const bestEntry = visibleEntries.reduce((prev, current) =>
-          (current.intersectionRatio > prev.intersectionRatio) ? current : prev
+          (current.intersectionRatio >= prev.intersectionRatio) ? current : prev
         );
 
         const id = bestEntry.target.id;
         const matchingLinks = document.querySelectorAll(`a[href="#${id}"]`);
 
         if (matchingLinks.length > 0) {
+          // Update classes
           navLinks.forEach(link => link.classList.remove('active'));
           matchingLinks.forEach(link => {
             if (link.classList.contains('project-link-item') || link.classList.contains('footer-link-item')) {
