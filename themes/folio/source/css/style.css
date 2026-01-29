@@ -193,6 +193,7 @@
   /* Reduced margin */
   text-transform: uppercase;
   max-width: 900px;
+  font-weight: 600;
 }
 
 .centered-intro-wrapper {
@@ -221,8 +222,6 @@
   /* Tighter for Display font */
   max-width: 650px;
   /* Force break into two lines */
-  font-weight: 600;
-  /* Semi-bold weight as requested */
 }
 
 /* Ensure Gazpacho headers in default layout stay left-aligned */
@@ -2474,7 +2473,7 @@ body.project-page {
 .project-page .project-title {
   font-family: var(--font-display);
   font-size: var(--size-4xl);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.1;
   margin: 0;
 }
