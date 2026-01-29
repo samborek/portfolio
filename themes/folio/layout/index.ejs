@@ -11,64 +11,50 @@
 
                 <!-- Left Sidebar -->
                 <aside class="sidebar">
-                    <div class="sidebar-content">
-                        <div class="sidebar-hero">
-                            <span class="project-link-item"
-                                style="text-transform: lowercase; border-bottom: none;">Michal Sambora — sambø</span>
+                    <div class="sidebar-header">
+                        <h1 class="sidebar-logo">Michal Sambora</h1>
+                    </div>
 
-                        </div>
-                        <h1 class="sidebar-title">
-                            <%= theme.hero_title || "I'm  Michal Sambora" %>
-                        </h1>
-
-                        <!-- Work Links (Collapsible) -->
-                        <div class="project-links">
-                            <button class="project-links-toggle" aria-expanded="false" aria-controls="work-list">
-                                <span class="project-links-label">Selected Work</span>
-                                <span class="toggle-arrow">↓</span>
-                            </button>
-                            <div class="project-links-list collapsed" id="work-list">
-                                <% projects.forEach(function(project, index) { %>
-                                    <a href="#project-<%= index %>" class="project-link-item">
-                                        <%= project.title %>
-                                    </a>
-                                    <% }); %>
-                            </div>
-                        </div>
-
-                        <hr class="sidebar-separator">
-
-                        <!-- Navigation Links -->
-                        <div class="nav-links">
-                            <% if (theme.experience) { %>
-                                <a href="#experience" class="project-link-item">Experience</a>
-                                <% } %>
-                                    <a href="#connect" class="project-link-item">Let's connect</a>
-                        </div>
+                    <div class="sidebar-body">
+                        <p class="sidebar-description">
+                            <%= site.description || config.description %>
+                        </p>
+                        <a href="<%= theme.connect.cta.link %>" class="primary-btn btn-sm">Get in touch</a>
                     </div>
 
                     <div class="sidebar-footer">
-                        <div class="social-icons">
-                            <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>"
-                                    target="_blank">𝕏</a>
-                                <% } %>
-                                    <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
-                                            target="_blank">in</a>
+                        <div class="footer-grid">
+                            <div class="footer-col">
+                                <h3 class="footer-col-title">Works</h3>
+                                <nav class="footer-nav">
+                                    <% projects.forEach(function(project, index) { %>
+                                        <a href="#project-<%= index %>" class="footer-link-item project-link-item">
+                                            <%= project.title %>
+                                        </a>
+                                        <% }); %>
+                                </nav>
+                            </div>
+                            <div class="footer-col">
+                                <h3 class="footer-col-title">Connect</h3>
+                                <nav class="footer-nav">
+                                    <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>"
+                                            target="_blank" class="footer-link-item">Twitter</a>
                                         <% } %>
-                                            <% if (theme.social?.dribbble) { %><a href="<%= theme.social.dribbble %>"
-                                                    target="_blank">◉</a>
+                                            <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
+                                                    target="_blank" class="footer-link-item">LinkedIn</a>
                                                 <% } %>
-                                                    <% if (theme.social?.behance) { %><a
-                                                            href="<%= theme.social.behance %>" target="_blank">Bē</a>
+                                                    <% if (theme.social?.dribbble) { %><a
+                                                            href="<%= theme.social.dribbble %>" target="_blank"
+                                                            class="footer-link-item">Dribbble</a>
                                                         <% } %>
-                                                            <% if (theme.social?.gumroad) { %><a
-                                                                    href="<%= theme.social.gumroad %>"
-                                                                    target="_blank">G</a>
+                                                            <% if (theme.social?.behance) { %><a
+                                                                    href="<%= theme.social.behance %>" target="_blank"
+                                                                    class="footer-link-item">Behance</a>
                                                                 <% } %>
-                        </div>
-
-                        <div class="sidebar-contact">
-                            <a href="mailto:michal@maise.io" class="sidebar-email">michal@maise.io</a>
+                                                                    <a href="mailto:michal@maise.io"
+                                                                        class="footer-link-item">Email</a>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </aside>
