@@ -10,7 +10,8 @@ carousel:
   - /images/work/hydration.json
   - light: /images/work/hydration_2.jpg
     dark: /images/work/hydration_2_dark.jpg
-  - /images/work/hydration_3.jpg
+  - light: /images/work/hydration_3.jpg
+    dark: /images/work/hydration_3_dark.jpg
   - light: /images/work/hydration_4.jpg
     dark: /images/work/hydration_4_dark.jpg
   - light: /images/work/hydration_5.jpg
