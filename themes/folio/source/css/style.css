@@ -575,6 +575,11 @@ body {
 
 /* Mobile styles */
 @media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
   .footer-col-toggle {
     display: flex;
   }
@@ -596,6 +601,17 @@ body {
     max-height: 500px;
     opacity: 1;
     margin-top: 0.5rem;
+  }
+
+  /* Center the Get in touch button on mobile */
+  .sidebar .unicorn-btn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sidebar-cta-wrapper {
+    display: flex;
+    justify-content: center;
   }
 }
 
