@@ -316,15 +316,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const sections = document.querySelectorAll('section[id^="project-"], #experience, #clients, #connect');
   const navLinks = document.querySelectorAll('.project-link-item, .footer-link-item');
 
-  const observerOptions = {
-    root: homeView,
-    rootMargin: '-20% 0px -70% 0px'
-  };
+  if (homeView && sections.length && navLinks.length) {
+    const observerOptions = {
+      root: homeView,
+      threshold: [0, 0.1, 0.5],
+      rootMargin: '-10% 0px -60% 0px' // Slightly more generous top margin
+    };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
+    const observer = new IntersectionObserver((entries) => {
+      // Find the "most" intersecting section
+      const visibleEntries = entries.filter(e => e.isIntersecting);
+      if (visibleEntries.length > 0) {
+        // Sort by how much of the section is visible or just pick the first one from the top
+        // But IntersectionObserver gives us entry for each section that changed.
+        // Simplest: only handle the one with the highest intersectionRatio OR the one closest to top
+        const bestEntry = visibleEntries.reduce((prev, current) =>
+          (current.intersectionRatio > prev.intersectionRatio) ? current : prev
+        );
+
+        const id = bestEntry.target.id;
         const matchingLinks = document.querySelectorAll(`a[href="#${id}"]`);
 
         if (matchingLinks.length > 0) {
@@ -336,9 +346,10 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       }
-    });
-  }, observerOptions);
-  sections.forEach(s => observer.observe(s));
+    }, observerOptions);
+
+    sections.forEach(s => observer.observe(s));
+  }
 
   // Work section toggle
   const workToggle = document.querySelector('.project-links-toggle');
