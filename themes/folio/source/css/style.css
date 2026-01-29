@@ -545,11 +545,11 @@ body {
   width: 100%;
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 0.75rem 0;
   cursor: pointer;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  border-top: 1px solid var(--color-border, rgba(128, 128, 128, 0.2));
 }
 
 .footer-col-toggle .footer-col-title {
@@ -603,15 +603,15 @@ body {
     margin-top: 0.5rem;
   }
 
-  /* Center the Get in touch button on mobile */
+  /* Edge-to-edge Get in touch button on mobile */
   .sidebar .unicorn-btn {
-    width: 100%;
-    margin-left: 0;
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-right: -2rem;
   }
 
   .sidebar-cta-wrapper {
-    display: flex;
-    justify-content: center;
+    display: block;
   }
 }
 
