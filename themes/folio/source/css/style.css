@@ -221,6 +221,8 @@
   /* Tighter for Display font */
   max-width: 650px;
   /* Force break into two lines */
+  font-weight: 600;
+  /* Semi-bold weight as requested */
 }
 
 /* Ensure Gazpacho headers in default layout stay left-aligned */
