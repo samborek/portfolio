@@ -573,92 +573,6 @@ body {
   gap: 0.5rem;
 }
 
-/* Mobile styles */
-@media (max-width: 1024px) {
-  .sidebar {
-    position: relative;
-    height: auto;
-    border-right: none;
-    border-bottom: none;
-    padding: 0;
-    /* Remove padding to allow edge-to-edge elements */
-    padding-top: 3rem;
-    /* Improved padding top */
-    padding-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    --sidebar-px: 0px;
-  }
-
-  .sidebar-hero,
-  .sidebar-body {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
-    width: 100%;
-    text-align: center;
-    /* Center Michal sambora and description */
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sidebar-footer {
-    width: 100%;
-    padding-top: 1rem;
-    text-align: left;
-    /* Keep navigation items left aligned */
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
-    /* No gap between sections with lines */
-  }
-
-  .footer-col-toggle {
-    display: flex;
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
-  }
-
-  .footer-col>.footer-col-title {
-    display: none;
-    /* Hide standalone title when using toggle */
-  }
-
-  .footer-nav-collapsible {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
-    margin-top: 0;
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
-  }
-
-  .footer-nav-collapsible.expanded {
-    max-height: 500px;
-    opacity: 1;
-    margin-top: 0.5rem;
-  }
-
-  /* Edge-to-edge Get in touch button on mobile */
-  .sidebar .unicorn-btn {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    border-radius: 0;
-    /* Corner to corner feel? or keep rounded? User said edge to edge */
-  }
-
-  .sidebar-cta-wrapper {
-    display: block;
-    padding-top: 2rem;
-    /* Give it some breathing room from above */
-  }
-}
-
 .footer-nav {
   display: flex;
   flex-direction: column;
@@ -2199,44 +2113,118 @@ body {
     height: auto;
     border-right: none;
     border-bottom: none;
+    padding: 0;
+    padding-top: 3.5rem;
     padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
     --sidebar-px: 0px;
+    align-items: center;
+    overflow: visible;
+    /* Ensure scaled elements aren't clipped */
   }
 
   .sidebar-hero,
-  .sidebar-body,
+  .sidebar-body {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar-description {
+    text-align: center;
+    max-width: 20rem;
+    /* Compact for mobile centering */
+  }
+
   .sidebar-footer {
     width: 100%;
+    padding-top: 1rem;
+    text-align: left;
   }
 
   .sidebar.sidebar-hidden {
     height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin: 0;
+    padding: 0;
     opacity: 0;
     visibility: hidden;
     overflow: hidden;
     pointer-events: none;
-    border-bottom-color: transparent;
   }
 
-  .sidebar>* {
-    max-width: 100%;
+  /* Centered logo */
+  .sidebar-logo {
+    text-align: center;
+    display: block;
+    width: 100%;
   }
 
-  .sidebar-hero {
-    align-items: flex-start;
+  /* Footer Accordion Styles */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .footer-col-toggle {
+    display: flex;
+    padding: 0.75rem var(--space-md);
+    border-top: 1px solid var(--color-border, rgba(128, 128, 128, 0.2));
+    width: 100%;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-col>.footer-col-title {
+    display: none;
+  }
+
+  .footer-nav-collapsible {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    padding: 0 var(--space-md);
+  }
+
+  .footer-nav-collapsible.expanded {
+    max-height: 500px;
+    opacity: 1;
+    padding-bottom: 1rem;
+  }
+
+  /* Substantial Button on Mobile */
+  .sidebar-cta-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem 0;
+    opacity: 1 !important;
+    /* Force visibility */
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .sidebar .unicorn-btn {
+    width: 110%;
+    height: 5rem;
+    margin: 0;
+    position: relative;
+    border-radius: 9999px;
+    z-index: 10;
   }
 
   .sidebar-nav,
-  .social-icons,
-  .project-link-item {
+  .social-icons {
     text-align: left;
     padding-left: 0;
     padding-right: 0;
