@@ -29,7 +29,6 @@ intro: "DeFi Exchange & borrow/lending platform"
 problem: "The existing interface felt fragmented and inconsistent, making complex DeFi operations confusing for users. The brand identity lacked cohesion, and the mobile experience was an afterthought."
 solution: "Led a complete UI overhaul with a unified design language, built a comprehensive design tokens system for consistency at scale, and reimagined the mobile-first approach to make DeFi accessible anywhere."
 scope:
-  - Brand Refresh
   - Design System
   - Design Tokens
   - UI/UX Design
