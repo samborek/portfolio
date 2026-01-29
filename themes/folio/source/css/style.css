@@ -582,6 +582,10 @@ body {
 
   .footer-col-toggle {
     display: flex;
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding: 1rem 2rem;
   }
 
   .footer-col>.footer-col-title {
@@ -595,12 +599,14 @@ body {
     opacity: 0;
     transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
     margin-top: 0;
+    padding: 0 0.5rem;
   }
 
   .footer-nav-collapsible.expanded {
     max-height: 500px;
     opacity: 1;
     margin-top: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   /* Edge-to-edge Get in touch button on mobile */
