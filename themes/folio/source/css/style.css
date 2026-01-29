@@ -3080,7 +3080,7 @@ body.project-page {
   font-size: var(--size-md);
   line-height: 1.6;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-xl);
 }
 
 /* Final Project Info Grid Refinements (2200px wide) */
