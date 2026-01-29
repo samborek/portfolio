@@ -12,6 +12,11 @@
                                     <%= page.back_label || theme.back_label || 'Back' %>
                                 </span>
                             </a>
+                            <!-- Font Switcher -->
+                            <div class="font-switcher" style="margin-left: var(--space-md);">
+                                <button class="font-switch-btn active" data-font="quablo">Q</button>
+                                <button class="font-switch-btn" data-font="gazpacho">G</button>
+                            </div>
                         </div>
                         <% if (page.scope) { %>
                             <div class="project-scope desktop-only">

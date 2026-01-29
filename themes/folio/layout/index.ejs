@@ -15,6 +15,12 @@
                         <div class="sidebar-hero">
                             <span class="project-link-item"
                                 style="text-transform: lowercase; border-bottom: none;">Michal Sambora — sambø</span>
+
+                            <!-- Font Switcher -->
+                            <div class="font-switcher">
+                                <button class="font-switch-btn active" data-font="quablo">Q</button>
+                                <button class="font-switch-btn" data-font="gazpacho">G</button>
+                            </div>
                         </div>
                         <h1 class="sidebar-title">
                             <%= theme.hero_title || "I'm  Michal Sambora" %>
@@ -294,7 +300,7 @@
                                         <div class="experience-intro" id="experience-intro">
                                             <%= theme.experience.intro_variants[0] %>
                                         </div>
-                                        <script>(function () { const variants =<%- JSON.stringify(theme.experience.intro_variants) %>; const randomIndex = Math.floor(Math.random() * variants.length); document.getElementById('experience-intro').textContent = variants[randomIndex]; })();</script>
+                                        <script>(function () { const variants =<% - JSON.stringify(theme.experience.intro_variants) %>; const randomIndex = Math.floor(Math.random() * variants.length); document.getElementById('experience-intro').textContent = variants[randomIndex]; })();</script>
                                         <div class="experience-timeline">
                                             <% theme.experience.timeline.forEach(function(item) { %>
                                                 <div class="timeline-item">

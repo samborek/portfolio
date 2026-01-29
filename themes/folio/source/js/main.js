@@ -25,6 +25,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- Font Toggle ---
+  const fontBtns = document.querySelectorAll('.font-switch-btn');
+  const storedFont = localStorage.getItem('font-display') || 'quablo';
+
+  const updateFont = (font) => {
+    document.documentElement.setAttribute('data-font', font);
+    localStorage.setItem('font-display', font);
+    fontBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.font === font);
+    });
+  };
+
+  // Initialize font
+  updateFont(storedFont);
+
+  fontBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      updateFont(btn.dataset.font);
+    });
+  });
+
   // --- Mobile Navigation ---
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
   const sidebar = document.querySelector('.sidebar');

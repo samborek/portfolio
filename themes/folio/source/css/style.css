@@ -41,6 +41,14 @@
   font-display: block;
 }
 
+@font-face {
+  font-family: 'Quablo';
+  src: url('/font/Quablo-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
 /* CSS Variables */
 :root {
   /* Light Theme Colors */
@@ -52,7 +60,9 @@
   --color-accent: #000000;
 
   /* Typography */
-  --font-display: 'Gazpacho', Georgia, serif;
+  --font-display-gazpacho: 'Gazpacho', Georgia, serif;
+  --font-display-quablo: 'Quablo', 'Gazpacho', Georgia, serif;
+  --font-display: var(--font-display-quablo);
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
 
@@ -99,6 +109,58 @@
   /* Smaller items (Nested images, small cards) */
   --radius-full: 999px;
   /* Pills, circles */
+}
+
+[data-font="gazpacho"] {
+  --font-display: var(--font-display-gazpacho);
+}
+
+[data-font="quablo"] {
+  --font-display: var(--font-display-quablo);
+}
+
+/* Font Switcher UI */
+.font-switcher {
+  display: flex;
+  gap: 4px;
+  background: var(--color-bg-secondary);
+  padding: 2px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  align-items: center;
+}
+
+.font-switch-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.font-switch-btn.active {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.sidebar-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md) !important;
+}
+
+.project-header-left {
+  display: flex;
+  align-items: center;
 }
 
 [data-theme="dark"] {
