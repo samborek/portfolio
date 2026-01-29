@@ -161,8 +161,7 @@
   text-align: center;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-lg) 0 var(--space-xl);
-  /* Reduced top padding */
+  padding: var(--space-lg) 0 var(--space-xs);
 }
 
 [data-header-style="centered"] .header-content-default {
@@ -203,11 +202,45 @@
 
 .centered-intro {
   font-family: var(--font-body);
-  font-size: var(--size-base);
-  line-height: 1.5;
-  color: var(--color-text-muted);
+  font-size: var(--size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+  margin-top: 0;
+  margin-bottom: var(--space-xs);
+  /* Very tight */
+}
+
+/* Centered Mode Layout Overrides */
+[data-header-style="centered"] .project-header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+[data-header-style="centered"] .project-content {
+  display: block;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
-  margin: 0;
+  max-width: 800px;
+  padding-top: 0;
+}
+
+[data-header-style="centered"] .project-body {
+  text-align: center;
+}
+
+[data-header-style="centered"] .project-body p {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 700px;
+  margin-bottom: var(--space-md);
+}
+
+[data-header-style="centered"] .project-body p:first-child {
+  margin-top: 0;
 }
 
 .sidebar-hero {
