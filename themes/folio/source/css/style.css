@@ -211,14 +211,31 @@
   /* Very tight */
 }
 
-/* Gazpacho No-Caps Variant */
+/* Gazpacho Sentence-Case Variant & Headline Constraints */
 [data-font="gazpacho"] .project-title,
-[data-font="gazpacho"] .project-title-centered,
+[data-font="gazpacho"] .project-title-centered {
+  text-transform: lowercase;
+  letter-spacing: -0.01em;
+  /* Tighter for Display font */
+  max-width: 650px;
+  /* Force break into two lines */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[data-font="gazpacho"] .project-title::first-letter,
+[data-font="gazpacho"] .project-title-centered::first-letter {
+  text-transform: uppercase;
+}
+
 [data-font="gazpacho"] .centered-meta,
 [data-font="gazpacho"] .centered-intro {
   text-transform: lowercase;
-  letter-spacing: -0.01em;
-  /* Tighter for lowercase Display font */
+}
+
+[data-font="gazpacho"] .centered-meta::first-letter,
+[data-font="gazpacho"] .centered-intro::first-letter {
+  text-transform: uppercase;
 }
 
 /* Centered Mode Layout Overrides */
