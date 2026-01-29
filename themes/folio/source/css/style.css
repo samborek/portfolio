@@ -467,6 +467,9 @@ body {
   margin-left: -1.4rem;
   display: block;
   position: relative;
+  /* Mask any square flash during Unicorn canvas initialization */
+  border-radius: 9999px;
+  overflow: hidden;
 }
 
 .sidebar .unicorn-btn canvas {
