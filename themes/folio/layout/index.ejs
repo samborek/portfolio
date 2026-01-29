@@ -24,7 +24,7 @@
                             <a href="<%= theme.connect.cta.link %>" class="unicorn-btn sidebar-btn"
                                 data-us-project-src="/button.json" data-us-scale="0.6" data-us-dpi="3.0"
                                 data-us-production="true" target="_blank" rel="noopener">
-                                <span class="btn-text">Get in touch</span>
+                                <span class="btn-text">Schedule a call</span>
                             </a>
                         </div>
                     </div>
@@ -32,14 +32,15 @@
                     <div class="sidebar-footer">
                         <div class="footer-grid">
                             <div class="footer-col">
-                                <h3 class="footer-col-title">Works</h3>
+                                <h3 class="footer-col-title">INDEX</h3>
                                 <nav class="footer-nav">
                                     <% projects.forEach(function(project, index) { %>
                                         <a href="#project-<%= index %>" class="footer-link-item project-link-item">
                                             <%= project.short_title || project.title %>
                                         </a>
                                         <% }); %>
-                                            <a href="#experience" class="footer-link-item">More</a>
+                                            <a href="#more-works" class="footer-link-item">More Works</a>
+                                            <a href="#experience" class="footer-link-item">Experience</a>
                                 </nav>
                             </div>
                             <div class="footer-col">
@@ -281,7 +282,7 @@
                             <% }); %>
 
                                 <!-- MORE WORK SECTION -->
-                                <section class="more-work-section">
+                                <section class="more-work-section" id="more-works">
                                     <div class="more-work-grid">
                                         <a href="https://www.behance.net/samborek" target="_blank"
                                             class="work-tile intro-tile">

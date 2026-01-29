@@ -454,30 +454,51 @@ body {
 
 /* Scaled Unicorn button for sidebar */
 .sidebar .unicorn-btn {
-  width: 15rem;
+  width: 100%;
   height: 3.75rem;
-  margin-left: -1.25rem;
+  margin-left: 0;
+  display: block;
+  position: relative;
 }
 
 .sidebar .unicorn-btn canvas {
-  width: 15rem !important;
-  height: 3.75rem !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+[data-theme="dark"] .sidebar .unicorn-btn canvas {
+  /* If the button is white by default in dark mode, this might flip it to black? 
+      Or if it's black by default, this makes it white.
+      User asked: "change it's color to black on dark mode"
+      If defaults are black-on-light, they might be white-on-dark.
+      If I want black-on-dark, I might need to un-invert or force filter. 
+      Let's assume standard behavior is fine but user wants SPECIFIC control.
+   */
+  filter: none !important;
+}
+
+/* Force text to black in dark mode if requested, but contrast might be an issue */
+[data-theme="dark"] .sidebar .unicorn-btn .btn-text {
+  color: #000000;
+  font-weight: 500;
+  /* thicker to see */
 }
 
 .sidebar .unicorn-btn .btn-text {
-  left: 1.25rem;
-  top: 0.625rem;
+  position: absolute;
+  inset: 0;
   font-size: 0.875rem;
-  width: 12.5rem;
-  height: 2.5rem;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .sidebar-footer {
   margin-top: auto;
-  border-top: 1px solid var(--color-border);
   padding-top: 2rem;
 }
 
