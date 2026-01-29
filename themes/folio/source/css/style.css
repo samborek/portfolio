@@ -575,17 +575,42 @@ body {
 
 /* Mobile styles */
 @media (max-width: 1024px) {
+  .sidebar {
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: none;
+    padding: 0;
+    /* Remove padding to allow edge-to-edge elements */
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    --sidebar-px: 0px;
+  }
+
+  .sidebar-hero,
+  .sidebar-body {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    width: 100%;
+  }
+
+  .sidebar-footer {
+    width: 100%;
+    padding-top: 1rem;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 0;
+    /* No gap between sections with lines */
   }
 
   .footer-col-toggle {
     display: flex;
-    width: calc(100% + 4rem);
-    margin-left: -2rem;
-    margin-right: -2rem;
-    padding: 1rem 2rem;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
   }
 
   .footer-col>.footer-col-title {
@@ -599,25 +624,29 @@ body {
     opacity: 0;
     transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
     margin-top: 0;
-    padding: 0 0.5rem;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
   }
 
   .footer-nav-collapsible.expanded {
     max-height: 500px;
     opacity: 1;
     margin-top: 0.5rem;
-    margin-bottom: 1rem;
   }
 
   /* Edge-to-edge Get in touch button on mobile */
   .sidebar .unicorn-btn {
-    width: calc(100% + 4rem);
-    margin-left: -2rem;
-    margin-right: -2rem;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    /* Corner to corner feel? or keep rounded? User said edge to edge */
   }
 
   .sidebar-cta-wrapper {
     display: block;
+    padding-top: 2rem;
+    /* Give it some breathing room from above */
   }
 }
 
@@ -2162,11 +2191,18 @@ body {
     border-right: none;
     border-bottom: none;
     padding-bottom: 2rem;
-    align-items: flex-start;
-    text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     padding-left: var(--space-md);
     padding-right: var(--space-md);
     --sidebar-px: 0px;
+  }
+
+  .sidebar-hero,
+  .sidebar-body,
+  .sidebar-footer {
+    width: 100%;
   }
 
   .sidebar.sidebar-hidden {
