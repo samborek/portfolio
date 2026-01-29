@@ -155,17 +155,13 @@
 }
 
 /* Centered Header Styles */
+/* Centered Header Styles (Now Default) */
 .header-content-centered {
-  display: none;
-  /* Hidden by default */
+  display: flex;
   text-align: center;
   flex-direction: column;
   align-items: center;
   padding: var(--space-lg) 0 var(--space-xs);
-}
-
-[data-header-style="centered"] .header-content-default {
-  display: none;
 }
 
 [data-header-style="centered"] .header-content-centered {
@@ -179,21 +175,27 @@
   /* Even tighter margin */
   font-family: var(--font-body);
   font-size: var(--size-xs);
-  text-transform: uppercase;
+  text-transform: capitalize;
+  /* Title Case */
   letter-spacing: 0.1em;
   color: var(--color-text-muted);
 }
 
 .project-title-centered {
-  font-family: var(--font-display);
+  font-family: 'Gazpacho', serif;
   font-size: clamp(2.5rem, 8vw, 5rem);
   /* Scalable huge size */
   line-height: 0.95;
   margin: 0 0 var(--space-sm);
   /* Reduced margin */
-  text-transform: uppercase;
-  max-width: 900px;
+  text-transform: capitalize;
+  /* Title Case */
+  letter-spacing: -0.01em;
+  max-width: 650px;
   font-weight: 600;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .centered-intro-wrapper {
@@ -204,7 +206,8 @@
 .centered-intro {
   font-family: var(--font-body);
   font-size: var(--size-sm);
-  text-transform: uppercase;
+  text-transform: capitalize;
+  /* Title Case */
   letter-spacing: 0.05em;
   color: var(--color-text);
   margin-top: 0;
@@ -212,69 +215,16 @@
   /* Very tight */
 }
 
-/* Gazpacho Title-Case Variant & Headline Constraints */
-[data-font="gazpacho"] .project-title,
-[data-font="gazpacho"] .project-title-centered,
-[data-font="gazpacho"] .project-body h2,
-[data-font="gazpacho"] .project-body h3 {
+/* Internal Project Headings - Title Case */
+.project-body h2,
+.project-body h3 {
+  font-family: 'Gazpacho', serif;
   text-transform: capitalize;
   letter-spacing: -0.01em;
-  /* Tighter for Display font */
   max-width: 650px;
-  /* Force break into two lines */
 }
 
-/* Ensure Gazpacho headers in default layout stay left-aligned */
-[data-font="gazpacho"] .project-title {
-  margin-left: 0;
-  margin-right: auto;
-  text-align: left;
-}
-
-/* Only center when explicitly intended (centered layout) */
-[data-font="gazpacho"] .project-title-centered {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-[data-font="gazpacho"] .centered-meta,
-[data-font="gazpacho"] .centered-intro {
-  text-transform: capitalize;
-}
-
-
-/* Centered Mode Layout Overrides */
-[data-header-style="centered"] .project-header {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-[data-header-style="centered"] .project-content {
-  display: block;
-  margin-top: 0;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  max-width: 800px;
-  padding-top: 0;
-}
-
-[data-header-style="centered"] .project-body {
-  text-align: left;
-}
-
-[data-header-style="centered"] .project-body p {
-  text-align: left;
-  margin-left: 0;
-  margin-right: 0;
-  max-width: 100%;
-  margin-bottom: var(--space-md);
-}
-
-[data-header-style="centered"] .project-body p:first-child {
-  margin-top: 0;
-}
+/* Consolidated Centered Header - Cleanup complete */
 
 .centered-scope {
   display: flex !important;
