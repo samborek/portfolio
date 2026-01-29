@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Sidebar & ScrollSpy ---
   const homeView = document.getElementById('home-view');
-  const sections = document.querySelectorAll('section[id^="project-"], #experience, #clients, #connect');
+  const sections = document.querySelectorAll('section[id^="project-"], #more-works, #experience, #clients, #connect');
   const navLinks = document.querySelectorAll('.project-link-item, .footer-link-item');
 
   if (homeView && sections.length && navLinks.length) {
