@@ -256,6 +256,10 @@
   --color-accent: #ffffff;
 }
 
+[data-theme="dark"] .project-section {
+  border: none;
+}
+
 /* Theme-specific visibility utilities */
 .theme-dark-only {
   display: none !important;
@@ -438,6 +442,10 @@ body {
     display: none !important;
   }
 
+  .sidebar-logo {
+    text-align: right;
+  }
+
   .sidebar-description {
     text-align: right;
   }
@@ -445,6 +453,23 @@ body {
   .social-icons {
     justify-content: flex-end;
     width: 100%;
+  }
+
+  /* Fix for the Get in Touch button alignment */
+  .sidebar-cta-wrapper {
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+  }
+
+  .sidebar .unicorn-btn {
+    width: 14rem !important;
+    height: 4.5rem !important;
+    margin: 0 !important;
+    /* Ensure no margins interfere */
+    margin-right: -2rem !important;
+    /* Specific wide-screen alignment exception */
   }
 }
 
