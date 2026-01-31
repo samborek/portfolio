@@ -3517,6 +3517,26 @@ body.project-page {
   font-weight: 400;
 }
 
+.intro-tile.dribbble-tile {
+  background: #ea4c89;
+  border-color: #ea4c89;
+  color: white;
+}
+
+.intro-tile.dribbble-tile .intro-title {
+  color: white !important;
+}
+
+.intro-tile.dribbble-tile .intro-subtitle {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.intro-tile.dribbble-tile:hover {
+  background: #f06297;
+  border-color: #f06297;
+  box-shadow: 0 15px 35px rgba(234, 76, 137, 0.3);
+}
+
 .intro-tile:hover .intro-arrow {
   transform: translate(4px, -4px);
 }
