@@ -24,7 +24,11 @@ scope:
   - App Design
   - IoT Integration
   - UI/UX Design
-credits: "Plaant Team"
+credits:
+  - role: Brand
+    name: Kamil Koziel
+  - role: Desktop
+    name: Krzysztof Krupa
 testimonial:
   quote: "The interface makes complex nutrient management feel as simple as checking the weather. It has completely transformed how our users interact with their indoor gardens."
   author: "Elara Vance"

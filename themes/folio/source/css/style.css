@@ -181,6 +181,52 @@
   color: var(--color-text-muted);
 }
 
+/* Project Credits Section */
+.project-credits {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  max-width: 650px;
+}
+
+.credits-heading {
+  font-family: var(--font-body);
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+  font-weight: 500;
+}
+
+.credits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.credits-row {
+  display: flex;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.credit-role {
+  color: var(--color-text-muted);
+}
+
+.credit-role::after {
+  content: " —";
+}
+
+.credit-name {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
 .project-title-centered {
   font-family: 'Gazpacho', serif;
   font-size: clamp(2.5rem, 8vw, 5rem);

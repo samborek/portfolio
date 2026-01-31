@@ -60,27 +60,52 @@
                 <div class="project-content">
                     <div class="project-body">
                         <%- page.content %>
+                            <% if (page.credits) { %>
+                                <div class="project-credits">
+                                    <h4 class="credits-heading">Credits</h4>
+                                    <div class="credits-list">
+                                        <% if (Array.isArray(page.credits)) { %>
+                                            <% page.credits.forEach(function(credit) { %>
+                                                <div class="credits-row">
+                                                    <span class="credit-role">
+                                                        <%= credit.role %>
+                                                    </span>
+                                                    <span class="credit-name">
+                                                        <%= credit.name %>
+                                                    </span>
+                                                </div>
+                                                <% }); %>
+                                                    <% } else { %>
+                                                        <div class="credits-row">
+                                                            <span class="credit-name">
+                                                                <%= page.credits %>
+                                                            </span>
+                                                        </div>
+                                                        <% } %>
+                                    </div>
+                                </div>
+                                <% } %>
 
-                            <% if (false && (page.problem || page.solution)) { %>
-                                <div class="project-details--top">
-                                    <% if (page.problem) { %>
-                                        <div class="detail">
-                                            <h4>Problem</h4>
-                                            <p>
-                                                <%= page.problem %>
-                                            </p>
-                                        </div>
-                                        <% } %>
-                                            <% if (page.solution) { %>
+                                    <% if (false && (page.problem || page.solution)) { %>
+                                        <div class="project-details--top">
+                                            <% if (page.problem) { %>
                                                 <div class="detail">
-                                                    <h4>Solution</h4>
+                                                    <h4>Problem</h4>
                                                     <p>
-                                                        <%= page.solution %>
+                                                        <%= page.problem %>
                                                     </p>
                                                 </div>
                                                 <% } %>
-                                </div>
-                                <% } %>
+                                                    <% if (page.solution) { %>
+                                                        <div class="detail">
+                                                            <h4>Solution</h4>
+                                                            <p>
+                                                                <%= page.solution %>
+                                                            </p>
+                                                        </div>
+                                                        <% } %>
+                                        </div>
+                                        <% } %>
                     </div>
                 </div>
 
