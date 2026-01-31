@@ -32,3 +32,5 @@ when: "January 2023"
 
 
 HydraDX is a next-generation DeFi protocol designed to bring an ocean of liquidity to Polkadot. The Omnipool is the core innovation - a single pool that contains all assets, enabling efficient trading with minimal slippage.
+
+The project required a specific design style for the interface, aimed at the founders and community invested in it. This was complemented by a full design system with design tokens built on Token Studio, plus a fully scalable UI for native mobile and web apps, landing page, social media post templates, and more.
