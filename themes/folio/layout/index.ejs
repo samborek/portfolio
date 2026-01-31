@@ -453,10 +453,12 @@
                                                                 <p class="project-info-text">
                                                                     <%= theme.connect.secondary_text %>
                                                                 </p>
-                                                                <a href="<%= theme.connect.guide_link.link %>"
-                                                                    class="connect-link">
-                                                                    <%= theme.connect.guide_link.text %>
-                                                                </a>
+                                                                <% if (theme.connect.guide_link) { %>
+                                                                    <a href="<%= theme.connect.guide_link.link %>"
+                                                                        class="connect-link">
+                                                                        <%= theme.connect.guide_link.text %>
+                                                                    </a>
+                                                                    <% } %>
                                                             </div>
                                                         </div>
                                                     </div>
