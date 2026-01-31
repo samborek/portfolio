@@ -39,4 +39,4 @@ when: 2024/25
 website: https://next-hydration.netlify.app/
 ---
 
-Complete redesign of Hydration's DeFi exchange and borrow/lending platform. The project involved rethinking the entire user experience from the ground up, establishing a robust design tokens architecture, and delivering a native-feeling mobile experience.
+Complete redesign of former HydraDX interface after rebrand to Hydration. The project involved expanding the user experience in multiple areas, establishing a robust design tokens architecture, and delivering a native feeling mobile of experience.

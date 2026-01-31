@@ -34,5 +34,5 @@ credits:
 
 
 
-Plaant aims to bridge the gap between urban living and nature. The goal was to create a brand that feels alive and breathable, moving away from sterile industrial aesthetics toward a "living" design language.
+Plaant aims to bridge the gap between urban living and nature. The goal was to create interface that feels simple, clean yet alive and modern. Project included cooperation with brand designer and full scalable UI for native mobile ap and web app.
 
