@@ -3517,19 +3517,6 @@ body.project-page {
   font-weight: 400;
 }
 
-.intro-logo {
-  width: 32px;
-  height: 32px;
-  color: var(--color-text-muted);
-  opacity: 0.8;
-  transition: opacity var(--transition-short), color var(--transition-short);
-}
-
-.intro-tile:hover .intro-logo {
-  opacity: 1;
-  color: var(--color-text);
-}
-
 .intro-tile:hover .intro-arrow {
   transform: translate(4px, -4px);
 }
