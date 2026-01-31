@@ -1594,7 +1594,7 @@ body {
 
 /* Experience section container */
 #experience {
-  background: color-mix(in srgb, var(--color-bg-secondary), transparent 30%);
+  background: color-mix(in srgb, var(--color-bg-secondary), transparent 50%);
   border-radius: var(--radius-xl);
   padding: 3.75rem 2.5rem;
   max-width: var(--max-project-width);
