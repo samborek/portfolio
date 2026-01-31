@@ -32,6 +32,9 @@ scope:
   - Design System
   - Design Tokens
   - UI/UX Design
+credits:
+  - role: Brand
+    name: Properly Studio
 when: 2024/25
 website: https://next-hydration.netlify.app/
 ---
