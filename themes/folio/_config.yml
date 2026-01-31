@@ -47,14 +47,11 @@ events:
 connect:
   title: "Connect"
   intro: "Let's make it happen — book a quick call and we'll take it from there."
-  secondary_text: "While you wait, check out my Notion — a mini folio with more context on how I work and what collaboration looks like."
+  secondary_text: "While you wait, feel free to prepare any documentation, Figma files or other details that might help us get on the same page quickly. Chat soon!"
   cta:
     text: "Schedule a call"
     link: "https://calendly.com/sambora/30min"
   email: "michal@maise.io"
-  guide_link:
-    text: "Notion mini folio & cooperation"
-    link: "https://maiseteam.notion.site/Design-Portfolio-Cooperation-dd73df909c3c49f3b56162923c533a14?source=copy_link"
 
 # Social links
 social:
