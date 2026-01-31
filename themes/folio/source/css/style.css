@@ -187,6 +187,10 @@
   padding-top: var(--space-md);
   border-top: 1px solid var(--color-border);
   max-width: 650px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: baseline;
 }
 
 .credits-heading {
@@ -195,19 +199,19 @@
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-sm);
+  margin-bottom: 0;
   font-weight: 500;
 }
 
 .credits-list {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: var(--space-md);
 }
 
 .credits-row {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   font-family: var(--font-body);
   font-size: var(--size-xs);
   text-transform: uppercase;
@@ -219,7 +223,7 @@
 }
 
 .credit-role::after {
-  content: " —";
+  content: ":";
 }
 
 .credit-name {
