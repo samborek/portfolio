@@ -14,7 +14,7 @@
   src: url('/font/GazpachoRegular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -22,7 +22,7 @@
   src: url('/font/GazpachoMedium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -30,7 +30,7 @@
   src: url('/font/GazpachoBold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -38,7 +38,7 @@
   src: url('/font/GazpachoBlack.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -46,8 +46,9 @@
   src: url('/font/Quablo-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
+
 
 /* CSS Variables */
 :root {
@@ -64,7 +65,6 @@
   --font-display-quablo: 'Quablo', 'Gazpacho', Georgia, serif;
   --font-display: var(--font-display-gazpacho);
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-
 
   /* Sizes */
   --size-xs: 0.75rem;
@@ -85,14 +85,11 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
   --section-gap: 2rem;
-  /* Gap between major sections */
-
 
   /* Layout */
   --sidebar-width: 20rem;
   --sidebar-px: var(--space-lg);
   --max-project-width: 100rem;
-  /* 1600px */
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -100,16 +97,15 @@
 
   /* Border Radii */
   --radius-xl: 2.5rem;
-  /* Main sections (Experience, Connect) */
   --radius-l: 1.5rem;
-  /* Main containers (Project sections, Playground items) */
   --radius-m: 1rem;
-  /* Secondary containers (Carousels) */
   --radius-s: 0.75rem;
-  /* Smaller items (Nested images, small cards) */
   --radius-full: 999px;
-  /* Pills, circles */
 }
+
+
+
+
 
 [data-font="gazpacho"] {
   --font-display: var(--font-display-gazpacho);
@@ -372,12 +368,14 @@ body {
   font-size: var(--size-base);
   line-height: 1.6;
   color: var(--color-text);
-  background: transparent;
+  background: var(--color-bg);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  transition: opacity 0.4s ease;
   overflow-x: hidden;
   width: 100vw;
+}
+
+body.index-page {
   position: fixed;
   /* Strictly lock body on mobile to prevent overscroll, main-content handles scroll inside */
 }
@@ -389,9 +387,6 @@ body {
   overflow: hidden;
 }
 
-.fonts-loading body {
-  opacity: 0;
-}
 
 
 /* Hide default header/footer on homepage */
@@ -420,9 +415,6 @@ body {
   position: relative;
   z-index: 1;
   overflow: visible;
-  /* Use a more specific transition that doesn't trigger on initial width calculation if possible, 
-     but at least ensure it's smooth and the base layout is solid */
-  transition: grid-template-columns 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
 
 .portfolio-wrapper.sidebar-hidden {
@@ -539,9 +531,7 @@ body {
   text-align: left;
   overflow: hidden;
   border-right: none;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.4s ease,
-    visibility 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sidebar.sidebar-hidden {
@@ -1308,8 +1298,7 @@ body {
   gap: 0.7rem;
   pointer-events: none;
   /* Let events pass through the container */
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    opacity 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 }
 
@@ -2120,12 +2109,20 @@ body {
     grid-template-columns: 1fr;
     margin: 0;
     width: 100%;
+    /* Ensure no independent scroll */
+    overflow: visible;
+    height: auto;
+    display: flex;
+    flex-direction: column;
   }
 
   .projects-column {
     padding-left: 0;
     padding-right: 0;
     --project-carousel-to-info-gap: 0px;
+    /* Ensure no independent scroll */
+    overflow: visible;
+    height: auto;
   }
 
   .project-section {
@@ -2242,6 +2239,8 @@ body {
   .sidebar {
     position: relative;
     height: auto;
+    min-height: auto;
+    top: unset;
     border-right: none;
     border-bottom: none;
     padding: 0;
@@ -2253,7 +2252,9 @@ body {
     --sidebar-px: 0px;
     align-items: center;
     overflow: visible;
-    /* Ensure scaled elements aren't clipped */
+    /* Not sticky on mobile - scrolls with page */
+    /* Ensure no max-height or scroll */
+    max-height: none;
   }
 
   .sidebar-hero,
@@ -2464,10 +2465,9 @@ body {
 }
 
 body.project-page {
-  /* Scroll fix: Override global body { position: fixed } */
-  position: relative !important;
-  overflow-y: auto !important;
-  height: auto !important;
+  /* Scroll fix: Base body is now position: relative */
+  overflow-y: auto;
+  height: auto;
   width: 100%;
 }
 
@@ -2930,7 +2930,7 @@ body.project-page {
   display: flex;
   width: 200vw;
   height: 100dvh;
-  transition: transform 1.0s cubic-bezier(0.6, 0.05, 0.01, 0.99);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
   touch-action: pan-y;
   /* Prevent horizontal swipe */
@@ -2965,18 +2965,8 @@ body.project-page {
 .unicorn-scene-skeleton {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(90deg,
-      rgba(150, 150, 150, 0.1) 0%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(150, 150, 150, 0.1) 100%),
-    url('/images/work/hydrationblur.jpg');
-  background-size: 200% 100%, cover;
-  background-position: 0 0, center;
-  filter: blur(25px);
-  opacity: 0.95;
-  animation: shimmer 1s ease-in-out infinite;
-  transition: opacity 0.3s ease;
+  background-color: var(--color-bg-secondary);
+  transition: opacity 0.2s ease;
   pointer-events: none;
   z-index: 2;
 }
@@ -3096,8 +3086,8 @@ body.project-page {
 /* Section Entrance Animations */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(30px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 

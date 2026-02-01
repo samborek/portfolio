@@ -1,4 +1,123 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- Subtle Page Transitions ---
+  const pageCover = document.getElementById('page-cover');
+  if (pageCover) {
+    // Entrance: Fade out on load
+    pageCover.style.transition = 'opacity 0.15s ease-out';
+    pageCover.style.opacity = '0';
+    setTimeout(() => {
+      if (pageCover.parentNode) pageCover.style.display = 'none';
+    }, 200);
+  }
+
+  // --- Scroll Restoration Logic ---
+  const saveScrollState = () => {
+    const homeView = document.getElementById('home-view');
+    const playgroundView = document.getElementById('playground-view');
+    const activeBtn = document.querySelector('.tab-button.active');
+
+    if (!homeView && !playgroundView) return;
+
+    const state = {
+      activeTab: activeBtn ? activeBtn.dataset.tab : 'home',
+      homeScroll: homeView ? homeView.scrollTop : 0,
+      playgroundScroll: playgroundView ? playgroundView.scrollTop : 0,
+      timestamp: Date.now(),
+      url: window.location.pathname
+    };
+    sessionStorage.setItem('folio_scroll_state', JSON.stringify(state));
+  };
+
+  const restoreScrollState = () => {
+    const saved = sessionStorage.getItem('folio_scroll_state');
+    if (!saved) return;
+
+    try {
+      const state = JSON.parse(saved);
+
+      // Only restore if we are on the same page (index) 
+      // and it was saved recently (within 1 hour)
+      if (state.url !== window.location.pathname) return;
+      if (Date.now() - state.timestamp > 60 * 60 * 1000) return;
+
+      const homeView = document.getElementById('home-view');
+      const playgroundView = document.getElementById('playground-view');
+
+      // Restore Tab first if not already active
+      if (state.activeTab && state.activeTab !== 'home') {
+        const tabBtn = document.querySelector(`.tab-button[data-tab="${state.activeTab}"]`);
+        if (tabBtn) tabBtn.click();
+      }
+
+      // Restore Scroll Positions
+      // We use a small delay to ensure content has stabilized
+      setTimeout(() => {
+        if (homeView && state.homeScroll) {
+          homeView.scrollTo({ top: state.homeScroll, behavior: 'auto' });
+        }
+        if (playgroundView && state.playgroundScroll) {
+          playgroundView.scrollTo({ top: state.playgroundScroll, behavior: 'auto' });
+        }
+      }, 100);
+    } catch (e) {
+      console.error('Failed to restore scroll state', e);
+    }
+  };
+
+  // Intercept clicks for Exit transition
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const url = link.href;
+    const isInternal = url &&
+      url.startsWith(window.location.origin) &&
+      !link.target &&
+      !link.hasAttribute('download') &&
+      !url.includes('#') &&
+      !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+
+    if (isInternal && pageCover) {
+      // Save scroll position before navigating away
+      saveScrollState();
+
+      e.preventDefault();
+      pageCover.style.display = 'block';
+      // Force reflow
+      pageCover.offsetHeight;
+      pageCover.style.opacity = '1';
+
+      setTimeout(() => {
+        window.location.href = url;
+      }, 150); // Fast 150ms exit
+    }
+  });
+
+  // Also save on beforeunload for browser back/forward buttons and refreshes
+  window.addEventListener('beforeunload', saveScrollState);
+
+  // Initialize Restoration
+  // Small delay to let index.ejs tab logic initialize
+  if (document.getElementById('home-view')) {
+    restoreScrollState();
+  }
+
+  // --- Performance: Instant Link Prefetching ---
+  const prefetchUrls = new Set();
+  document.addEventListener('mouseover', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const url = link.href;
+    if (url && url.startsWith(window.location.origin) && !prefetchUrls.has(url) && !url.includes('#')) {
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = url;
+      document.head.appendChild(prefetchLink);
+      prefetchUrls.add(url);
+    }
+  }, { passive: true });
+
   // --- Theme Toggle ---
   const themeToggle = document.getElementById('theme-toggle');
   const storedTheme = localStorage.getItem('theme');
@@ -180,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Loading States (Images & Unicorn Studio) ---
-  const MIN_SKELETON_TIME = 600; // Consistent timing at 600ms
+  const MIN_SKELETON_TIME = 0; // Removed delay for instant show when cached
 
   // Standard Image Handler
   const handleImageLoad = (img) => {
