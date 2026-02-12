@@ -745,4 +745,37 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   initResumeHoverPreview();
+
+  // --- Copy Email Functionality ---
+  const copyEmailLinks = document.querySelectorAll('.copy-email-btn');
+  copyEmailLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const email = link.getAttribute('href').replace('mailto:', '');
+
+      navigator.clipboard.writeText(email).then(() => {
+        link.classList.add('copied');
+
+        setTimeout(() => {
+          link.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy email: ', err);
+        // Fallback for older browsers or if navigator.clipboard fails
+        const textArea = document.createElement("textarea");
+        textArea.value = email;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          link.classList.add('copied');
+          setTimeout(() => link.classList.remove('copied'), 2000);
+        } catch (copyErr) {
+          console.error('Fallback copy failed', copyErr);
+        }
+        document.body.removeChild(textArea);
+      });
+    });
+  });
 });

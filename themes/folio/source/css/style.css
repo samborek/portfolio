@@ -3561,3 +3561,46 @@ body.project-page {
     font-size: 1.75rem;
   }
 }
+
+/* Email Copy Tooltip */
+.copy-email-btn {
+  position: relative;
+  cursor: pointer;
+}
+
+.copy-email-btn::after {
+  content: 'Email Copied!';
+  position: absolute;
+  top: -3.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-m);
+  font-size: var(--size-xs);
+  font-family: var(--font-body);
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 10000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.copy-email-btn.copied::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Ensure tooltip is visible above other elements */
+.sidebar .copy-email-btn::after {
+  top: -4rem;
+}
+
+.footer-link-item.copy-email-btn::after {
+  top: -3rem;
+}
