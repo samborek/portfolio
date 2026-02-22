@@ -63,7 +63,7 @@
   /* Typography */
   --font-display-gazpacho: 'Gazpacho', Georgia, serif;
   --font-display-quablo: 'Quablo', 'Gazpacho', Georgia, serif;
-  --font-display: var(--font-display-gazpacho);
+  --font-display: var(--font-display-quablo);
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Sizes */
@@ -229,7 +229,7 @@
 }
 
 .project-title-centered {
-  font-family: 'Gazpacho', serif;
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 8vw, 5rem);
   /* Scalable huge size */
   line-height: 0.95;
@@ -265,7 +265,7 @@
 /* Internal Project Headings - Title Case */
 .project-body h2,
 .project-body h3 {
-  font-family: 'Gazpacho', serif;
+  font-family: var(--font-display);
   text-transform: capitalize;
   letter-spacing: -0.01em;
   max-width: 650px;
@@ -3484,7 +3484,7 @@ body.project-page {
 }
 
 .intro-title {
-  font-family: var(--font-display-gazpacho);
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 2.5vw, 2rem);
   line-height: 1;
   font-weight: 500;
