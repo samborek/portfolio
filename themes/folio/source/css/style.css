@@ -3451,11 +3451,13 @@ body.project-page {
 }
 
 .intro-tile {
+  container-type: inline-size;
+  container-name: intro-tile;
   background: var(--color-bg-secondary);
   color: var(--color-text);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: var(--space-md);
   text-decoration: none;
   border: 1px solid var(--color-border);
@@ -3468,7 +3470,8 @@ body.project-page {
 }
 
 .intro-arrow {
-  font-size: 2.5rem;
+  /* scale with tile; balanced for ~270px tile and up */
+  font-size: clamp(1.15rem, 5cqw, 2.25rem);
   line-height: 1;
   font-weight: 300;
   transition: transform var(--transition-short, 200ms) ease;
@@ -3481,30 +3484,51 @@ body.project-page {
   flex-direction: column;
   gap: 0.125rem;
   text-align: left;
+  margin-top: auto;
+  min-height: 0;
+  flex-shrink: 0;
 }
 
 .intro-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
-  line-height: 1;
+  /* cqw scales with tile: prominent on big screens, min on small */
+  font-size: clamp(1.15rem, 4.5cqw, 2.35rem);
+  line-height: 1.1;
   font-weight: 500;
   margin: 0;
   color: inherit;
   word-wrap: break-word;
   max-width: 100%;
-}
-
-@media (max-width: 1200px) {
-  .intro-title {
-    font-size: clamp(1.4rem, 4vw, 1.8rem);
-  }
+  /* prevent title from pushing subtitle out of tile */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .intro-subtitle {
-  font-size: 1rem;
+  /* scales with container; compact so it doesn't get cut off */
+  font-size: clamp(1.0rem, 2.6cqw, 0.85rem);
   font-family: var(--font-body);
   color: var(--color-text-muted);
   font-weight: 400;
+  flex-shrink: 0;
+}
+
+/* Narrow tiles: shrink content so subtitle isn’t clipped */
+@container intro-tile (max-width: 360px) {
+  .intro-title {
+    font-size: clamp(0.85rem, 12.2cqw, 8rem);
+  }
+  .intro-subtitle {
+    font-size: clamp(1.0rem, 2.2cqw, 1.3rem);
+  }
+  .intro-arrow {
+    font-size: clamp(0.9rem, 4cqw, 1.35rem);
+  }
+  .intro-content {
+    gap: 0.0625rem;
+  }
 }
 
 .intro-tile:hover .intro-arrow {
@@ -3544,21 +3568,15 @@ body.project-page {
   }
 
   .intro-tile {
-    padding: var(--space-md);
+    padding: var(--space-sm);
   }
 
   .intro-title {
-    font-size: 1.5rem;
     line-height: 1.1;
   }
 
   .intro-subtitle {
-    font-size: 0.875rem;
     margin-top: 0;
-  }
-
-  .intro-arrow {
-    font-size: 1.75rem;
   }
 }
 
