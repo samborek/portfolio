@@ -173,11 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewportNode = emblaNode.querySelector('.embla__viewport');
     if (!viewportNode) return;
 
+    const isMobileViewport = window.innerWidth <= 900;
     const embla = EmblaCarousel(viewportNode, {
       loop: false,
-      align: 'start',
+      align: isMobileViewport ? 'center' : 'start',
       dragFree: false,
-      containScroll: 'trimSnaps'
+      containScroll: isMobileViewport ? 'keepSnaps' : 'trimSnaps'
     });
 
     // Integrated Progress Bar Logic
@@ -279,7 +280,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }, { passive: false });
     }
 
-    window.addEventListener('resize', () => embla.reInit());
+    window.addEventListener('resize', () => {
+      const wasMobile = isMobileViewport;
+      const nowMobile = window.innerWidth <= 900;
+      if (wasMobile !== nowMobile) {
+        embla.reInit({
+          align: nowMobile ? 'center' : 'start',
+          containScroll: nowMobile ? 'keepSnaps' : 'trimSnaps'
+        });
+      } else {
+        embla.reInit();
+      }
+    });
 
     // --- Auto-reset when out of view ---
     const resetObserver = new IntersectionObserver((entries) => {

@@ -2125,37 +2125,55 @@ body.index-page {
     height: auto;
   }
 
+  /* Edge-to-edge project sections on mobile */
   .project-section {
-    border-radius: var(--radius-l);
+    border-radius: 0 !important;
     border: none;
-    box-shadow: none;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: none !important;
     margin-bottom: var(--section-gap);
     width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    /* give same breathing room top as the bottom info padding */
+    padding-top: 0.75rem;
   }
 
+  /* Peek carousel: overflow visible so adjacent slides show */
   .project-carousel-wrapper {
     padding: 0;
-    margin: 0.5rem 0.5rem 0 0.5rem;
-    width: calc(100% - 1rem);
-    border-radius: var(--radius-m);
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+    overflow: visible;
     mask-image: none !important;
     -webkit-mask-image: none !important;
+  }
+
+  /* Clip only within the viewport so side slides peek through */
+  .embla {
+    overflow: visible;
   }
 
   .embla__viewport {
-    border-radius: var(--radius-m);
+    overflow: hidden;
+    border-radius: 0;
     mask-image: none !important;
     -webkit-mask-image: none !important;
   }
 
-  .project-section {
-    border-radius: var(--radius-l) !important;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+  /* Peek: main slide takes 88% width, remainder shows neighbours */
+  .embla__slide {
+    flex: 0 0 88%;
+    margin-right: 0;
   }
 
-  .embla__slide,
+  /* Gap between peeked slides — centered peek */
+  .embla__container {
+    gap: 0.5rem;
+    padding-inline: 5%;
+  }
+
   .project-info,
   .image-container,
   .image-skeleton,
@@ -2169,9 +2187,9 @@ body.index-page {
     max-width: 100%;
   }
 
-  /* Keep the scroll pill rounded */
+  /* Hide the scroll hint on mobile — peek layout makes it self-explanatory */
   .carousel-scroll-hint {
-    border-radius: var(--radius-xl) !important;
+    display: none !important;
   }
 
   .project-info {
@@ -3520,12 +3538,15 @@ body.project-page {
   .intro-title {
     font-size: clamp(0.85rem, 12.2cqw, 8rem);
   }
+
   .intro-subtitle {
     font-size: clamp(1.0rem, 2.2cqw, 1.3rem);
   }
+
   .intro-arrow {
     font-size: clamp(0.9rem, 4cqw, 1.35rem);
   }
+
   .intro-content {
     gap: 0.0625rem;
   }
