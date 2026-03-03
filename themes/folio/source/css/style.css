@@ -801,9 +801,13 @@ body.index-page {
   margin-bottom: var(--space-xl);
 }
 
+#project-0 {
+  padding-top: 0;
+}
+
 .project-section {
   margin-bottom: var(--section-gap);
-  padding-top: 1.25rem;
+  padding-top: 0;
   background: var(--color-bg-secondary);
   border-radius: var(--radius-l);
   overflow: hidden;
@@ -825,9 +829,8 @@ body.index-page {
 .project-carousel-wrapper {
   display: block;
   position: relative;
-  /* ~10% bigger: negative margins pull the wrapper wider than its container */
-  margin: -0.25rem -0.5rem 0 -0.5rem;
-  width: calc(100% + 1rem);
+  margin: 0.5rem 0.5rem 0 0.5rem;
+  width: calc(100% - 1rem);
   border-radius: var(--radius-m);
   overflow: hidden;
   --slider-cursor: ew-resize;
@@ -3420,20 +3423,26 @@ body.project-page {
 }
 
 /* More Work Section (Home) */
+#more-works .more-work-section:first-child {
+  margin-top: var(--space-lg);
+}
+
 .more-work-section {
-  padding-bottom: var(--space-2xl);
-  padding-left: var(--space-lg);
-  margin-bottom: var(--space-2xl);
-  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0;
+  margin-bottom: var(--space-lg);
   margin-top: var(--space-xl);
   overflow-x: visible;
+}
+
+#more-works-dribbble {
+  margin-top: var(--space-sm);
 }
 
 .more-work-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-md);
-  margin-left: 16px;
+  padding-top: 20px;
 }
 
 .work-tile {
@@ -3558,14 +3567,23 @@ body.project-page {
 }
 
 @media (max-width: 900px) {
+  #more-works .more-work-section:first-child {
+    margin-top: var(--space-2xl);
+  }
+
   .more-work-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
+  #more-works .more-work-section:first-child {
+    margin-top: var(--space-2xl);
+  }
+
   .more-work-section {
     margin-top: var(--space-xl);
+    padding-left: var(--space-md);
   }
 
   .more-work-grid {
@@ -3573,8 +3591,8 @@ body.project-page {
     overflow-x: visible;
     scroll-snap-type: x mandatory;
     gap: var(--space-sm);
-    padding-left: var(--space-md);
-    padding-bottom: var(--space-md);
+    padding-left: 0;
+    padding-bottom: 20px;
     padding-right: 0;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
