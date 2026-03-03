@@ -2140,6 +2140,11 @@ body.index-page {
     padding-top: 1.25rem;
   }
 
+  /* First project: same top padding as other sections on mobile */
+  #project-0 {
+    padding-top: 1.25rem;
+  }
+
   /* Peek carousel: overflow visible so adjacent slides show */
   .project-carousel-wrapper {
     padding: 0;
@@ -3453,7 +3458,6 @@ body.project-page {
   aspect-ratio: 4/3;
   background: var(--color-bg-secondary);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
-  border: 1px solid var(--color-border);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
@@ -3577,23 +3581,39 @@ body.project-page {
 }
 
 @media (max-width: 600px) {
+  /* Consolidate more-work spacing to 20px on mobile */
+  #more-works {
+    --more-work-mobile-space: 20px;
+    margin-top: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
   #more-works .more-work-section:first-child {
-    margin-top: var(--space-2xl);
+    margin-top: 0;
   }
 
   .more-work-section {
     margin-top: var(--space-xl);
-    padding-left: var(--space-md);
+    padding-inline: var(--more-work-mobile-space);
+  }
+
+  /* Single 20px gap between sections; remove first section margin-bottom to avoid doubling */
+  #more-works-behance {
+    margin-bottom: 0;
+  }
+
+  #more-works-dribbble {
+    margin-top: var(--more-work-mobile-space) !important;
   }
 
   .more-work-grid {
     display: flex;
     overflow-x: visible;
     scroll-snap-type: x mandatory;
-    gap: var(--space-sm);
-    padding-left: 0;
-    padding-bottom: 20px;
-    padding-right: 0;
+    gap: var(--more-work-mobile-space);
+    padding-top: 0;
+    padding-bottom: 0;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
@@ -3609,8 +3629,9 @@ body.project-page {
     border-radius: var(--radius-m);
   }
 
+  /* Section has 20px padding-inline; intro tile uses less horizontal padding to avoid stacking */
   .intro-tile {
-    padding: var(--space-sm);
+    padding: var(--more-work-mobile-space) 12px;
   }
 
   .intro-title {
