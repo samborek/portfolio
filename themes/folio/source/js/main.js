@@ -535,14 +535,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Footer Accordion Toggle (Mobile)
-  document.querySelectorAll('.footer-col-toggle').forEach(toggle => {
+  // Sidebar Accordion Toggle
+  document.querySelectorAll('.sidebar-accordion-toggle').forEach(toggle => {
     toggle.addEventListener('click', () => {
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', !isExpanded);
-      const nav = toggle.nextElementSibling;
-      if (nav && nav.classList.contains('footer-nav-collapsible')) {
-        nav.classList.toggle('expanded', !isExpanded);
+      const content = toggle.nextElementSibling;
+      if (content) {
+        content.classList.toggle('expanded', !isExpanded);
       }
     });
   });

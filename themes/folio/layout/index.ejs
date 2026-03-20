@@ -19,6 +19,49 @@
                         <h2 class="sidebar-description">
                             Building digital products & exploring technology
                         </h2>
+
+                        <div class="sidebar-accordion">
+                            <div class="sidebar-accordion-item">
+                                <button class="sidebar-accordion-toggle" aria-expanded="false">
+                                    <span class="sidebar-accordion-label">Works</span>
+                                    <span class="sidebar-accordion-icon">+</span>
+                                </button>
+                                <nav class="sidebar-accordion-content">
+                                    <% projects.forEach(function(project, index) { %>
+                                        <a href="#project-<%= index %>" class="footer-link-item project-link-item">
+                                            <%= project.short_title || project.title %>
+                                        </a>
+                                    <% }); %>
+                                    <a href="#more-works" class="footer-link-item">More</a>
+                                </nav>
+                            </div>
+                            <div class="sidebar-accordion-item">
+                                <button class="sidebar-accordion-toggle" aria-expanded="false">
+                                    <span class="sidebar-accordion-label">Socials</span>
+                                    <span class="sidebar-accordion-icon">+</span>
+                                </button>
+                                <nav class="sidebar-accordion-content">
+                                    <% if (theme.social?.twitter) { %>
+                                        <a href="<%= theme.social.twitter %>" target="_blank" class="footer-link-item">Twitter</a>
+                                    <% } %>
+                                    <% if (theme.social?.linkedin) { %>
+                                        <a href="<%= theme.social.linkedin %>" target="_blank" class="footer-link-item">LinkedIn</a>
+                                    <% } %>
+                                    <% if (theme.social?.dribbble) { %>
+                                        <a href="<%= theme.social.dribbble %>" target="_blank" class="footer-link-item">Dribbble</a>
+                                    <% } %>
+                                    <% if (theme.social?.behance) { %>
+                                        <a href="<%= theme.social.behance %>" target="_blank" class="footer-link-item">Behance</a>
+                                    <% } %>
+                                </nav>
+                            </div>
+                            <div class="sidebar-accordion-item">
+                                <a href="#" class="sidebar-accordion-toggle" id="about-toggle">
+                                    <span class="sidebar-accordion-label">About</span>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="sidebar-cta-wrapper">
                             <a href="#connect" class="unicorn-btn sidebar-btn"
                                 data-us-project-src="/button-sidebar.json" data-us-scale="0.6" data-us-dpi="4.0"
@@ -26,73 +69,100 @@
                                 <span class="btn-text">Get in touch</span>
                             </a>
                         </div>
-                    </div>
-
-                    <div class="sidebar-footer">
-                        <div class="footer-grid">
-                            <div class="footer-col">
-                                <button class="footer-col-toggle" aria-expanded="false">
-                                    <h3 class="footer-col-title">INDEX</h3>
-                                    <span class="footer-toggle-icon">+</span>
-                                </button>
-                                <nav class="footer-nav footer-nav-collapsible">
-                                    <% projects.forEach(function(project, index) { %>
-                                        <a href="#project-<%= index %>" class="footer-link-item project-link-item">
-                                            <%= project.short_title || project.title %>
-                                        </a>
-                                        <% }); %>
-                                            <a href="#more-works" class="footer-link-item">More</a>
-                                            <a href="#experience" class="footer-link-item">Experience</a>
-                                </nav>
-                            </div>
-                            <div class="footer-col">
-                                <button class="footer-col-toggle" aria-expanded="false">
-                                    <h3 class="footer-col-title">Connect</h3>
-                                    <span class="footer-toggle-icon">+</span>
-                                </button>
-                                <nav class="footer-nav footer-nav-collapsible">
-                                    <% if (theme.social?.twitter) { %><a href="<%= theme.social.twitter %>"
-                                            target="_blank" class="footer-link-item">Twitter</a>
-                                        <% } %>
-                                            <% if (theme.social?.linkedin) { %><a href="<%= theme.social.linkedin %>"
-                                                    target="_blank" class="footer-link-item">LinkedIn</a>
-                                                <% } %>
-                                                    <% if (theme.social?.dribbble) { %><a
-                                                            href="<%= theme.social.dribbble %>" target="_blank"
-                                                            class="footer-link-item">Dribbble</a>
-                                                        <% } %>
-                                                            <% if (theme.social?.behance) { %><a
-                                                                    href="<%= theme.social.behance %>" target="_blank"
-                                                                    class="footer-link-item">Behance</a>
-                                                                <% } %>
-                                                                    <a href="mailto:michal@maise.io"
-                                                                        class="footer-link-item copy-email-btn">Email</a>
-                                                                    <a href="<%- url_for('images/Michal Sambora Resume.pdf') %>"
-                                                                        target="_blank" class="footer-link-item"
-                                                                        style="display: flex; align-items: center; gap: 6px;">
-                                                                        <svg viewBox="0 0 24 24" fill="none"
-                                                                            stroke="currentColor" stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            style="width: 14px; height: 14px;">
-                                                                            <path
-                                                                                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
-                                                                            </path>
-                                                                            <polyline points="14 2 14 8 20 8">
-                                                                            </polyline>
-                                                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                                                        </svg> Resume
-                                                                    </a>
-                                </nav>
-                            </div>
-                        </div>
+                        <a href="mailto:<%= theme.connect?.email || 'michal@maise.io' %>"
+                            class="footer-email-full copy-email-btn">
+                            <%= theme.connect?.email || 'michal@maise.io' %>
+                        </a>
                     </div>
                 </aside>
 
                 <!-- Right Content - Projects -->
                 <main class="projects-column" id="projects">
+
+                    <!-- ABOUT VIEW (hidden by default) -->
+                    <div class="about-view" id="about-view">
+                        <div class="about-back-row">
+                            <a href="#" class="project-back" id="about-close">
+                                <span class="project-back-icon" aria-hidden="true">&larr;</span>
+                                <span class="project-back-label">Back</span>
+                            </a>
+                        </div>
+                        <% if (theme.experience) { %>
+                            <section class="about-section">
+                                <h2 class="about-title">The Journey</h2>
+                                <div class="about-intro" id="about-intro">
+                                    <%= theme.experience.intro_variants[0] %>
+                                </div>
+                                <div class="experience-timeline">
+                                    <% theme.experience.timeline.forEach(function(item) { %>
+                                        <div class="timeline-item">
+                                            <div class="timeline-marker"></div>
+                                            <div class="timeline-content">
+                                                <div class="timeline-header">
+                                                    <span class="timeline-milestone"><%= item.milestone %></span>
+                                                    <h4 class="timeline-title"><%= item.title %></h4>
+                                                </div>
+                                                <p class="timeline-text"><%= item.content %></p>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                                <div class="resume-lists-grid">
+                                    <% if (theme.speaking) { %>
+                                        <div class="resume-list-column">
+                                            <h2 class="resume-section-heading">Speaking</h2>
+                                            <ul class="resume-list">
+                                                <% theme.speaking.forEach(function(item) { %>
+                                                    <li class="resume-list-item"
+                                                        <% if (item.image) { %>data-preview-image="<%= url_for(item.image) %>"<% } %>
+                                                        <% if (item.description) { %>data-preview-description="<%= item.description %>"<% } %>
+                                                        data-preview-title="<%= item.title %>"
+                                                        data-preview-year="<%= item.year %>">
+                                                        <span class="resume-item-title"><%= item.title %></span>
+                                                        <span class="resume-item-year"><%= item.year %></span>
+                                                    </li>
+                                                <% }); %>
+                                            </ul>
+                                        </div>
+                                    <% } %>
+                                    <% if (theme.events) { %>
+                                        <div class="resume-list-column">
+                                            <h2 class="resume-section-heading">Events</h2>
+                                            <ul class="resume-list">
+                                                <% theme.events.forEach(function(item) { %>
+                                                    <li
+                                                        <% if (item.image) { %>data-preview-image="<%= url_for(item.image) %>"<% } %>
+                                                        <% if (item.description) { %>data-preview-description="<%= item.description %>"<% } %>
+                                                        data-preview-title="<%= item.title %>"
+                                                        data-preview-year="<%= item.year %>">
+                                                        <span class="resume-item-title"><%= item.title %></span>
+                                                        <span class="resume-item-year"><%= item.year %></span>
+                                                    </li>
+                                                <% }); %>
+                                            </ul>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <div class="resume-hover-preview">
+                                    <div class="preview-content">
+                                        <div class="preview-media">
+                                            <img src="" alt="" class="preview-image">
+                                        </div>
+                                        <div class="preview-text">
+                                            <div class="preview-header">
+                                                <span class="preview-year"></span>
+                                                <h4 class="preview-title"></h4>
+                                            </div>
+                                            <p class="preview-description"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        <% } %>
+                    </div>
+
+                    <!-- Main content (projects + more works + connect) -->
+                    <div class="projects-main-content" id="projects-main-content">
                     <% projects.forEach(function(project, pindex) { %>
                         <% const carouselStyle=[ project.carousel_aspect_ratio ?
                             `\--carousel-aspect-ratio:${project.carousel_aspect_ratio};` : '' ,
@@ -382,109 +452,6 @@
                                     </section>
                                 </div>
 
-                                <!-- EXPERIENCE SECTION -->
-                                <% if (theme.experience) { %>
-                                    <section class="content-section reveal-on-scroll" id="experience">
-                                        <div class="section-header">
-                                            <h2 class="project-title">The Journey</h2>
-                                        </div>
-                                        <div class="experience-intro" id="experience-intro">
-                                            <%= theme.experience.intro_variants[0] %>
-                                        </div>
-                                        <script>(function () { const variants =<% - JSON.stringify(theme.experience.intro_variants) %>; const randomIndex = Math.floor(Math.random() * variants.length); document.getElementById('experience-intro').textContent = variants[randomIndex]; })();</script>
-                                        <div class="experience-timeline">
-                                            <% theme.experience.timeline.forEach(function(item) { %>
-                                                <div class="timeline-item">
-                                                    <div class="timeline-marker"></div>
-                                                    <div class="timeline-content">
-                                                        <div class="timeline-header">
-                                                            <span class="timeline-milestone">
-                                                                <%= item.milestone %>
-                                                            </span>
-                                                            <h4 class="timeline-title">
-                                                                <%= item.title %>
-                                                            </h4>
-                                                        </div>
-                                                        <p class="timeline-text">
-                                                            <%= item.content %>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <% }); %>
-                                        </div>
-                                        <div class="resume-lists-grid">
-                                            <% if (theme.speaking) { %>
-                                                <div class="resume-list-column">
-                                                    <h2 class="resume-section-heading">Speaking</h2>
-                                                    <ul class="resume-list">
-                                                        <% theme.speaking.forEach(function(item) { %>
-                                                            <li class="resume-list-item" <% if (item.image) { %>
-                                                                data-preview-image="<%= url_for(item.image) %>" <% } %>
-                                                                        <% if (item.description) { %>
-                                                                            data-preview-description="<%=
-                                                                                item.description %>" <% } %>
-                                                                                    data-preview-title="<%= item.title
-                                                                                        %>" data-preview-year="<%=
-                                                                                            item.year %>">
-                                                                                            <span
-                                                                                                class="resume-item-title">
-                                                                                                <%= item.title %>
-                                                                                            </span>
-                                                                                            <span
-                                                                                                class="resume-item-year">
-                                                                                                <%= item.year %>
-                                                                                            </span>
-                                                            </li>
-                                                            <% }); %>
-                                                    </ul>
-                                                </div>
-                                                <% } %>
-                                                    <% if (theme.events) { %>
-                                                        <div class="resume-list-column">
-                                                            <h2 class="resume-section-heading">Events</h2>
-                                                            <ul class="resume-list">
-                                                                <% theme.events.forEach(function(item) { %>
-                                                                    <li class="" <% if (item.image) { %>
-                                                                        data-preview-image="<%= url_for(item.image) %>"
-                                                                            <% } %>
-                                                                                <% if (item.description) { %>
-                                                                                    data-preview-description="<%=
-                                                                                        item.description %>" <% } %>
-                                                                                            data-preview-title="<%=
-                                                                                                item.title %>"
-                                                                                                data-preview-year="<%=
-                                                                                                    item.year %>">
-                                                                                                    <span
-                                                                                                        class="resume-item-title">
-                                                                                                        <%= item.title
-                                                                                                            %>
-                                                                                                    </span>
-                                                                                                    <span
-                                                                                                        class="resume-item-year">
-                                                                                                        <%= item.year %>
-                                                                                                    </span>
-                                                                    </li>
-                                                                    <% }); %>
-                                                            </ul>
-                                                        </div>
-                                                        <% } %>
-                                        </div>
-                                        <div class="resume-hover-preview">
-                                            <div class="preview-content">
-                                                <div class="preview-media">
-                                                    <img src="" alt="" class="preview-image">
-                                                </div>
-                                                <div class="preview-text">
-                                                    <div class="preview-header">
-                                                        <span class="preview-year"></span>
-                                                        <h4 class="preview-title"></h4>
-                                                    </div>
-                                                    <p class="preview-description"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <% } %>
 
                                         <!-- CONNECT SECTION -->
                                         <% if (theme.connect) { %>
@@ -512,13 +479,82 @@
                                                                 <p class="project-info-text">
                                                                     <%= theme.connect.secondary_text %>
                                                                 </p>
-                                                                <% if (theme.connect.guide_link) { %>
-                                                                    <a href="<%= theme.connect.guide_link.link %>"
-                                                                        class="connect-link">
-                                                                        <%= theme.connect.guide_link.text %>
-                                                                    </a>
-                                                                    <% } %>
+                                                                <a href="#" class="connect-link" id="collab-toggle">
+                                                                    Learn how we can collaborate →
+                                                                </a>
                                                             </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Collaboration Section (expandable) -->
+                                                    <%
+                                                        const coopPage = site.pages.toArray().filter(p => p.source === 'work/cooperation.md')[0];
+                                                        let coopRaw = (coopPage && coopPage.raw) ? coopPage.raw : '';
+                                                        // Strip front matter
+                                                        coopRaw = coopRaw.replace(/^---[\s\S]*?---\s*/, '');
+                                                        const coopLines = coopRaw.trim().split('\n');
+
+                                                        // Parse: heading, intro paragraphs, sections (h3), items (bold title — *price* + description)
+                                                        let coopTitle = '';
+                                                        let coopIntro = [];
+                                                        let coopSections = [];
+                                                        let currentSection = null;
+
+                                                        coopLines.forEach(line => {
+                                                            const l = line.trim();
+                                                            if (!l) return;
+                                                            if (l.startsWith('# ')) {
+                                                                coopTitle = l.replace('# ', '');
+                                                            } else if (l.startsWith('### ')) {
+                                                                currentSection = { title: l.replace('### ', ''), items: [] };
+                                                                coopSections.push(currentSection);
+                                                            } else if (l.startsWith('**') && currentSection) {
+                                                                // Parse: **Title** — *price*  OR  **Title**
+                                                                const titleMatch = l.match(/^\*\*(.+?)\*\*(?:\s*—\s*\*(.+?)\*)?$/);
+                                                                if (titleMatch) {
+                                                                    currentSection.items.push({
+                                                                        title: titleMatch[1],
+                                                                        price: titleMatch[2] || '',
+                                                                        desc: ''
+                                                                    });
+                                                                }
+                                                            } else if (currentSection && currentSection.items.length > 0) {
+                                                                const lastItem = currentSection.items[currentSection.items.length - 1];
+                                                                lastItem.desc += (lastItem.desc ? ' ' : '') + l;
+                                                            } else if (!currentSection) {
+                                                                coopIntro.push(l);
+                                                            }
+                                                        });
+                                                    %>
+                                                    <div class="collab-section" id="collab-section">
+                                                        <div class="collab-inner">
+                                                            <div class="collab-header">
+                                                                <h3 class="collab-heading"><%= coopTitle %></h3>
+                                                                <a href="#" class="collab-close" id="collab-close">
+                                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                                                        <line x1="1" y1="1" x2="13" y2="13"></line>
+                                                                        <line x1="13" y1="1" x2="1" y2="13"></line>
+                                                                    </svg>
+                                                                    Close
+                                                                </a>
+                                                            </div>
+                                                            <% if (coopIntro.length) { %>
+                                                                <p class="collab-text"><%= coopIntro.join(' ') %></p>
+                                                            <% } %>
+                                                            <% coopSections.forEach(section => { %>
+                                                                <h4 class="collab-subheading"><%= section.title %></h4>
+                                                                <div class="collab-cards">
+                                                                    <% section.items.forEach(item => { %>
+                                                                        <div class="collab-card">
+                                                                            <strong><%= item.title %></strong>
+                                                                            <% if (item.price) { %>
+                                                                                <span class="collab-price"><%= item.price %></span>
+                                                                            <% } %>
+                                                                            <span><%= item.desc %></span>
+                                                                        </div>
+                                                                    <% }); %>
+                                                                </div>
+                                                            <% }); %>
                                                         </div>
                                                     </div>
                                                     <div class="connect-footer-bottom">
@@ -548,6 +584,7 @@
                                                 </div>
                                             </section>
                                             <% } %>
+                    </div><!-- /projects-main-content -->
                 </main>
         </div>
     </div>
@@ -622,6 +659,57 @@
         const tabIndicator = document.querySelector('.tab-indicator');
         const floatControls = document.querySelector('.floating-controls');
         const isMobile = () => window.innerWidth <= 768;
+
+        // --- About View Toggle ---
+        const aboutToggle = document.getElementById('about-toggle');
+        const aboutClose = document.getElementById('about-close');
+        const aboutView = document.getElementById('about-view');
+        const mainContent = document.getElementById('projects-main-content');
+
+        function showAbout(e) {
+            e.preventDefault();
+            mainContent.classList.add('is-hidden');
+            aboutView.classList.add('is-active');
+            homeView.scrollTop = 0;
+            document.getElementById('projects').scrollTop = 0;
+        }
+        function hideAbout(e) {
+            e.preventDefault();
+            aboutView.classList.remove('is-active');
+            mainContent.classList.remove('is-hidden');
+        }
+        if (aboutToggle) aboutToggle.addEventListener('click', showAbout);
+        if (aboutClose) aboutClose.addEventListener('click', hideAbout);
+
+        // Close About when clicking any sidebar project/section link
+        document.querySelectorAll('.sidebar-accordion-content .footer-link-item').forEach(link => {
+            link.addEventListener('click', () => {
+                if (aboutView.classList.contains('is-active')) {
+                    aboutView.classList.remove('is-active');
+                    mainContent.classList.remove('is-hidden');
+                }
+            });
+        });
+
+        // --- Collaboration Toggle ---
+        const collabToggle = document.getElementById('collab-toggle');
+        const collabClose = document.getElementById('collab-close');
+        const collabSection = document.getElementById('collab-section');
+        function toggleCollab(e) {
+            e.preventDefault();
+            const isOpen = collabSection.classList.toggle('is-open');
+            if (isOpen) {
+                setTimeout(() => {
+                    collabSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+        if (collabToggle && collabSection) {
+            collabToggle.addEventListener('click', toggleCollab);
+        }
+        if (collabClose && collabSection) {
+            collabClose.addEventListener('click', toggleCollab);
+        }
 
         // --- View & Scroll Management ---
         let activeView = homeView;
