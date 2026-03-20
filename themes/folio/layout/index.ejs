@@ -838,6 +838,16 @@
                     activeView = homeView;
                     homeView.setAttribute('aria-hidden', 'false');
                     playgroundView.setAttribute('aria-hidden', 'true');
+
+                    // Wake up Unicorn Studio canvases
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                        window.dispatchEvent(new MouseEvent('mousemove', {
+                            clientX: window.innerWidth / 2,
+                            clientY: window.innerHeight / 2,
+                            bubbles: true
+                        }));
+                    }, 750);
                 }
 
                 // Update Scroll Listener

@@ -3913,7 +3913,9 @@ body.project-page {
 }
 
 .projects-main-content.is-hidden {
-  display: none;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
 }
 
 .footer-email-full {
