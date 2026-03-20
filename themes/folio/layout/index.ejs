@@ -56,6 +56,11 @@
                                 </nav>
                             </div>
                             <div class="sidebar-accordion-item">
+                                <a href="#scope" class="sidebar-accordion-toggle sidebar-scroll-link">
+                                    <span class="sidebar-accordion-label">Offer</span>
+                                </a>
+                            </div>
+                            <div class="sidebar-accordion-item">
                                 <a href="#" class="sidebar-accordion-toggle" id="about-toggle">
                                     <span class="sidebar-accordion-label">About</span>
                                 </a>
@@ -815,6 +820,19 @@
                     aboutView.classList.remove('is-active');
                     mainContent.classList.remove('is-hidden');
                 }
+            });
+        });
+
+        // --- Offer scroll link ---
+        document.querySelectorAll('.sidebar-scroll-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (aboutView.classList.contains('is-active')) {
+                    aboutView.classList.remove('is-active');
+                    mainContent.classList.remove('is-hidden');
+                }
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
