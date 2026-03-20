@@ -453,6 +453,93 @@
                                 </div>
 
 
+                                        <!-- SCOPE SECTION -->
+                                        <%
+                                            const scopePage = site.pages.toArray().filter(p => p.source === 'work/cooperation.md')[0];
+                                            let scopeRaw = (scopePage && scopePage.raw) ? scopePage.raw : '';
+                                            scopeRaw = scopeRaw.replace(/^---[\s\S]*?---\s*/, '');
+                                            const scopeLines = scopeRaw.trim().split('\n');
+                                            let scopeIntro = '';
+                                            let scopeGroups = [];
+                                            let curGroup = null;
+                                            let foundScope = false;
+                                            scopeLines.forEach(ln => {
+                                                const s = ln.trim();
+                                                if (!s) return;
+                                                if (s.toLowerCase().startsWith('### what i') || s.startsWith('### Scope')) {
+                                                    foundScope = true;
+                                                } else if (s.startsWith('### ') && foundScope) {
+                                                    foundScope = false;
+                                                } else if (foundScope && s.startsWith('#### ')) {
+                                                    curGroup = { title: s.replace('#### ', ''), items: [] };
+                                                    scopeGroups.push(curGroup);
+                                                } else if (foundScope && s.startsWith('- ') && curGroup) {
+                                                    curGroup.items.push(s.replace('- ', ''));
+                                                } else if (foundScope && !curGroup) {
+                                                    scopeIntro = s;
+                                                }
+                                            });
+                                        %>
+                                        <% if (scopeGroups.length > 0) { %>
+                                        <section class="scope-section reveal-on-scroll" id="scope">
+                                            <div class="scope-container">
+                                                <div class="scope-wrapper">
+                                                    <h2 class="scope-title">What I Cover</h2>
+                                                    <% if (scopeIntro) { %>
+                                                        <p class="scope-intro"><%= scopeIntro %></p>
+                                                    <% } %>
+                                                    <div class="scope-grid">
+                                                        <% const scopeIcons = ['product', 'creative', 'dev']; %>
+                                                        <% scopeGroups.forEach((group, gi) => { %>
+                                                            <div class="scope-card">
+                                                                <div class="scope-card-header">
+                                                                    <div class="scope-card-icon scope-illust-<%= scopeIcons[gi] || 'product' %>">
+                                                                        <% if (gi === 0) { %>
+                                                                        <svg class="scope-svg" viewBox="0 0 40 40" fill="none">
+                                                                            <defs><filter id="motionBlur1"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5,0"/></filter></defs>
+                                                                            <rect class="scope-float-1" x="4" y="6" width="22" height="14" rx="3" stroke="#000" stroke-width="1.2" fill="rgba(0,0,0,0.06)"/>
+                                                                            <rect class="scope-float-2" x="10" y="14" width="26" height="16" rx="3" stroke="#000" stroke-width="1.2" fill="rgba(0,0,0,0.1)"/>
+                                                                            <rect class="scope-float-3" x="14" y="20" width="16" height="3" rx="1.5" fill="rgba(0,0,0,0.2)"/>
+                                                                            <circle class="scope-float-1" cx="11" cy="11" r="2" fill="#000"/>
+                                                                        </svg>
+                                                                        <% } else if (gi === 1) { %>
+                                                                        <svg class="scope-svg" viewBox="0 0 32 32" fill="none">
+                                                                            <defs><filter id="motionBlur2"><feGaussianBlur in="SourceGraphic" stdDeviation="0.4,0.2"/></filter></defs>
+                                                                            <circle class="scope-orbit-1" cx="16" cy="16" r="2.5" fill="#000"/>
+                                                                            <rect class="scope-orbit-2" x="12" y="12" width="5" height="5" rx="1" fill="rgba(0,0,0,0.5)" transform="rotate(15 14.5 14.5)"/>
+                                                                            <polygon class="scope-orbit-3" points="16,2 20,10 12,10" fill="rgba(0,0,0,0.35)"/>
+                                                                            <circle cx="16" cy="16" r="8" stroke="rgba(0,0,0,0.15)" stroke-width="1" fill="none" stroke-dasharray="2,3"/>
+                                                                            <circle cx="16" cy="16" r="13" stroke="rgba(0,0,0,0.1)" stroke-width="1" fill="none" stroke-dasharray="1.5,4"/>
+                                                                            <rect class="scope-spin" x="13.5" y="13.5" width="5" height="5" rx="1.5" stroke="#000" stroke-width="1" fill="rgba(0,0,0,0.08)"/>
+                                                                        </svg>
+                                                                        <% } else { %>
+                                                                        <svg class="scope-svg" viewBox="0 0 40 40" fill="none">
+                                                                            <defs><filter id="motionBlur3"><feGaussianBlur in="SourceGraphic" stdDeviation="0,0.4"/></filter></defs>
+                                                                            <path class="scope-bracket-l" d="M12 12 L6 20 L12 28" stroke="#000" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                                                            <path class="scope-bracket-r" d="M28 12 L34 20 L28 28" stroke="#000" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                                                            <line class="scope-code-1" x1="15" y1="17" x2="25" y2="17" stroke="rgba(0,0,0,0.4)" stroke-width="2" stroke-linecap="round"/>
+                                                                            <line class="scope-code-2" x1="16" y1="20" x2="27" y2="20" stroke="rgba(0,0,0,0.6)" stroke-width="2" stroke-linecap="round"/>
+                                                                            <line class="scope-code-3" x1="15" y1="23" x2="24" y2="23" stroke="rgba(0,0,0,0.3)" stroke-width="2" stroke-linecap="round"/>
+                                                                            <circle class="scope-pulse" cx="20" cy="20" r="6" stroke="rgba(0,0,0,0.15)" stroke-width="1" fill="none"/>
+                                                                        </svg>
+                                                                        <% } %>
+                                                                    </div>
+                                                                    <h3 class="scope-card-title"><%= group.title %></h3>
+                                                                </div>
+                                                                <ul class="scope-card-list">
+                                                                    <% group.items.forEach(item => { %>
+                                                                        <li><span class="scope-dot"></span><%= item %></li>
+                                                                    <% }); %>
+                                                                </ul>
+                                                            </div>
+                                                        <% }); %>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <% } %>
+
                                         <!-- CONNECT SECTION -->
                                         <% if (theme.connect) { %>
                                             <section class="content-section reveal-on-scroll" id="connect">
@@ -494,22 +581,36 @@
                                                         coopRaw = coopRaw.replace(/^---[\s\S]*?---\s*/, '');
                                                         const coopLines = coopRaw.trim().split('\n');
 
-                                                        // Parse: heading, intro paragraphs, sections (h3), items (bold title — *price* + description)
+                                                        // Parse: # heading, intro, ### sections, #### groups with - list items, **cards**
                                                         let coopTitle = '';
                                                         let coopIntro = [];
                                                         let coopSections = [];
                                                         let currentSection = null;
+                                                        let currentGroup = null;
+                                                        let skipSection = false;
 
                                                         coopLines.forEach(line => {
                                                             const l = line.trim();
                                                             if (!l) return;
                                                             if (l.startsWith('# ')) {
                                                                 coopTitle = l.replace('# ', '');
+                                                            } else if (l.toLowerCase().startsWith('### what i')) {
+                                                                skipSection = true;
+                                                                currentSection = null;
+                                                                currentGroup = null;
                                                             } else if (l.startsWith('### ')) {
-                                                                currentSection = { title: l.replace('### ', ''), items: [], text: '' };
+                                                                skipSection = false;
+                                                                currentSection = { title: l.replace('### ', ''), items: [], groups: [], text: '' };
                                                                 coopSections.push(currentSection);
+                                                                currentGroup = null;
+                                                            } else if (skipSection) {
+                                                                return;
+                                                            } else if (l.startsWith('#### ') && currentSection) {
+                                                                currentGroup = { title: l.replace('#### ', ''), listItems: [] };
+                                                                currentSection.groups.push(currentGroup);
+                                                            } else if (l.startsWith('- ') && currentGroup) {
+                                                                currentGroup.listItems.push(l.replace('- ', ''));
                                                             } else if (l.startsWith('**') && currentSection) {
-                                                                // Parse: **Title** — *price*  OR  **Title**
                                                                 const titleMatch = l.match(/^\*\*(.+?)\*\*(?:\s*—\s*\*(.+?)\*)?$/);
                                                                 if (titleMatch) {
                                                                     currentSection.items.push({
@@ -521,7 +622,7 @@
                                                             } else if (currentSection && currentSection.items.length > 0) {
                                                                 const lastItem = currentSection.items[currentSection.items.length - 1];
                                                                 lastItem.desc += (lastItem.desc ? ' ' : '') + l;
-                                                            } else if (currentSection && currentSection.items.length === 0) {
+                                                            } else if (currentSection && currentSection.items.length === 0 && !currentGroup) {
                                                                 currentSection.text += (currentSection.text ? ' ' : '') + l;
                                                             } else if (!currentSection) {
                                                                 coopIntro.push(l);
@@ -545,6 +646,9 @@
                                                             <% } %>
                                                             <% coopSections.forEach(section => { %>
                                                                 <h4 class="collab-subheading"><%= section.title %></h4>
+                                                                <% if (section.text) { %>
+                                                                    <p class="collab-text"><%= section.text %></p>
+                                                                <% } %>
                                                                 <% if (section.items.length > 0) { %>
                                                                     <div class="collab-cards">
                                                                         <% section.items.forEach(item => { %>
@@ -557,42 +661,23 @@
                                                                             </div>
                                                                         <% }); %>
                                                                     </div>
-                                                                <% } else if (section.text) { %>
-                                                                    <%
-                                                                        const textParts = section.text.split(/(?=[\w\s]+·)/);
-                                                                        const pillsIdx = section.text.indexOf('·');
-                                                                        let sectionIntro = '';
-                                                                        let pillsStr = '';
-                                                                        if (pillsIdx > -1) {
-                                                                            // Find the last sentence before the first pill tag
-                                                                            const lines = section.text.split(/(?<=\.)\s+/);
-                                                                            const introLines = [];
-                                                                            let foundPills = false;
-                                                                            lines.forEach(ln => {
-                                                                                if (ln.includes('·') && !foundPills) {
-                                                                                    foundPills = true;
-                                                                                    pillsStr = ln;
-                                                                                } else if (!foundPills) {
-                                                                                    introLines.push(ln);
-                                                                                }
-                                                                            });
-                                                                            sectionIntro = introLines.join(' ');
-                                                                        } else {
-                                                                            sectionIntro = section.text;
-                                                                        }
-                                                                    %>
-                                                                    <% if (sectionIntro) { %>
-                                                                        <p class="collab-text"><%= sectionIntro %></p>
-                                                                    <% } %>
-                                                                    <% if (pillsStr) { %>
-                                                                        <div class="collab-pills">
-                                                                            <% pillsStr.split('·').forEach(tag => { %>
-                                                                                <% const t = tag.trim(); if (t) { %>
-                                                                                    <span class="collab-pill"><%= t %></span>
-                                                                                <% } %>
-                                                                            <% }); %>
-                                                                        </div>
-                                                                    <% } %>
+                                                                <% } %>
+                                                                <% if (section.groups.length > 0) { %>
+                                                                    <div class="collab-groups">
+                                                                        <% section.groups.forEach(group => { %>
+                                                                            <div class="collab-group">
+                                                                                <h5 class="collab-group-title"><%= group.title %></h5>
+                                                                                <ul class="collab-checklist">
+                                                                                    <% group.listItems.forEach(item => { %>
+                                                                                        <li class="collab-check-item">
+                                                                                            <span class="collab-dot"></span>
+                                                                                            <%= item %>
+                                                                                        </li>
+                                                                                    <% }); %>
+                                                                                </ul>
+                                                                            </div>
+                                                                        <% }); %>
+                                                                    </div>
                                                                 <% } %>
                                                             <% }); %>
                                                         </div>

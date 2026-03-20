@@ -1835,7 +1835,7 @@ body.index-page {
   color: #fff;
   border-radius: var(--radius-xl);
   padding: 3.75rem;
-  margin: 0;
+  margin-top: 32px;
   margin-bottom: var(--section-gap);
   border: none;
   width: 100%;
@@ -2019,6 +2019,49 @@ body.index-page {
   color: #aaa;
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+/* Collab Groups (checklist columns) */
+.collab-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.collab-group-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.collab-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.collab-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: #aaa;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.collab-dot {
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #555;
+  margin-top: 0.4rem;
 }
 
 .collab-pills {
@@ -3967,4 +4010,266 @@ body.project-page {
 
 .footer-email-full.copied::after {
   transform: none;
+}
+
+/* ============================================
+   SCOPE SECTION - What I Cover
+   ============================================ */
+
+.scope-section {
+  padding: var(--space-md) 0 0;
+}
+
+.scope-container {
+  background: color-mix(in srgb, var(--color-bg-secondary), transparent 50%);
+  border-radius: var(--radius-xl);
+  padding: 3.75rem 2.5rem;
+  width: 100%;
+}
+
+.scope-wrapper {
+  max-width: 100%;
+}
+
+.scope-title {
+  font-family: var(--font-display);
+  font-size: var(--size-3xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.scope-intro {
+  font-family: var(--font-body);
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-xl);
+  max-width: 100%;
+}
+
+.scope-grid {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.scope-card {
+  flex: 1;
+  background: color-mix(in srgb, var(--color-text) 3%, transparent);
+  border: none;
+  border-radius: var(--radius-l);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header: icon + title inline */
+.scope-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: var(--space-sm);
+}
+
+.scope-card-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scope-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Card content */
+.scope-card-title {
+  font-family: var(--font-display);
+  font-size: var(--size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.scope-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.scope-card-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-body);
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  padding: 0.25rem 0;
+}
+
+.scope-dot {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  margin-top: 0.45rem;
+}
+
+/* ---- SVG Animations ---- */
+
+/* Product & UX: floating layers */
+.scope-float-1 {
+  animation: scopeFloat1 4s ease-in-out infinite;
+  filter: url(#motionBlur1);
+}
+
+.scope-float-2 {
+  animation: scopeFloat2 5s ease-in-out infinite;
+  filter: url(#motionBlur1);
+}
+
+.scope-float-3 {
+  animation: scopeFloat3 6s ease-in-out infinite;
+  filter: url(#motionBlur1);
+}
+
+@keyframes scopeFloat1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes scopeFloat2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes scopeFloat3 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-4px) translateX(3px); }
+}
+
+/* Creative: orbiting shapes */
+.scope-orbit-1 {
+  animation: scopeOrbit1 6s linear infinite;
+  transform-origin: 16px 16px;
+  filter: url(#motionBlur2);
+}
+
+.scope-orbit-2 {
+  animation: scopeOrbit2 8s linear infinite reverse;
+  transform-origin: 16px 16px;
+  filter: url(#motionBlur2);
+}
+
+.scope-orbit-3 {
+  animation: scopeOrbit3 10s linear infinite;
+  transform-origin: 16px 16px;
+  filter: url(#motionBlur2);
+}
+
+.scope-spin {
+  animation: scopeSpin 12s linear infinite;
+  transform-origin: 16px 16px;
+}
+
+@keyframes scopeOrbit1 {
+  from { transform: rotate(0deg) translateX(10px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(10px) rotate(-360deg); }
+}
+
+@keyframes scopeOrbit2 {
+  from { transform: rotate(0deg) translateX(14px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(14px) rotate(-360deg); }
+}
+
+@keyframes scopeOrbit3 {
+  from { transform: rotate(0deg) translateX(16px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(16px) rotate(-360deg); }
+}
+
+@keyframes scopeSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Dev Handoff: brackets and code lines */
+.scope-bracket-l {
+  animation: scopeBracketL 3s ease-in-out infinite;
+  filter: url(#motionBlur3);
+}
+
+.scope-bracket-r {
+  animation: scopeBracketR 3s ease-in-out infinite;
+  filter: url(#motionBlur3);
+}
+
+.scope-code-1 {
+  animation: scopeCodeFade 2.5s ease-in-out infinite;
+}
+
+.scope-code-2 {
+  animation: scopeCodeFade 2.5s ease-in-out 0.4s infinite;
+}
+
+.scope-code-3 {
+  animation: scopeCodeFade 2.5s ease-in-out 0.8s infinite;
+}
+
+.scope-pulse {
+  animation: scopePulse 3s ease-in-out infinite;
+}
+
+@keyframes scopeBracketL {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-4px); }
+}
+
+@keyframes scopeBracketR {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+@keyframes scopeCodeFade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes scopePulse {
+  0%, 100% { r: 6; opacity: 0.08; }
+  50% { r: 9; opacity: 0.02; }
+}
+
+/* ---- Scope responsive ---- */
+@media (max-width: 768px) {
+  .scope-grid {
+    flex-direction: column;
+  }
+
+  .engagement-grid {
+    flex-direction: column;
+  }
+
+  .scope-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .scope-title {
+    font-size: var(--size-2xl);
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .scope-float-1, .scope-float-2, .scope-float-3,
+  .scope-orbit-1, .scope-orbit-2, .scope-orbit-3,
+  .scope-spin, .scope-bracket-l, .scope-bracket-r,
+  .scope-code-1, .scope-code-2, .scope-code-3,
+  .scope-pulse {
+    animation: none;
+  }
 }
