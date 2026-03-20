@@ -4078,11 +4078,13 @@ body.project-page {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .scope-svg {
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
 
 /* Card content */
@@ -4183,13 +4185,13 @@ body.project-page {
 }
 
 @keyframes scopeOrbit2 {
-  from { transform: rotate(0deg) translateX(14px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(14px) rotate(-360deg); }
+  from { transform: rotate(0deg) translateX(8px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(8px) rotate(-360deg); }
 }
 
 @keyframes scopeOrbit3 {
-  from { transform: rotate(0deg) translateX(16px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(16px) rotate(-360deg); }
+  from { transform: rotate(0deg) translateX(8px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(8px) rotate(-360deg); }
 }
 
 @keyframes scopeSpin {

@@ -19,18 +19,22 @@ I move fluidly between disciplines—no handoffs between specialists, just one d
 - Design systems (colors, typography, components , design tokens)
 - Visual & UX audits
 
+
 #### Creatives & visual
 - Visual design and art direction
 - Interaction design and micro-animations
-- 3D illustrations and motion assets 
-- Social media visuals
+- 3D illustrations and simple motion elements 
+- Social media materials
 - Pitch decks (Figma)
+- 
 
 #### Development handoff
 - Development-ready deliverables (Figma)
+- Prototyping (Figma, AI assisted)
 - AI-assisted implementation (Claude, Cursor)
 - Production-ready AIgen front-end
 - Design-to-dev bridge and QA support
+
 
 ### How we can work together
 

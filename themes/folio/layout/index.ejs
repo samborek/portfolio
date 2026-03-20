@@ -460,6 +460,7 @@
                                             scopeRaw = scopeRaw.replace(/^---[\s\S]*?---\s*/, '');
                                             const scopeLines = scopeRaw.trim().split('\n');
                                             let scopeIntro = '';
+                                            let scopeHeading = '';
                                             let scopeGroups = [];
                                             let curGroup = null;
                                             let foundScope = false;
@@ -468,6 +469,7 @@
                                                 if (!s) return;
                                                 if (s.toLowerCase().startsWith('### what i') || s.startsWith('### Scope')) {
                                                     foundScope = true;
+                                                    scopeHeading = s.replace('### ', '');
                                                 } else if (s.startsWith('### ') && foundScope) {
                                                     foundScope = false;
                                                 } else if (foundScope && s.startsWith('#### ')) {
@@ -484,7 +486,7 @@
                                         <section class="scope-section reveal-on-scroll" id="scope">
                                             <div class="scope-container">
                                                 <div class="scope-wrapper">
-                                                    <h2 class="scope-title">What I Cover</h2>
+                                                    <h2 class="scope-title"><%= scopeHeading %></h2>
                                                     <% if (scopeIntro) { %>
                                                         <p class="scope-intro"><%= scopeIntro %></p>
                                                     <% } %>
@@ -506,8 +508,8 @@
                                                                         <svg class="scope-svg" viewBox="0 0 32 32" fill="none">
                                                                             <defs><filter id="motionBlur2"><feGaussianBlur in="SourceGraphic" stdDeviation="0.4,0.2"/></filter></defs>
                                                                             <circle class="scope-orbit-1" cx="16" cy="16" r="2.5" fill="#000"/>
-                                                                            <rect class="scope-orbit-2" x="12" y="12" width="5" height="5" rx="1" fill="rgba(0,0,0,0.5)" transform="rotate(15 14.5 14.5)"/>
-                                                                            <polygon class="scope-orbit-3" points="16,2 20,10 12,10" fill="rgba(0,0,0,0.35)"/>
+                                                                            <rect class="scope-orbit-2" x="14" y="14" width="4" height="4" rx="1" fill="rgba(0,0,0,0.5)"/>
+                                                                            <polygon class="scope-orbit-3" points="16,10 19,15 13,15" fill="rgba(0,0,0,0.35)"/>
                                                                             <circle cx="16" cy="16" r="8" stroke="rgba(0,0,0,0.15)" stroke-width="1" fill="none" stroke-dasharray="2,3"/>
                                                                             <circle cx="16" cy="16" r="13" stroke="rgba(0,0,0,0.1)" stroke-width="1" fill="none" stroke-dasharray="1.5,4"/>
                                                                             <rect class="scope-spin" x="13.5" y="13.5" width="5" height="5" rx="1.5" stroke="#000" stroke-width="1" fill="rgba(0,0,0,0.08)"/>
