@@ -506,7 +506,7 @@
                                                             if (l.startsWith('# ')) {
                                                                 coopTitle = l.replace('# ', '');
                                                             } else if (l.startsWith('### ')) {
-                                                                currentSection = { title: l.replace('### ', ''), items: [] };
+                                                                currentSection = { title: l.replace('### ', ''), items: [], text: '' };
                                                                 coopSections.push(currentSection);
                                                             } else if (l.startsWith('**') && currentSection) {
                                                                 // Parse: **Title** — *price*  OR  **Title**
@@ -521,6 +521,8 @@
                                                             } else if (currentSection && currentSection.items.length > 0) {
                                                                 const lastItem = currentSection.items[currentSection.items.length - 1];
                                                                 lastItem.desc += (lastItem.desc ? ' ' : '') + l;
+                                                            } else if (currentSection && currentSection.items.length === 0) {
+                                                                currentSection.text += (currentSection.text ? ' ' : '') + l;
                                                             } else if (!currentSection) {
                                                                 coopIntro.push(l);
                                                             }
@@ -543,17 +545,55 @@
                                                             <% } %>
                                                             <% coopSections.forEach(section => { %>
                                                                 <h4 class="collab-subheading"><%= section.title %></h4>
-                                                                <div class="collab-cards">
-                                                                    <% section.items.forEach(item => { %>
-                                                                        <div class="collab-card">
-                                                                            <strong><%= item.title %></strong>
-                                                                            <% if (item.price) { %>
-                                                                                <span class="collab-price"><%= item.price %></span>
-                                                                            <% } %>
-                                                                            <span><%= item.desc %></span>
+                                                                <% if (section.items.length > 0) { %>
+                                                                    <div class="collab-cards">
+                                                                        <% section.items.forEach(item => { %>
+                                                                            <div class="collab-card">
+                                                                                <strong><%= item.title %></strong>
+                                                                                <% if (item.price) { %>
+                                                                                    <span class="collab-price"><%= item.price %></span>
+                                                                                <% } %>
+                                                                                <span><%= item.desc %></span>
+                                                                            </div>
+                                                                        <% }); %>
+                                                                    </div>
+                                                                <% } else if (section.text) { %>
+                                                                    <%
+                                                                        const textParts = section.text.split(/(?=[\w\s]+·)/);
+                                                                        const pillsIdx = section.text.indexOf('·');
+                                                                        let sectionIntro = '';
+                                                                        let pillsStr = '';
+                                                                        if (pillsIdx > -1) {
+                                                                            // Find the last sentence before the first pill tag
+                                                                            const lines = section.text.split(/(?<=\.)\s+/);
+                                                                            const introLines = [];
+                                                                            let foundPills = false;
+                                                                            lines.forEach(ln => {
+                                                                                if (ln.includes('·') && !foundPills) {
+                                                                                    foundPills = true;
+                                                                                    pillsStr = ln;
+                                                                                } else if (!foundPills) {
+                                                                                    introLines.push(ln);
+                                                                                }
+                                                                            });
+                                                                            sectionIntro = introLines.join(' ');
+                                                                        } else {
+                                                                            sectionIntro = section.text;
+                                                                        }
+                                                                    %>
+                                                                    <% if (sectionIntro) { %>
+                                                                        <p class="collab-text"><%= sectionIntro %></p>
+                                                                    <% } %>
+                                                                    <% if (pillsStr) { %>
+                                                                        <div class="collab-pills">
+                                                                            <% pillsStr.split('·').forEach(tag => { %>
+                                                                                <% const t = tag.trim(); if (t) { %>
+                                                                                    <span class="collab-pill"><%= t %></span>
+                                                                                <% } %>
+                                                                            <% }); %>
                                                                         </div>
-                                                                    <% }); %>
-                                                                </div>
+                                                                    <% } %>
+                                                                <% } %>
                                                             <% }); %>
                                                         </div>
                                                     </div>

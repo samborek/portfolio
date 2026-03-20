@@ -2021,6 +2021,22 @@ body.index-page {
   line-height: 1.5;
 }
 
+.collab-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.collab-pill {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  color: #aaa;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
 .collab-price {
   color: #fff !important;
   font-weight: 600;
