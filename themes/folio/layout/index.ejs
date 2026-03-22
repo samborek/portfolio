@@ -381,16 +381,15 @@
 
                                 <!-- MORE WORK AREA -->
                                 <div id="more-works">
-                                    <!-- MORE WORK SECTION (BEHANCE) -->
-                                    <section class="more-work-section reveal-on-scroll" id="more-works-behance">
-                                        <div class="more-work-grid">
+                                    <section class="more-work-section reveal-on-scroll" id="more-works-combined">
+                                        <div class="more-work-strip">
                                             <a href="https://www.behance.net/samborek" target="_blank"
                                                 class="work-tile intro-tile">
                                                 <div class="intro-arrow-wrapper">
                                                     <span class="intro-arrow">↗</span>
                                                 </div>
                                                 <div class="intro-content">
-                                                    <h2 class="intro-title">See more of my work</h2>
+                                                    <h2 class="intro-title">See more</h2>
                                                     <span class="intro-subtitle">Behance</span>
                                                 </div>
                                             </a>
@@ -415,20 +414,13 @@
                                                         alt="Editing Pro Voice" loading="lazy">
                                                 </div>
                                             </a>
-                                        </div>
-                                    </section>
-
-                                    <!-- MORE WORK SECTION (DRIBBBLE) -->
-                                    <section class="more-work-section reveal-on-scroll" id="more-works-dribbble"
-                                        style="margin-top: var(--section-gap);">
-                                        <div class="more-work-grid">
                                             <a href="https://dribbble.com/samborek" target="_blank"
                                                 class="work-tile intro-tile">
                                                 <div class="intro-arrow-wrapper">
                                                     <span class="intro-arrow">↗</span>
                                                 </div>
                                                 <div class="intro-content">
-                                                    <h2 class="intro-title">Explore last shots</h2>
+                                                    <h2 class="intro-title">Explore shots</h2>
                                                     <span class="intro-subtitle">Dribbble</span>
                                                 </div>
                                             </a>
@@ -450,7 +442,7 @@
                                                 target="_blank" class="work-tile">
                                                 <div class="tile-image-wrapper">
                                                     <img src="<%- url_for('/images/work/dribbble/vui_wallet.png') %>"
-                                                        alt="VUI Wallat" loading="lazy">
+                                                        alt="VUI Wallet" loading="lazy">
                                                 </div>
                                             </a>
                                         </div>
@@ -798,27 +790,59 @@
         const aboutView = document.getElementById('about-view');
         const mainContent = document.getElementById('projects-main-content');
 
-        function showAbout(e) {
-            e.preventDefault();
-            mainContent.classList.add('is-hidden');
-            aboutView.classList.add('is-active');
-            homeView.scrollTop = 0;
-            document.getElementById('projects').scrollTop = 0;
+        const fadeDuration = 250;
+
+        function fadeOut(el) {
+            el.style.opacity = '0';
         }
-        function hideAbout(e) {
-            e.preventDefault();
-            aboutView.classList.remove('is-active');
-            mainContent.classList.remove('is-hidden');
+
+        function fadeIn(el) {
+            requestAnimationFrame(() => { el.style.opacity = '1'; });
         }
-        if (aboutToggle) aboutToggle.addEventListener('click', showAbout);
-        if (aboutClose) aboutClose.addEventListener('click', hideAbout);
+
+        function switchToAbout() {
+            fadeOut(mainContent);
+            setTimeout(() => {
+                mainContent.classList.add('is-hidden');
+                aboutView.classList.add('is-active');
+                homeView.scrollTop = 0;
+                document.getElementById('projects').scrollTop = 0;
+                fadeIn(aboutView);
+            }, fadeDuration);
+        }
+
+        function switchToMain(scrollTarget) {
+            fadeOut(aboutView);
+            setTimeout(() => {
+                aboutView.classList.remove('is-active');
+                mainContent.classList.remove('is-hidden');
+                fadeIn(mainContent);
+                if (scrollTarget) {
+                    setTimeout(() => {
+                        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+                }
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                    window.dispatchEvent(new MouseEvent('mousemove', { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }));
+                }, fadeDuration + 100);
+            }, fadeDuration);
+        }
+
+        if (aboutToggle) aboutToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchToAbout();
+        });
+        if (aboutClose) aboutClose.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchToMain();
+        });
 
         // Close About when clicking any sidebar project/section link
         document.querySelectorAll('.sidebar-accordion-content .footer-link-item').forEach(link => {
             link.addEventListener('click', () => {
                 if (aboutView.classList.contains('is-active')) {
-                    aboutView.classList.remove('is-active');
-                    mainContent.classList.remove('is-hidden');
+                    switchToMain();
                 }
             });
         });
@@ -827,14 +851,46 @@
         document.querySelectorAll('.sidebar-scroll-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (aboutView.classList.contains('is-active')) {
-                    aboutView.classList.remove('is-active');
-                    mainContent.classList.remove('is-hidden');
-                }
                 const target = document.querySelector(link.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (aboutView.classList.contains('is-active')) {
+                    switchToMain(target);
+                } else if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             });
         });
+
+        // --- More Work Strip scroll fade ---
+        const strip = document.querySelector('.more-work-strip');
+        if (strip) {
+            const wrapper = strip.parentElement;
+            wrapper.style.position = 'relative';
+
+            const fadeL = document.createElement('div');
+            const fadeR = document.createElement('div');
+            const fadeBase = 'position:absolute;top:0;bottom:0;width:60px;pointer-events:none;z-index:2;opacity:0;transition:opacity 0.4s ease;';
+            fadeL.style.cssText = fadeBase + `left:0;background:linear-gradient(to right, var(--color-bg), transparent);`;
+            fadeR.style.cssText = fadeBase + `right:0;background:linear-gradient(to left, var(--color-bg), transparent);`;
+            wrapper.appendChild(fadeL);
+            wrapper.appendChild(fadeR);
+
+            let stripFadeTimer = null;
+
+            function updateStripFade() {
+                const sl = strip.scrollLeft;
+                const sr = strip.scrollWidth - strip.clientWidth - sl;
+                fadeL.style.opacity = sl > 2 ? '1' : '0';
+                fadeR.style.opacity = sr > 2 ? '1' : '0';
+
+                clearTimeout(stripFadeTimer);
+                stripFadeTimer = setTimeout(() => {
+                    fadeL.style.opacity = '0';
+                    fadeR.style.opacity = '0';
+                }, 800);
+            }
+
+            strip.addEventListener('scroll', updateStripFade);
+        }
 
         // --- Collaboration Toggle ---
         const collabToggle = document.getElementById('collab-toggle');
