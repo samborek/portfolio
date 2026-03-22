@@ -37,21 +37,21 @@
                             </div>
                             <div class="sidebar-accordion-item">
                                 <button class="sidebar-accordion-toggle" aria-expanded="false">
-                                    <span class="sidebar-accordion-label">Socials</span>
+                                    <span class="sidebar-accordion-label">Channels</span>
                                     <span class="sidebar-accordion-icon">+</span>
                                 </button>
                                 <nav class="sidebar-accordion-content">
                                     <% if (theme.social?.twitter) { %>
                                         <a href="<%= theme.social.twitter %>" target="_blank" class="footer-link-item">Twitter</a>
                                     <% } %>
-                                    <% if (theme.social?.linkedin) { %>
-                                        <a href="<%= theme.social.linkedin %>" target="_blank" class="footer-link-item">LinkedIn</a>
-                                    <% } %>
                                     <% if (theme.social?.dribbble) { %>
                                         <a href="<%= theme.social.dribbble %>" target="_blank" class="footer-link-item">Dribbble</a>
                                     <% } %>
                                     <% if (theme.social?.behance) { %>
                                         <a href="<%= theme.social.behance %>" target="_blank" class="footer-link-item">Behance</a>
+                                    <% } %>
+                                    <% if (theme.social?.linkedin) { %>
+                                        <a href="<%= theme.social.linkedin %>" target="_blank" class="footer-link-item">LinkedIn</a>
                                     <% } %>
                                 </nav>
                             </div>
