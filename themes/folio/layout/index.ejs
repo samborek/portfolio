@@ -469,7 +469,7 @@
                                             scopeLines.forEach(ln => {
                                                 const s = ln.trim();
                                                 if (!s) return;
-                                                if (s.toLowerCase().startsWith('### what i') || s.startsWith('### Scope')) {
+                                                if (s.toLowerCase().startsWith('### what i') || s.startsWith('### Scope') || s.toLowerCase().startsWith('### core offer')) {
                                                     foundScope = true;
                                                     scopeHeading = s.replace('### ', '');
                                                 } else if (s.startsWith('### ') && foundScope) {

@@ -4196,7 +4196,7 @@ body.project-page {
 .scope-container {
   background: color-mix(in srgb, var(--color-bg-secondary), transparent 50%);
   border-radius: var(--radius-xl);
-  padding: 3.75rem 2.5rem;
+  padding: 2.5rem 2.5rem;
   width: 100%;
 }
 

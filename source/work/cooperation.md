@@ -7,7 +7,7 @@ layout: page
 
 I see every project as a real partnership. I'm not just delivering a Figma file and moving on—I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
 
-### What I handle
+### Core offer
 
 I move fluidly between disciplines—no handoffs between specialists, just one designer who connects the dots end to end. I see every project as a real partnership. I'm not just delivering a Figma file and moving on—I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
 
