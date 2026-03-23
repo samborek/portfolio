@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const isMobileViewport = window.innerWidth <= 900;
     const embla = EmblaCarousel(viewportNode, {
-      loop: false,
+      loop: true,
       align: isMobileViewport ? 'center' : 'start',
       dragFree: false,
       containScroll: isMobileViewport ? 'keepSnaps' : 'trimSnaps'
