@@ -7,7 +7,7 @@ layout: page
 
 I see every project as a real partnership. I'm not just delivering a Figma file and moving on—I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
 
-### What i handle
+### What I handle
 
 I move fluidly between disciplines—no handoffs between specialists, just one designer who connects the dots end to end. I see every project as a real partnership. I'm not just delivering a Figma file and moving on—I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
 
@@ -39,7 +39,7 @@ I move fluidly between disciplines—no handoffs between specialists, just one d
 ### How we can work together
 
 **Monthly Retainer**
-Perfect for vision-to-product design or ongoing foundational work where we need to move fast. You get an embedded design partner shaping the vision, defining requirements, and designing final flows in tight loops with your engineering team. As close to full-time as it gets beyond longer contracts.
+Perfect for vision-to-product design or ongoing foundational work where we need to move fast. You get an embedded design partner shaping the vision, defining requirements, and designing final flows in tight loops with your engineering team. Comparable to 0.5 FTE with some reasonable flexibility.
 
 **Weekly Sprint**
 Great for tightly scoped work—crafting a high-conversion website, building a pitch deck, preparing new visuals for social media, or dropping in to solve a specific product UI/UX challenge. We align on a straightforward quote upfront and dive straight into the work.

@@ -894,24 +894,7 @@ body.index-page {
 } */
 
 .project-carousel-progress {
-  position: relative;
-  height: 0.1875rem;
-  background: rgba(0, 0, 0, 0.1);
-  width: 50%;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: var(--radius-m);
-}
-
-.project-carousel-progress span {
-  display: block;
-  height: 100%;
-  background: #9d9d9d;
-  /* Black */
-  border-radius: var(--radius-m);
-  transform-origin: left center;
-  /* transform: scaleX(0); */
-  /* transition: transform var(--progress-transition, 0.2s) ease; */
+  display: none;
 }
 
 /* Embla Carousel */
@@ -2297,6 +2280,114 @@ body.index-page {
 /* ============================================
    RESPONSIVE
    ============================================ */
+
+/* ---- Tablet: horizontal top bar with two columns ---- */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .portfolio-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    top: unset;
+    padding: 20px 2rem;
+    gap: 0;
+    border-right: none;
+    overflow: visible;
+  }
+
+  .sidebar-header {
+    margin-bottom: 0;
+  }
+
+  /* Two-column grid: left = headline, right = nav + CTA */
+  .sidebar-body {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    align-items: center;
+    gap: 0 2rem;
+    max-width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  /* Headline constrained like desktop sidebar */
+  .sidebar-body > .sidebar-description,
+  .sidebar-body > .bubble-flow {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    max-width: var(--sidebar-width);
+    align-self: center;
+  }
+
+  /* Nav stacked vertically in right column */
+  .sidebar-body > .sidebar-accordion {
+    grid-column: 2;
+    grid-row: 1;
+    flex-direction: column;
+    margin-top: 0;
+    gap: 0;
+    align-self: center;
+  }
+
+  /* Hide Works on tablet */
+  .sidebar-accordion-item:first-child {
+    display: none;
+  }
+
+  .sidebar-accordion-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .sidebar-accordion-toggle {
+    padding: 0.4rem 0;
+    min-width: 10rem;
+  }
+
+  .sidebar-accordion-content {
+    position: absolute;
+    z-index: 10;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    padding: 0;
+    min-width: 10rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+
+  .sidebar-accordion-content.expanded {
+    padding: 0.5rem 0;
+  }
+
+  .sidebar-accordion-content .footer-link-item {
+    padding: 0.4rem 1rem;
+  }
+
+  /* Hide CTA on tablet */
+  .sidebar-cta-wrapper {
+    display: none;
+  }
+
+  /* Show Contact link on tablet */
+  .sidebar-contact-link {
+    display: block;
+  }
+
+  /* Hide email in tablet top bar */
+  .sidebar .footer-email-full {
+    display: none;
+  }
+
+  .sidebar.sidebar-hidden {
+    display: none;
+  }
+
+  .projects-column {
+    width: 100%;
+  }
+}
+
 @media (max-width: 900px) {
   .portfolio-wrapper {
     grid-template-columns: 1fr;
@@ -2457,24 +2548,20 @@ body.index-page {
     top: unset;
     border-right: none;
     border-bottom: none;
-    padding: 0;
-    padding-top: 3.5rem;
-    padding-bottom: 0rem;
+    padding: 1.5rem var(--space-md) 0;
     display: flex;
     flex-direction: column;
     width: 100%;
     --sidebar-px: 0px;
     align-items: center;
     overflow: visible;
-    /* Not sticky on mobile - scrolls with page */
-    /* Ensure no max-height or scroll */
     max-height: none;
   }
 
   .sidebar-hero,
   .sidebar-body {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
+    padding-left: 0;
+    padding-right: 0;
     width: 100%;
     text-align: center;
     display: flex;
@@ -2482,10 +2569,41 @@ body.index-page {
     align-items: center;
   }
 
+  .sidebar-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-body {
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+
   .sidebar-description {
     text-align: center;
     max-width: 20rem;
-    /* Compact for mobile centering */
+  }
+
+  /* Hide Works accordion on mobile — projects are right below */
+  .sidebar-accordion-item:first-child {
+    display: none;
+  }
+
+  /* Compact accordion spacing */
+  .sidebar-accordion {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  /* Hide email on mobile */
+  .sidebar .footer-email-full {
+    display: none;
+  }
+
+  /* Smaller CTA on mobile */
+  .sidebar-cta-wrapper {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0;
   }
 
   .sidebar-footer {
@@ -3957,12 +4075,29 @@ body.project-page {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease, padding 0.3s ease;
-  padding-bottom: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  line-height: 0;
+  font-size: 0;
 }
 
 .sidebar-accordion-content.expanded {
   max-height: 500px;
   padding-bottom: 0.75rem;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Contact link: hidden by default, shown on tablet only via media query */
+.sidebar-contact-link {
+  display: none !important;
+}
+
+@media (min-width: 901px) and (max-width: 1199px) {
+  .sidebar-contact-link {
+    display: block !important;
+  }
 }
 
 /* About View */
@@ -4055,6 +4190,7 @@ body.project-page {
 
 .scope-section {
   padding: var(--space-md) 0 0;
+  container-type: inline-size;
 }
 
 .scope-container {
@@ -4087,7 +4223,7 @@ body.project-page {
 
 .scope-grid {
   display: flex;
-  gap: var(--space-lg);
+  gap: 20px;
 }
 
 .scope-card {
@@ -4283,8 +4419,8 @@ body.project-page {
   50% { r: 9; opacity: 0.02; }
 }
 
-/* ---- Scope responsive ---- */
-@media (max-width: 768px) {
+/* ---- Scope responsive (container query) ---- */
+@container (max-width: 812px) {
   .scope-grid {
     flex-direction: column;
   }
