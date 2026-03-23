@@ -16,8 +16,10 @@ I move fluidly between disciplines—no handoffs between specialists, just one d
 - Mobile and web app design
 - Mobile App UI (iOS)
 - Landing pages and marketing sites
-- Design systems (colors, typography, components , design tokens)
+- Design systems (colors, typography, components, design tokens)
 - Visual & UX audits
+- Internal tools for marketing & UI assets
+- AI-powered POCs for business & UX validation
 
 
 #### Creatives & visual
