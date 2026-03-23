@@ -2106,6 +2106,11 @@ body.index-page {
   color: #fff;
   text-decoration: none;
   transition: opacity 0.2s;
+  position: relative;
+}
+
+.connect-footer-email.copy-email-btn::after {
+  display: none;
 }
 
 .connect-footer-email:hover {
@@ -3974,6 +3979,30 @@ body.project-page {
   cursor: pointer;
 }
 
+.copied-tooltip {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+.copy-email-btn.copied .copied-tooltip {
+  opacity: 1;
+}
+
+.connect-footer-email .copied-tooltip {
+  background: #fff;
+  color: #1a1a1a;
+}
+
 .copy-email-btn::after {
   content: 'Email Copied!';
   position: absolute;
@@ -4152,18 +4181,8 @@ body.project-page {
   color: var(--color-text);
 }
 
-.footer-email-full::after {
-  position: static;
-  display: inline;
-  margin-left: 0.75rem;
-  transform: none;
-  padding: 0.3rem 0.6rem;
-  font-size: 0.75rem;
-  vertical-align: middle;
-}
-
-.footer-email-full.copied::after {
-  transform: none;
+.footer-email-full.copy-email-btn::after {
+  display: none;
 }
 
 /* ============================================

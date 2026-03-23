@@ -761,31 +761,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Copy Email Functionality ---
   const copyEmailLinks = document.querySelectorAll('.copy-email-btn');
   copyEmailLinks.forEach(link => {
+    // Create inline tooltip span
+    const tooltip = document.createElement('span');
+    tooltip.className = 'copied-tooltip';
+    tooltip.textContent = 'Copied!';
+    link.appendChild(tooltip);
+
+    const showCopied = () => {
+      link.classList.add('copied');
+      setTimeout(() => link.classList.remove('copied'), 2000);
+    };
+
     link.addEventListener('click', (e) => {
       e.preventDefault();
-
       const email = link.getAttribute('href').replace('mailto:', '');
 
-      navigator.clipboard.writeText(email).then(() => {
-        link.classList.add('copied');
-
-        setTimeout(() => {
-          link.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy email: ', err);
-        // Fallback for older browsers or if navigator.clipboard fails
+      navigator.clipboard.writeText(email).then(showCopied).catch(() => {
         const textArea = document.createElement("textarea");
         textArea.value = email;
         document.body.appendChild(textArea);
         textArea.select();
-        try {
-          document.execCommand('copy');
-          link.classList.add('copied');
-          setTimeout(() => link.classList.remove('copied'), 2000);
-        } catch (copyErr) {
-          console.error('Fallback copy failed', copyErr);
-        }
+        try { document.execCommand('copy'); showCopied(); } catch (err) {}
         document.body.removeChild(textArea);
       });
     });
