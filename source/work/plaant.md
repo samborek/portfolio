@@ -22,7 +22,6 @@ solution: "Created an intuitive digital ecosystem and brand identity that balanc
 scope:
   - Brand Identity
   - App Design
-  - IoT Integration
   - UI/UX Design
 credits:
   - role: Brand

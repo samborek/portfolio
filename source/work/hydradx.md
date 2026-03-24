@@ -26,6 +26,8 @@ solution: "UI direction, building the new Design System and continue improving t
 scope:
   - Visual Design
   - UI & UX Design
+  - AI Gen
+  - Interactions
 when: "January 2023"
 ---
 

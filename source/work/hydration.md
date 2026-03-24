@@ -32,6 +32,8 @@ scope:
   - Design System
   - Design Tokens
   - UI/UX Design
+  - Prototyping
+  - QA
 credits:
   - role: Brand
     name: Properly Studio
