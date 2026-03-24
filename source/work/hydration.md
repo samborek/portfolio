@@ -25,7 +25,7 @@ carousel_image_scale: 1
 client: Hydration Protocol
 role: "Lead Product Designer"
 theme_hint: "Try Dark Mode"
-intro: "DeFi Exchange & borrow/lending platform"
+intro: "Decentralized exchange & lending platform"
 problem: "The existing interface felt fragmented and inconsistent, making complex DeFi operations confusing for users. The brand identity lacked cohesion, and the mobile experience was an afterthought."
 solution: "Led a complete UI overhaul with a unified design language, built a comprehensive design tokens system for consistency at scale, and reimagined the mobile-first approach to make DeFi accessible anywhere."
 scope:

@@ -20,8 +20,8 @@ carousel_object_position: "top center"
 carousel_image_scale: 1.1
 client: Volt Industry
 role: Visual Design, UI & UX Design
-intro: "An Ocean of Liquidity for Polkadot"
-problem: "Next-gen DeFi protocol which is designed to bring an ocean of liquidity to Polkadot. Our tool for the job: the HydraDX Omnipool."
+intro: "An ocean of liquidity for Polkadot"
+problem: "Next-gen DeFi protocol which is designed to bring liquidity to Polkadot. Our tool for the job: the HydraDX Omnipool."
 solution: "UI direction, building the new Design System and continue improving the whole Interface, create new sub products and pages along with our internal team and community feedback."
 scope:
   - Visual Design
