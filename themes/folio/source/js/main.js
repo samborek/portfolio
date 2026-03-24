@@ -786,4 +786,48 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // --- Drag to scroll for more-work-strip ---
+  document.querySelectorAll('.more-work-strip').forEach(strip => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    strip.addEventListener('mousedown', e => {
+      isDown = true;
+      strip.style.cursor = 'grabbing';
+      startX = e.pageX - strip.offsetLeft;
+      scrollLeft = strip.scrollLeft;
+    });
+
+    strip.addEventListener('dragstart', e => e.preventDefault());
+
+    strip.addEventListener('mouseleave', () => {
+      isDown = false;
+      strip.style.cursor = 'grab';
+    });
+
+    strip.addEventListener('mouseup', () => {
+      isDown = false;
+      strip.style.cursor = 'grab';
+    });
+
+    strip.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - strip.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      strip.scrollLeft = scrollLeft - walk;
+    });
+
+    // Prevent click on links after dragging
+    strip.addEventListener('click', e => {
+      if (Math.abs(strip.scrollLeft - scrollLeft) > 5) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+
+    strip.style.cursor = 'grab';
+  });
 });
