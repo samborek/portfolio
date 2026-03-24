@@ -9,37 +9,7 @@
 */
 
 /* Custom Fonts */
-@font-face {
-  font-family: 'Gazpacho';
-  src: url('/font/GazpachoRegular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gazpacho';
-  src: url('/font/GazpachoMedium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gazpacho';
-  src: url('/font/GazpachoBold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gazpacho';
-  src: url('/font/GazpachoBlack.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
+/* Lexend loaded via Google Fonts in layout.ejs */
 
 @font-face {
   font-family: 'Quablo';
@@ -61,8 +31,8 @@
   --color-accent: #000000;
 
   /* Typography */
-  --font-display-gazpacho: 'Gazpacho', Georgia, serif;
-  --font-display-quablo: 'Quablo', 'Gazpacho', Georgia, serif;
+  --font-display-gazpacho: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-quablo: 'Quablo', 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: var(--font-display-gazpacho);
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -561,6 +531,29 @@ body.index-page {
   max-width: 24rem;
   margin-top: 2rem;
   /* More space like in the image */
+}
+
+.sidebar-description-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.dithered-text-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sidebar-description--sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .sidebar-description {
@@ -2736,7 +2729,7 @@ body.index-page {
 
   /* 20% smaller title and description on mobile */
   .project-title {
-    font-size: 1.45rem;
+    font-size: 2.45rem;
     /* 1.5625rem * 0.8 */
     line-height: 1.2;
   }
@@ -4209,7 +4202,7 @@ body.project-page {
 .scope-title {
   font-family: var(--font-display);
   font-size: var(--size-3xl);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-text);
   margin-bottom: var(--space-xs);
 }
