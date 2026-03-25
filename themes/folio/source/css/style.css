@@ -414,13 +414,25 @@ body.index-page {
     text-align: right;
   }
 
-  .sidebar-header,
-  .sidebar-body,
+  .sidebar-header {
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .sidebar-footer {
     width: auto;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+  }
+
+  .sidebar-body {
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .footer-grid {
@@ -456,11 +468,11 @@ body.index-page {
   }
 
   .sidebar-logo {
-    text-align: right;
+    text-align: left;
   }
 
   .sidebar-description {
-    text-align: right;
+    text-align: left;
   }
 
   .social-icons {
@@ -468,21 +480,22 @@ body.index-page {
     width: 100%;
   }
 
-  /* Fix for the Get in Touch button alignment */
+  /* CTA + email stretch to full sidebar-body width */
   .sidebar-cta-wrapper {
-    width: auto;
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: stretch;
     margin-top: 2rem;
   }
 
   .sidebar .unicorn-btn {
-    width: 14rem !important;
+    width: 100% !important;
     height: 4.5rem !important;
     margin: 0 !important;
-    /* Ensure no margins interfere */
-    margin-right: -2rem !important;
-    /* Specific wide-screen alignment exception */
+  }
+
+  .sidebar .footer-email-full {
+    width: 100%;
   }
 }
 
@@ -528,9 +541,8 @@ body.index-page {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-width: 24rem;
+  max-width: var(--sidebar-width);
   margin-top: 2rem;
-  /* More space like in the image */
 }
 
 .sidebar-description-wrapper {
