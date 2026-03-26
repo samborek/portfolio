@@ -313,24 +313,10 @@
                                                 <div class="project-text-container">
                                                     <div class="project-title-row">
                                                         <h3 class="project-title">
-                                                            <% if (project.website) { %>
-                                                                <a href="<%= project.website %>" target="_blank"
+                                                                <a href="<%- url_for(project.path) %>"
                                                                     class="project-title-link">
                                                                     <%= project.title %>
-                                                                        <svg class="world-icon" viewBox="0 0 24 24"
-                                                                            fill="none" stroke="currentColor"
-                                                                            stroke-width="2" stroke-linecap="round"
-                                                                            stroke-linejoin="round">
-                                                                            <circle cx="12" cy="12" r="10"></circle>
-                                                                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                                                                            <path
-                                                                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                                                            </path>
-                                                                        </svg>
                                                                 </a>
-                                                                <% } else { %>
-                                                                    <%= project.title %>
-                                                                        <% } %>
                                                         </h3>
                                                     </div>
                                                     <% if (project.intro) { %>
@@ -340,8 +326,9 @@
                                                         <% } %>
                                                 </div>
                                                 <div class="project-actions">
-                                                    <a href="<%- url_for(project.path) %>" class="project-pill-button">
-                                                        <span>Details</span>
+                                                    <% if (project.website) { %>
+                                                    <a href="<%= project.website %>" target="_blank" class="project-pill-button">
+                                                        <span>Visit site</span>
                                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                             stroke-width="2.5" stroke-linecap="round"
                                                             stroke-linejoin="round">
@@ -349,6 +336,7 @@
                                                             <polyline points="7 7 17 7 17 17"></polyline>
                                                         </svg>
                                                     </a>
+                                                    <% } %>
                                                 </div>
                                             </div>
                                             <% if (project.description) { %>

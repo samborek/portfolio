@@ -869,22 +869,7 @@ body.index-page {
 }
 
 .carousel-scroll-hint {
-  position: absolute;
-  right: 0.875rem;
-  bottom: 0.875rem;
-  padding: 0.35rem 0.6rem;
-  border-radius: var(--radius-m);
-  font-size: var(--size-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text);
-  background: rgba(0, 0, 0, 0.35);
-  background: color-mix(in srgb, var(--color-bg) 60%, transparent);
-  border: 1px solid var(--color-border);
-  opacity: 0.55;
-  transform: translateY(0.125rem);
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
-  pointer-events: none;
+  display: none;
 }
 
 .project-carousel-wrapper:hover .carousel-scroll-hint,
