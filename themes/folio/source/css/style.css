@@ -2647,16 +2647,14 @@ body.index-page {
     padding-bottom: 1rem;
   }
 
-  /* Substantial Button on Mobile */
+  /* Hide CTA button on mobile — Contact link in accordion replaces it */
   .sidebar-cta-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 1rem 0;
-    opacity: 1 !important;
-    /* Force visibility */
-    transform: none !important;
-    animation: none !important;
+    display: none !important;
+  }
+
+  /* Show Contact link on mobile, just below About */
+  .sidebar-contact-link {
+    display: block !important;
   }
 
   .sidebar .unicorn-btn {

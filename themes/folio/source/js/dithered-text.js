@@ -79,8 +79,12 @@
     octx.fillStyle = '#000000';
     octx.textBaseline = 'top';
 
+    const isMobile = window.innerWidth <= 900;
+    const textX = isMobile ? maxWidth / 2 : 0;
+    if (isMobile) octx.textAlign = 'center';
+
     lines.forEach((line, i) => {
-      octx.fillText(line, 0, i * fontSize * lineHeight * SCALE);
+      octx.fillText(line, textX, i * fontSize * lineHeight * SCALE);
     });
 
     const imageData = octx.getImageData(0, 0, off.width, off.height);
