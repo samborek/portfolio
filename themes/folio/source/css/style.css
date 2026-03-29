@@ -2724,16 +2724,20 @@ body.index-page {
     height: 1.5rem;
   }
 
-  /* ~50% smaller title and description on mobile (further 30% reduction) */
+  /* ~65% smaller title and description on mobile (further 30% reduction) */
   .project-title {
-    font-size: 1.715rem;
-    /* 2.45rem * 0.7 */
+    font-size: 1.2rem;
+    /* 1.715rem * 0.7 */
     line-height: 1.2;
   }
 
   .project-subtitle {
-    font-size: 1rem;
-    /* 1.25rem * 0.8 */
+    font-size: 0.85rem;
+    /* 1rem * 0.85 */
+  }
+
+  .project-text-container {
+    gap: 0.6rem;
   }
 
   .project-info-left,
