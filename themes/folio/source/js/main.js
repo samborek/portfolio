@@ -10,6 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   }
 
+  // BFCache restore (iOS/Android swipe-back): DOMContentLoaded doesn't re-fire,
+  // so the page-cover from the exit transition remains visible. Fix by fading it out.
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted && pageCover) {
+      pageCover.style.display = 'block';
+      pageCover.style.transition = 'opacity 0.15s ease-out';
+      pageCover.style.opacity = '0';
+      setTimeout(() => {
+        if (pageCover.parentNode) pageCover.style.display = 'none';
+      }, 200);
+    }
+  });
+
   // --- Scroll Restoration Logic ---
   const saveScrollState = () => {
     const homeView = document.getElementById('home-view');
