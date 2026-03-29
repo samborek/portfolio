@@ -248,7 +248,7 @@
     return lines;
   }
 
-  // --- Init on load & theme change ---
+  // --- Init on load ---
   function initAll() {
     document.querySelectorAll('.dithered-text-canvas').forEach(initDitheredCanvas);
   }
@@ -258,17 +258,6 @@
   } else {
     initAll();
   }
-
-  // Re-render on theme toggle
-  const observer = new MutationObserver((mutations) => {
-    for (const m of mutations) {
-      if (m.attributeName === 'data-theme') {
-        initAll();
-        break;
-      }
-    }
-  });
-  observer.observe(document.documentElement, { attributes: true });
 
   // Re-render on resize (debounced)
   let resizeTimer;
