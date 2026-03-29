@@ -2724,10 +2724,10 @@ body.index-page {
     height: 1.5rem;
   }
 
-  /* 20% smaller title and description on mobile */
+  /* ~50% smaller title and description on mobile (further 30% reduction) */
   .project-title {
-    font-size: 2.45rem;
-    /* 1.5625rem * 0.8 */
+    font-size: 1.715rem;
+    /* 2.45rem * 0.7 */
     line-height: 1.2;
   }
 
