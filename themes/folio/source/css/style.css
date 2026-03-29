@@ -2652,11 +2652,6 @@ body.index-page {
     display: none !important;
   }
 
-  /* Show Contact link on mobile, just below About */
-  .sidebar-contact-link {
-    display: block !important;
-  }
-
   .sidebar .unicorn-btn {
     width: 110%;
     height: 5rem;
@@ -4099,6 +4094,12 @@ body.project-page {
 }
 
 @media (min-width: 901px) and (max-width: 1199px) {
+  .sidebar-contact-link {
+    display: block !important;
+  }
+}
+
+@media (max-width: 900px) {
   .sidebar-contact-link {
     display: block !important;
   }
