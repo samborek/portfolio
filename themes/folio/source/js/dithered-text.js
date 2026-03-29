@@ -132,7 +132,7 @@
 
     // Drawing
     const ctx = canvas.getContext('2d');
-    const dotColor = styles.getPropertyValue('--color-text').trim() ||
+    let dotColor = styles.getPropertyValue('--color-text').trim() ||
       (isDark ? '#e6e6e6' : '#000000');
 
     const startTime = performance.now();
@@ -219,8 +219,12 @@
     animId = requestAnimationFrame(draw);
     canvas.setAttribute('data-ready', '');
 
-    // Store instance for cleanup
+    // Store instance for cleanup + color updates
     instances.set(canvas, {
+      updateColor(color) {
+        dotColor = color;
+        if (animId === null) animId = requestAnimationFrame(draw);
+      },
       destroy() {
         if (animId) cancelAnimationFrame(animId);
         canvas.removeEventListener('mousemove', onMouseMove);
@@ -258,6 +262,20 @@
   } else {
     initAll();
   }
+
+  // Update dot color on theme change (no re-render/animation reset)
+  const themeObserver = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.attributeName === 'data-theme') {
+        const s = getComputedStyle(document.documentElement);
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const color = s.getPropertyValue('--color-text').trim() || (dark ? '#e6e6e6' : '#000000');
+        instances.forEach(instance => instance.updateColor(color));
+        break;
+      }
+    }
+  });
+  themeObserver.observe(document.documentElement, { attributes: true });
 
   // Re-render on resize (debounced)
   let resizeTimer;
