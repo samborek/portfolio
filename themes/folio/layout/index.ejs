@@ -319,11 +319,11 @@
                                                                 </a>
                                                         </h3>
                                                     </div>
-                                                    <% if (project.intro) { %>
+                                                    <% if (project.solution || project.intro) { %>
                                                         <p class="project-subtitle">
-                                                            <%= project.intro %>
+                                                            <%= project.solution || project.intro %>
                                                         </p>
-                                                        <% } %>
+                                                    <% } %>
                                                 </div>
                                                 <div class="project-actions">
                                                     <% if (project.website) { %>
@@ -339,20 +339,6 @@
                                                     <% } %>
                                                 </div>
                                             </div>
-                                            <% if (project.description) { %>
-                                                <div class="project-description">
-                                                    <p class="project-info-text">
-                                                        <%= project.description %>
-                                                    </p>
-                                                </div>
-                                                <% } else if (project.problem || project.solution) { %>
-                                                    <div class="project-description">
-                                                        <p class="project-info-text">
-                                                            <%= project.problem %>
-                                                                <%= project.solution %>
-                                                        </p>
-                                                    </div>
-                                                    <% } %>
                                                         <div class="project-meta-row">
                                                             <% if (project.scope && project.scope.length) { %>
                                                                 <div class="project-scope-tags">
@@ -366,10 +352,6 @@
                                                                                 <% }); %>
                                                                 </div>
                                                                 <% } %>
-                                                                    <span class="project-year">
-                                                                        <%= project.when || project.date_label ||
-                                                                            project.year || '—' %>
-                                                                    </span>
                                                         </div>
                                         </div>
                             </section>

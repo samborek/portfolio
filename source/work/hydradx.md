@@ -28,6 +28,8 @@ scope:
   - UI & UX Design
   - AI Gen
   - Interactions
+  - Landing page 
+  - Framer prototypes
 when: "January 2023"
 ---
 
