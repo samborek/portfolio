@@ -79,8 +79,12 @@
     octx.fillStyle = '#000000';
     octx.textBaseline = 'top';
 
+    const isMobile = window.innerWidth <= 900;
+    const textX = isMobile ? maxWidth / 2 : 0;
+    if (isMobile) octx.textAlign = 'center';
+
     lines.forEach((line, i) => {
-      octx.fillText(line, 0, i * fontSize * lineHeight * SCALE);
+      octx.fillText(line, textX, i * fontSize * lineHeight * SCALE);
     });
 
     const imageData = octx.getImageData(0, 0, off.width, off.height);
@@ -128,7 +132,7 @@
 
     // Drawing
     const ctx = canvas.getContext('2d');
-    const dotColor = styles.getPropertyValue('--color-text').trim() ||
+    let dotColor = styles.getPropertyValue('--color-text').trim() ||
       (isDark ? '#e6e6e6' : '#000000');
 
     const startTime = performance.now();
@@ -215,8 +219,12 @@
     animId = requestAnimationFrame(draw);
     canvas.setAttribute('data-ready', '');
 
-    // Store instance for cleanup
+    // Store instance for cleanup + color updates
     instances.set(canvas, {
+      updateColor(color) {
+        dotColor = color;
+        if (animId === null) animId = requestAnimationFrame(draw);
+      },
       destroy() {
         if (animId) cancelAnimationFrame(animId);
         canvas.removeEventListener('mousemove', onMouseMove);
@@ -244,7 +252,7 @@
     return lines;
   }
 
-  // --- Init on load & theme change ---
+  // --- Init on load ---
   function initAll() {
     document.querySelectorAll('.dithered-text-canvas').forEach(initDitheredCanvas);
   }
@@ -255,16 +263,19 @@
     initAll();
   }
 
-  // Re-render on theme toggle
-  const observer = new MutationObserver((mutations) => {
+  // Update dot color on theme change (no re-render/animation reset)
+  const themeObserver = new MutationObserver((mutations) => {
     for (const m of mutations) {
       if (m.attributeName === 'data-theme') {
-        initAll();
+        const s = getComputedStyle(document.documentElement);
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const color = s.getPropertyValue('--color-text').trim() || (dark ? '#e6e6e6' : '#000000');
+        instances.forEach(instance => instance.updateColor(color));
         break;
       }
     }
   });
-  observer.observe(document.documentElement, { attributes: true });
+  themeObserver.observe(document.documentElement, { attributes: true });
 
   // Re-render on resize (debounced)
   let resizeTimer;

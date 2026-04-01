@@ -2647,16 +2647,9 @@ body.index-page {
     padding-bottom: 1rem;
   }
 
-  /* Substantial Button on Mobile */
+  /* Hide CTA button on mobile — Contact link in accordion replaces it */
   .sidebar-cta-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 1rem 0;
-    opacity: 1 !important;
-    /* Force visibility */
-    transform: none !important;
-    animation: none !important;
+    display: none !important;
   }
 
   .sidebar .unicorn-btn {
@@ -2724,16 +2717,20 @@ body.index-page {
     height: 1.5rem;
   }
 
-  /* ~50% smaller title and description on mobile (further 30% reduction) */
+  /* ~65% smaller title and description on mobile (further 30% reduction) */
   .project-title {
-    font-size: 1.715rem;
-    /* 2.45rem * 0.7 */
+    font-size: 1.2rem;
+    /* 1.715rem * 0.7 */
     line-height: 1.2;
   }
 
   .project-subtitle {
-    font-size: 1rem;
-    /* 1.25rem * 0.8 */
+    font-size: 0.85rem;
+    /* 1rem * 0.85 */
+  }
+
+  .project-text-container {
+    gap: 0.3rem;
   }
 
   .project-info-left,
@@ -4097,6 +4094,12 @@ body.project-page {
 }
 
 @media (min-width: 901px) and (max-width: 1199px) {
+  .sidebar-contact-link {
+    display: block !important;
+  }
+}
+
+@media (max-width: 900px) {
   .sidebar-contact-link {
     display: block !important;
   }
