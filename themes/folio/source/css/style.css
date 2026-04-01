@@ -3715,6 +3715,60 @@ body.project-page {
   }
 }
 
+/* Dribbble Grid */
+.dribbble-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.dribbble-grid-intro {
+  aspect-ratio: 4 / 3;
+}
+
+.dribbble-grid-item {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+.dribbble-grid-item .tile-image-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.dribbble-grid-item .tile-image-wrapper img,
+.dribbble-grid-item .tile-image-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.dribbble-grid-item:hover .tile-image-wrapper img,
+.dribbble-grid-item:hover .tile-image-wrapper video {
+  transform: scale(1.04);
+}
+
+@media (max-width: 900px) {
+  .dribbble-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .dribbble-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xs);
+  }
+
+  .dribbble-grid-intro {
+    grid-column: span 2;
+    aspect-ratio: 4 / 1;
+  }
+}
+
 /* More Work Section (Home) */
 #more-works .more-work-section:first-child {
   margin-top: var(--space-lg);
