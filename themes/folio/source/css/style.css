@@ -2557,11 +2557,12 @@ body.index-page {
   .sidebar-body {
     gap: 0.25rem;
     margin-top: 0.5rem;
+    max-width: 100%;
   }
 
   .sidebar-description {
     text-align: center;
-    max-width: 20rem;
+    max-width: 100%;
   }
 
   /* Hide Works accordion on mobile — projects are right below */

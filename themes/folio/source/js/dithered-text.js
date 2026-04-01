@@ -75,13 +75,14 @@
     off.width = maxWidth;
     off.height = totalHeight;
     const octx = off.getContext('2d');
+    const isMobile = window.innerWidth <= 900;
+
+    const textX = isMobile ? maxWidth / 2 : 0;
+
     octx.font = `${fontWeight} ${fontSize * SCALE}px ${fontFamily}`;
     octx.fillStyle = '#000000';
     octx.textBaseline = 'top';
-
-    const isMobile = window.innerWidth <= 900;
-    const textX = isMobile ? maxWidth / 2 : 0;
-    if (isMobile) octx.textAlign = 'center';
+    octx.textAlign = isMobile ? 'center' : 'left';
 
     lines.forEach((line, i) => {
       octx.fillText(line, textX, i * fontSize * lineHeight * SCALE);
