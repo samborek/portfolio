@@ -26,7 +26,7 @@
     "hexo-theme-landscape": "^1.0.0"
   },
   "devDependencies": {
-    "agentation": "^3.0.1",
+    "agentation": "^3.0.2",
     "hexo-browsersync": "^0.3.0"
   }
 }
