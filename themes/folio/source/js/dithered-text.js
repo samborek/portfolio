@@ -65,12 +65,16 @@
     const lines = wrapText(mctx, text, maxWidth);
     const totalHeight = lines.length * fontSize * lineHeight * SCALE + fontSize * 0.3 * SCALE;
 
-    canvas.width = maxWidth;
-    canvas.height = totalHeight;
-    canvas.style.width = wrapper.clientWidth + 'px';
-    canvas.style.height = (totalHeight / SCALE) + 'px';
+    // Add padding so displaced particles aren't clipped by canvas edges
+    const PAD = FORCE_STRENGTH + DOT_RADIUS * SCALE + 2;
+    canvas.width = maxWidth + PAD * 2;
+    canvas.height = totalHeight + PAD * 2;
+    canvas.style.width = (canvas.width / SCALE) + 'px';
+    canvas.style.height = (canvas.height / SCALE) + 'px';
+    canvas.style.marginLeft = -(PAD / SCALE) + 'px';
+    canvas.style.marginTop = -(PAD / SCALE) + 'px';
 
-    // Draw text offscreen to sample pixels
+    // Draw text offscreen to sample pixels (no padding — text position is offset in draw loop)
     const off = document.createElement('canvas');
     off.width = maxWidth;
     off.height = totalHeight;
@@ -102,11 +106,11 @@
         const threshold = BAYER_8x8[(y / CELL_SIZE | 0) % 8][(x / CELL_SIZE | 0) % 8];
         if (alpha > threshold) {
           dots.push({
-            hx: x + CELL_SIZE / 2,  // home x
-            hy: y + CELL_SIZE / 2,  // home y
-            cx: x + CELL_SIZE / 2,  // current x (for smooth return)
-            cy: y + CELL_SIZE / 2,  // current y
-            col: x / off.width      // for stagger animation
+            hx: x + CELL_SIZE / 2 + PAD,  // home x (offset by padding)
+            hy: y + CELL_SIZE / 2 + PAD,  // home y (offset by padding)
+            cx: x + CELL_SIZE / 2 + PAD,  // current x
+            cy: y + CELL_SIZE / 2 + PAD,  // current y
+            col: x / off.width             // for stagger animation
           });
         }
       }
