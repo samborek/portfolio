@@ -15,7 +15,6 @@ carousel_image_scale: 1.1
 client: Plaant
 role: UI & UX Design
 tech: Figma
-link: https://example.com
 intro: "Smart home hydroponics made simple"
 problem: "Bringing nature indoors can be complex and intimidating for urban dwellers with limited space and no green thumb. Existing hydroponic solutions were often too industrial or overly complicated for a domestic setting."
 solution: "Created an intuitive digital ecosystem and brand identity that balances organic softness with smart technology. The design system uses biophilic principles to make plant care an effortless and rewarding experience through a minimalist, nature-first interface."
