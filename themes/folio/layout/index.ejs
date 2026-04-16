@@ -38,26 +38,6 @@
                                 </nav>
                             </div>
                             <div class="sidebar-accordion-item">
-                                <button class="sidebar-accordion-toggle" aria-expanded="false">
-                                    <span class="sidebar-accordion-label">Channels</span>
-                                    <span class="sidebar-accordion-icon">+</span>
-                                </button>
-                                <nav class="sidebar-accordion-content">
-                                    <% if (theme.social?.twitter) { %>
-                                        <a href="<%= theme.social.twitter %>" target="_blank" class="footer-link-item">Twitter</a>
-                                    <% } %>
-                                    <% if (theme.social?.dribbble) { %>
-                                        <a href="<%= theme.social.dribbble %>" target="_blank" class="footer-link-item">Dribbble</a>
-                                    <% } %>
-                                    <% if (theme.social?.behance) { %>
-                                        <a href="<%= theme.social.behance %>" target="_blank" class="footer-link-item">Behance</a>
-                                    <% } %>
-                                    <% if (theme.social?.linkedin) { %>
-                                        <a href="<%= theme.social.linkedin %>" target="_blank" class="footer-link-item">LinkedIn</a>
-                                    <% } %>
-                                </nav>
-                            </div>
-                            <div class="sidebar-accordion-item">
                                 <a href="#scope" class="sidebar-accordion-toggle sidebar-scroll-link">
                                     <span class="sidebar-accordion-label">Offer</span>
                                 </a>
@@ -80,6 +60,20 @@
                                 data-us-production="true">
                                 <span class="btn-text">Get in touch</span>
                             </a>
+                            <div class="sidebar-channels">
+                                <% if (theme.social?.twitter) { %>
+                                    <a href="<%= theme.social.twitter %>" target="_blank" class="sidebar-channel-link">Twitter</a>
+                                <% } %>
+                                <% if (theme.social?.dribbble) { %>
+                                    <a href="<%= theme.social.dribbble %>" target="_blank" class="sidebar-channel-link">Dribbble</a>
+                                <% } %>
+                                <% if (theme.social?.behance) { %>
+                                    <a href="<%= theme.social.behance %>" target="_blank" class="sidebar-channel-link">Behance</a>
+                                <% } %>
+                                <% if (theme.social?.linkedin) { %>
+                                    <a href="<%= theme.social.linkedin %>" target="_blank" class="sidebar-channel-link">LinkedIn</a>
+                                <% } %>
+                            </div>
                         </div>
                         <a href="mailto:<%= theme.connect?.email || 'contact@msambora.com' %>"
                             class="footer-email-full copy-email-btn">
@@ -360,6 +354,32 @@
                                 <div id="more-works">
                                     <section class="more-work-section reveal-on-scroll" id="more-works-combined">
                                         <div class="dribbble-grid">
+                                            <!-- Behance intro + shots -->
+                                            <a href="https://www.behance.net/samborek" target="_blank" class="dribbble-grid-intro work-tile intro-tile">
+                                                <div class="intro-arrow-wrapper">
+                                                    <span class="intro-arrow">↗</span>
+                                                </div>
+                                                <div class="intro-content">
+                                                    <h2 class="intro-title">Case studies</h2>
+                                                    <span class="intro-subtitle">Behance</span>
+                                                </div>
+                                            </a>
+                                            <a href="https://www.behance.net/gallery/78992065/CakeWallet-First-Open-Source-Monero-Wallet" target="_blank" class="work-tile dribbble-grid-item">
+                                                <div class="tile-image-wrapper">
+                                                    <img data-src="<%- url_for('/images/work/behance/cakewallet.png') %>" alt="Cake Wallet">
+                                                </div>
+                                            </a>
+                                            <a href="https://www.behance.net/gallery/90433865/DesignWays-Conf-Designs" target="_blank" class="work-tile dribbble-grid-item">
+                                                <div class="tile-image-wrapper">
+                                                    <img data-src="<%- url_for('/images/work/behance/dwc.png') %>" alt="DesignWays Conf">
+                                                </div>
+                                            </a>
+                                            <a href="https://www.behance.net/gallery/62252031/PRO-Voice-Site-Design-Product-Design" target="_blank" class="work-tile dribbble-grid-item">
+                                                <div class="tile-image-wrapper">
+                                                    <img data-src="<%- url_for('/images/work/behance/Editing%20PRO%20Voice%20Site%20Design.png') %>" alt="PRO Voice Site Design">
+                                                </div>
+                                            </a>
+                                            <!-- Dribbble intro + shots -->
                                             <a href="https://dribbble.com/samborek" target="_blank" class="dribbble-grid-intro work-tile intro-tile">
                                                 <div class="intro-arrow-wrapper">
                                                     <span class="intro-arrow">↗</span>
@@ -407,11 +427,6 @@
                                             <a href="https://dribbble.com/shots/17787996" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
                                                     <img data-src="<%- url_for('/images/work/dribbble/17787996.webp') %>" alt="">
-                                                </div>
-                                            </a>
-                                            <a href="https://dribbble.com/shots/15762676" target="_blank" class="work-tile dribbble-grid-item">
-                                                <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/15762676.webp') %>" alt="">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/14650757" target="_blank" class="work-tile dribbble-grid-item">

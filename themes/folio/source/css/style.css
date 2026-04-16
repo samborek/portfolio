@@ -495,7 +495,7 @@ body.index-page {
   }
 
   .sidebar .footer-email-full {
-    width: 100%;
+    display: none;
   }
 }
 
@@ -584,6 +584,23 @@ body.index-page {
   opacity: 0;
   animation: fadeInButton 0.5s ease-out 0.8s forwards;
   will-change: transform, opacity;
+}
+
+.sidebar-channels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.sidebar-channel-link {
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.sidebar-channel-link:hover {
+  color: var(--color-text);
 }
 
 /* Scaled Unicorn button for sidebar */
@@ -4038,13 +4055,20 @@ body.project-page {
   color: var(--color-bg);
   border-radius: var(--radius-full);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transform: scale(0.75);
   pointer-events: none;
   vertical-align: middle;
 }
 
+@keyframes copied-bounce {
+  0%   { opacity: 0; transform: scale(0.75); }
+  55%  { opacity: 1; transform: scale(1.08); }
+  75%  { transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
 .copy-email-btn.copied .copied-tooltip {
-  opacity: 1;
+  animation: copied-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .connect-footer-email .copied-tooltip {
@@ -4052,12 +4076,19 @@ body.project-page {
   color: #1a1a1a;
 }
 
+@keyframes tooltip-bounce-in {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.85); }
+  55%  { opacity: 1; transform: translateX(-50%) translateY(-3px) scale(1.04); }
+  75%  { transform: translateX(-50%) translateY(1px) scale(0.98); }
+  100% { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
 .copy-email-btn::after {
   content: 'Email Copied!';
   position: absolute;
   top: -3.5rem;
   left: 50%;
-  transform: translateX(-50%) translateY(10px);
+  transform: translateX(-50%) translateY(10px) scale(0.85);
   background: var(--color-text);
   color: var(--color-bg);
   padding: 0.6rem 1rem;
@@ -4068,16 +4099,14 @@ body.project-page {
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   z-index: 10000;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .copy-email-btn.copied::after {
-  opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  animation: tooltip-bounce-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* Ensure tooltip is visible above other elements */
@@ -4220,11 +4249,13 @@ body.project-page {
   opacity: 0;
 }
 
+.sidebar .footer-email-full {
+  display: none;
+}
+
 .footer-email-full {
   display: block;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+  margin-top: 1rem;
   color: var(--color-text-secondary);
   font-size: 0.85rem;
   text-decoration: none;
