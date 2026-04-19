@@ -484,14 +484,14 @@ body.index-page {
   .sidebar-cta-wrapper {
     width: 100%;
     display: flex;
-    justify-content: stretch;
+    flex-direction: column;
     margin-top: 2rem;
   }
 
   .sidebar .unicorn-btn {
-    width: 100% !important;
+    width: calc(100% + 4rem) !important;
     height: 4.5rem !important;
-    margin: 0 !important;
+    margin-left: -2rem !important;
   }
 
   .sidebar .footer-email-full {
@@ -589,7 +589,10 @@ body.index-page {
 .sidebar-channels {
   display: flex;
   justify-content: space-between;
+  width: calc(100% + 4rem);
+  margin-left: -2rem;
   margin-top: 1rem;
+  padding: 0 calc(2rem + 15px) 0 2rem;
 }
 
 .sidebar-channel-link {
@@ -605,9 +608,9 @@ body.index-page {
 
 /* Scaled Unicorn button for sidebar */
 .sidebar .unicorn-btn {
-  width: 125%;
+  width: calc(100% + 4rem);
   height: 5rem;
-  margin-left: -1.4rem;
+  margin-left: -2rem;
   display: block;
   position: relative;
   /* Mask any square flash during Unicorn canvas initialization */
