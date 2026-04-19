@@ -7,9 +7,10 @@ year: 2024
 order: 1000
 cover: /images/work/hydration_1.jpg
 hero_image: /images/work/hydration_1.jpg
+preview_extra:
+  - /images/work/hydration_1.jpg
 carousel:
   - /images/work/hydration.json
-  - /images/work/hydration_1.jpg
   - light: /images/work/hydration_2.jpg
     dark: /images/work/hydration_2_dark.jpg
   - light: /images/work/hydration_3.jpg
@@ -20,6 +21,7 @@ carousel:
     dark: /images/work/hydration_5_dark.jpg
   - light: /images/work/hydration_6.jpg
     dark: /images/work/hydration_6_dark.jpg
+preview_slideshow: true
 carousel_object_fit: cover
 disable_parallax: true
 carousel_image_scale: 1

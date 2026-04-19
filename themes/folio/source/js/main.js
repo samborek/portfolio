@@ -293,6 +293,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }, { passive: false });
     }
 
+    // Initialise Unicorn scene only when its slide is selected (avoids off-screen coord mapping)
+    embla.on('select', () => {
+      const selectedSlide = embla.slideNodes()[embla.selectedScrollSnap()];
+      const unicornScene = selectedSlide && selectedSlide.querySelector('.unicorn-scene');
+      if (unicornScene) {
+        // Flip lazyload → Unicorn's MutationObserver initialises the canvas while it's on-screen
+        if (unicornScene.getAttribute('data-us-lazyload') === 'true') {
+          unicornScene.setAttribute('data-us-lazyload', 'false');
+        }
+        // After Embla's transition settles, force resize + wake-up mousemove
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+          const rect = unicornScene.getBoundingClientRect();
+          ['mouseenter', 'mousemove'].forEach(type => {
+            unicornScene.dispatchEvent(new MouseEvent(type, {
+              clientX: rect.left + rect.width / 2,
+              clientY: rect.top + rect.height / 2,
+              bubbles: true
+            }));
+          });
+        }, 300);
+      }
+    });
+
     window.addEventListener('resize', () => {
       const wasMobile = isMobileViewport;
       const nowMobile = window.innerWidth <= 900;
