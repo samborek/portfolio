@@ -21,7 +21,6 @@ carousel:
     dark: /images/work/hydration_5_dark.jpg
   - light: /images/work/hydration_6.jpg
     dark: /images/work/hydration_6_dark.jpg
-preview_slideshow: true
 carousel_object_fit: cover
 disable_parallax: true
 carousel_image_scale: 1
