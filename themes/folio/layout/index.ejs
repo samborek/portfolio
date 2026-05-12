@@ -38,11 +38,6 @@
                                 </nav>
                             </div>
                             <div class="sidebar-accordion-item">
-                                <a href="#scope" class="sidebar-accordion-toggle sidebar-scroll-link">
-                                    <span class="sidebar-accordion-label">Offer</span>
-                                </a>
-                            </div>
-                            <div class="sidebar-accordion-item">
                                 <a href="#" class="sidebar-accordion-toggle" id="about-toggle">
                                     <span class="sidebar-accordion-label">About</span>
                                 </a>
@@ -60,6 +55,8 @@
                                 data-us-production="true">
                                 <span class="btn-text">Get in touch</span>
                             </a>
+                        </div>
+                        <div class="sidebar-footer">
                             <div class="sidebar-channels">
                                 <% if (theme.social?.twitter) { %>
                                     <a href="<%= theme.social.twitter %>" target="_blank" class="sidebar-channel-link">Twitter</a>
@@ -387,19 +384,20 @@
                                             </a>
                                             <a href="https://www.behance.net/gallery/78992065/CakeWallet-First-Open-Source-Monero-Wallet" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/behance/cakewallet.png') %>" alt="Cake Wallet">
+                                                    <img src="<%- url_for('/images/work/behance/cakewallet.png') %>" alt="Cake Wallet" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://www.behance.net/gallery/90433865/DesignWays-Conf-Designs" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/behance/dwc.png') %>" alt="DesignWays Conf">
+                                                    <img src="<%- url_for('/images/work/behance/dwc.png') %>" alt="DesignWays Conf" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://www.behance.net/gallery/62252031/PRO-Voice-Site-Design-Product-Design" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/behance/Editing%20PRO%20Voice%20Site%20Design.png') %>" alt="PRO Voice Site Design">
+                                                    <img src="<%- url_for('/images/work/behance/Editing%20PRO%20Voice%20Site%20Design.png') %>" alt="PRO Voice Site Design" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
+                                            <div class="dribbble-grid-separator" aria-hidden="true"></div>
                                             <!-- Dribbble intro + shots -->
                                             <a href="https://dribbble.com/samborek" target="_blank" class="dribbble-grid-intro work-tile intro-tile">
                                                 <div class="intro-arrow-wrapper">
@@ -412,87 +410,87 @@
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/asistant.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/asistant.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/bebrighter.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/bebrighter.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <video data-src="<%- url_for('/images/work/dribbble/bullrun.mp4') %>" muted loop playsinline preload="auto"></video>
+                                                    <video src="<%- url_for('/images/work/dribbble/bullrun.mp4') %>" muted loop playsinline preload="metadata"></video>
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/cakewallet.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/cakewallet.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/cards.gif') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/cards.gif') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/motioncontrol.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/motioncontrol.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/21192557" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <video data-src="<%- url_for('/images/work/dribbble/21192557.mp4') %>" muted loop playsinline preload="auto"></video>
+                                                    <video src="<%- url_for('/images/work/dribbble/21192557.mp4') %>" muted loop playsinline preload="metadata"></video>
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/17787996" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/17787996.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/17787996.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/14650757" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/14650757.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/14650757.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/14601518" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/14601518.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/14601518.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/14211029" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <video data-src="<%- url_for('/images/work/dribbble/14211029.mp4') %>" muted loop playsinline preload="auto"></video>
+                                                    <video src="<%- url_for('/images/work/dribbble/14211029.mp4') %>" muted loop playsinline preload="metadata"></video>
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/13923537" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/13923537.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/13923537.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/10854070" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/10854070.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/10854070.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/10804106" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <video data-src="<%- url_for('/images/work/dribbble/10804106.mp4') %>" muted loop playsinline preload="auto"></video>
+                                                    <video src="<%- url_for('/images/work/dribbble/10804106.mp4') %>" muted loop playsinline preload="metadata"></video>
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/10784607" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/10784607.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/10784607.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/9403994" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/9403994.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/9403994.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/shots/9403747" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img data-src="<%- url_for('/images/work/dribbble/9403747.webp') %>" alt="">
+                                                    <img src="<%- url_for('/images/work/dribbble/9403747.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
                                         </div>
@@ -530,7 +528,7 @@
                                             });
                                         %>
                                         <% if (scopeGroups.length > 0) { %>
-                                        <section class="scope-section reveal-on-scroll" id="scope">
+                                        <section class="scope-section reveal-on-scroll seo-hidden" id="scope" aria-hidden="true">
                                             <div class="scope-container">
                                                 <div class="scope-wrapper">
                                                     <h2 class="scope-title"><%= scopeHeading %></h2>

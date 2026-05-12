@@ -71,6 +71,9 @@
   --radius-m: 1rem;
   --radius-s: 0.75rem;
   --radius-full: 999px;
+
+  /* Fixed UI clearance (e.g., mobile floating controls) */
+  --fixed-ui-bottom-clearance: 0px;
 }
 
 
@@ -2158,9 +2161,38 @@ body.index-page {
 }
 
 @media (max-width: 768px) {
+  :root {
+    /* Prevent fixed bottom controls overlapping last content */
+    --fixed-ui-bottom-clearance: 6.5rem;
+  }
+
   #connect {
+    padding: 0;
+    border-top-left-radius: var(--radius-l);
+    border-top-right-radius: var(--radius-l);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0;
+    /* Ensure the black background visually reaches the bottom on mobile */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  #connect .connect-wrapper {
     padding: 2.5rem 1.5rem;
-    border-radius: var(--radius-l);
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom) + var(--fixed-ui-bottom-clearance));
+  }
+
+  /* Full-width Calendly CTA on mobile */
+  #connect .unicorn-btn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  #connect .unicorn-btn canvas {
+    width: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+    top: 0 !important;
   }
 
   #connect .section-intro {
@@ -2405,6 +2437,7 @@ body.index-page {
   .projects-column {
     padding-left: 0;
     padding-right: 0;
+    padding-bottom: 0;
     --project-carousel-to-info-gap: 0px;
     /* Ensure no independent scroll */
     overflow: visible;
@@ -3745,6 +3778,12 @@ body.project-page {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-sm);
+  --dribbble-grid-section-gap: var(--space-xl);
+}
+
+.dribbble-grid-separator {
+  grid-column: 1 / -1;
+  height: var(--dribbble-grid-section-gap);
 }
 
 .dribbble-grid-intro {
@@ -3779,6 +3818,7 @@ body.project-page {
 @media (max-width: 900px) {
   .dribbble-grid {
     grid-template-columns: repeat(3, 1fr);
+    --dribbble-grid-section-gap: var(--space-lg);
   }
 }
 
@@ -3786,11 +3826,12 @@ body.project-page {
   .dribbble-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-xs);
+    --dribbble-grid-section-gap: var(--space-md);
   }
 
   .dribbble-grid-intro {
-    grid-column: span 2;
-    aspect-ratio: 4 / 1;
+    grid-column: auto;
+    aspect-ratio: 4 / 3;
   }
 }
 
@@ -4277,6 +4318,20 @@ body.project-page {
 /* ============================================
    SCOPE SECTION - What I Cover
    ============================================ */
+
+/* Utility: keep content in DOM (e.g., SEO), but visually remove it. */
+.seo-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 
 .scope-section {
   padding: var(--space-md) 0 0;
