@@ -1893,6 +1893,15 @@ body.index-page {
   color: #000 !important;
 }
 
+/* Ensure CTA label stays visually centered even when the canvas scales responsively. */
+#connect .unicorn-btn .btn-text {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-lg);
+}
+
 #connect .connect-secondary {
   border-top: none;
   padding-top: 0;
@@ -2204,6 +2213,11 @@ body.index-page {
     align-items: flex-start;
     gap: 1.5rem;
     margin-top: 3.75rem;
+  }
+
+  .connect-footer-socials {
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
   }
 }
 
@@ -3779,6 +3793,7 @@ body.project-page {
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-sm);
   --dribbble-grid-section-gap: var(--space-xl);
+  box-sizing: border-box;
 }
 
 .dribbble-grid-separator {
@@ -3819,6 +3834,7 @@ body.project-page {
   .dribbble-grid {
     grid-template-columns: repeat(3, 1fr);
     --dribbble-grid-section-gap: var(--space-lg);
+    padding-inline: var(--space-md);
   }
 }
 
@@ -3827,6 +3843,12 @@ body.project-page {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-xs);
     --dribbble-grid-section-gap: var(--space-md);
+    padding-inline: var(--space-xs);
+  }
+
+  .dribbble-grid-intro,
+  .dribbble-grid-item {
+    border-radius: var(--radius-s);
   }
 
   .dribbble-grid-intro {

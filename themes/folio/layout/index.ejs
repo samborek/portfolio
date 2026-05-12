@@ -55,8 +55,6 @@
                                 data-us-production="true">
                                 <span class="btn-text">Get in touch</span>
                             </a>
-                        </div>
-                        <div class="sidebar-footer">
                             <div class="sidebar-channels">
                                 <% if (theme.social?.twitter) { %>
                                     <a href="<%= theme.social.twitter %>" target="_blank" class="sidebar-channel-link">Twitter</a>
@@ -1185,7 +1183,6 @@
             const btn = document.querySelector('.tab-button.active');
             if (btn) updateIndicator(btn);
         });
-
 
         // --- Video Lazy Loading (Playground) ---
         const loadVideo = (item) => {
