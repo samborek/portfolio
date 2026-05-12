@@ -53,7 +53,7 @@
     const h2Style = h2 ? getComputedStyle(h2) : null;
     const fontSize = h2Style ? parseFloat(h2Style.fontSize) : 32;
     const fontFamily = h2Style ? h2Style.fontFamily : "'Gazpacho', Georgia, serif";
-    const fontWeight = h2Style ? h2Style.fontWeight : '500';
+    const fontWeight = h2Style ? h2Style.fontWeight : '600';
     const lineHeight = 1.0;
 
     // Measure text

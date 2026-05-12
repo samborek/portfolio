@@ -9,6 +9,28 @@ hero_title: "I love building digital products and exploring technology"
 experience:
   intro_variants:
     - "It all began at 14 when I stumbled onto a \"signatures\" design board on a parkour forum - thanks to a friend of mine. I couldn't sleep first night after discovering Photoshop filters and dove headfirst into experimenting. From web design and 3D matte painting to animation and interaction design, one skill led to another. I slowly built a solid portfolio, landed clients, and helped shape multiple products from the ground up."
+  roles:
+    - company: "Hydration"
+      title: "UI & Design Systems Lead"
+      period: "Jul 2022 - Present"
+    - company: "DesignWays Conf"
+      title: "Founder"
+      period: "Jan 2021 - Apr 2023"
+    - company: "DesignWays Hub"
+      title: "Co-Founder"
+      period: "Jan 2021 - Mar 2022"
+    - company: "Freelance / Contract"
+      title: "Product Designer & Visual Designer"
+      period: "May 2021 - Jul 2022"
+    - company: "ITMagination"
+      title: "Team Manager / Lead UI"
+      period: "Feb 2020 - Sep 2020"
+    - company: "Maise Creative Studio"
+      title: "Co-Founder / Lead Designer"
+      period: "Mar 2018 - Feb 2020"
+    - company: "66 Audio"
+      title: "SVP Interface Design"
+      period: "Dec 2013 - Dec 2018"
   timeline:
     - title: "Freelance"
       milestone: "Freelance"
@@ -20,23 +42,27 @@ experience:
 
     - title: "♾️ And Beyond"
       milestone: "Now"
-      content: "I thrive on exploring  new tools wether it's , motion, 3D, WebGL, AI—you name it. I'm usually out there palying around with those tools, spending free time testing betas and giving feedback to devs on Twitter/X to help refine features and sharing my work. Beyond the nerdy workaholism, I'm hooked on handheld consoles and cherish lazy couch gaming sessions whenever possible or spending time outside with my wonderful family."
+      content: "I thrive on exploring  new tools wether it's , motion, 3D, WebGL, AI - you name it. I'm usually out there palying around with new tools, spending free time testing betas and giving feedback to devs on Twitter/X to help refine features and sharing my work. Beyond the nerdy workaholism, I'm hooked on handheld consoles and cherish lazy couch gaming sessions whenever possible or spending time outside with my wonderful family."
 
 # Events Section
 events:
-  - title: "DesignWays Ed. 4 // Co-Organiser & Co-founder"
+  - title: "DesignWays Ed. 4"
+    role: "Co-Organiser & Co-founder"
     year: "2022"
     image: "/images/work/plaant_1.jpg"
     description: "Focusing on the intersection of 3D design and product ecosystems."
-  - title: "DesignWays Ed. 3 // Co-Organiser & Co-founder"
+  - title: "DesignWays Ed. 3"
+    role: "Co-Organiser & Co-founder"
     year: "2021"
     image: "/images/work/hydra_1_1.jpg"
     description: "A deep dive into branding strategies for emerging blockchain protocols and DeFi platforms."
-  - title: "DesignWays Ed. 2 // Co-Organiser & Co-founder"
+  - title: "DesignWays Ed. 2"
+    role: "Co-Organiser & Co-founder"
     year: "2019"
     image: "/images/work/plaant_2.jpg"
     description: "Discussing the evolution of UI/UX in the age of IoT and connected home devices."
-  - title: "DesignWays Ed. 1 // Co-Organiser & Co-founder"
+  - title: "DesignWays Ed. 1"
+    role: "Co-Organiser & Co-founder"
     year: "2018"
     image: "/images/work/plaant_3.jpg"
     description: "The beginning of a journey: shareable insights on building unique design communities."
@@ -60,4 +86,3 @@ social:
   dribbble: https://dribbble.com/samborek
   behance: https://behance.net/samborek
   gumroad: https://samborek.gumroad.com/
-

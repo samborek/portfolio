@@ -182,6 +182,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Embla Carousel ---
   const emblaNodes = document.querySelectorAll('.embla');
+  const emblaInstances = [];
+
+  const wakeUnicornScene = (scene) => {
+    if (!scene) return;
+
+    if (scene.getAttribute('data-us-lazyload') === 'true') {
+      scene.setAttribute('data-us-lazyload', 'false');
+    }
+
+    const rect = scene.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    window.dispatchEvent(new Event('resize'));
+
+    ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
+      scene.dispatchEvent(new MouseEvent(type, {
+        clientX: centerX,
+        clientY: centerY,
+        bubbles: true
+      }));
+    });
+  };
+
   emblaNodes.forEach(emblaNode => {
     const viewportNode = emblaNode.querySelector('.embla__viewport');
     if (!viewportNode) return;
@@ -193,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dragFree: false,
       containScroll: isMobileViewport ? 'keepSnaps' : 'trimSnaps'
     });
+    emblaInstances.push(embla);
 
     // Integrated Progress Bar Logic
     const section = emblaNode.closest('.project-section');
@@ -298,21 +324,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const selectedSlide = embla.slideNodes()[embla.selectedScrollSnap()];
       const unicornScene = selectedSlide && selectedSlide.querySelector('.unicorn-scene');
       if (unicornScene) {
-        // Flip lazyload → Unicorn's MutationObserver initialises the canvas while it's on-screen
-        if (unicornScene.getAttribute('data-us-lazyload') === 'true') {
-          unicornScene.setAttribute('data-us-lazyload', 'false');
-        }
         // After Embla's transition settles, force resize + wake-up mousemove
         setTimeout(() => {
-          window.dispatchEvent(new Event('resize'));
-          const rect = unicornScene.getBoundingClientRect();
-          ['mouseenter', 'mousemove'].forEach(type => {
-            unicornScene.dispatchEvent(new MouseEvent(type, {
-              clientX: rect.left + rect.width / 2,
-              clientY: rect.top + rect.height / 2,
-              bubbles: true
-            }));
-          });
+          wakeUnicornScene(unicornScene);
         }, 300);
       }
     });
@@ -345,6 +359,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     resetObserver.observe(emblaNode);
+  });
+
+  document.addEventListener('folio:work-visible', () => {
+    requestAnimationFrame(() => {
+      emblaInstances.forEach(embla => {
+        embla.reInit();
+      });
+
+      document.querySelectorAll('.unicorn-scene').forEach(scene => {
+        const rect = scene.getBoundingClientRect();
+        const isVisible = rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight;
+        if (isVisible) wakeUnicornScene(scene);
+      });
+    });
   });
 
   // --- Loading States (Images & Unicorn Studio) ---

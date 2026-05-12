@@ -108,57 +108,62 @@
                                         </div>
                                     <% }); %>
                                 </div>
-                                <div class="resume-lists-grid">
-                                    <% if (theme.speaking) { %>
-                                        <div class="resume-list-column">
-                                            <h2 class="resume-section-heading">Speaking</h2>
-                                            <ul class="resume-list">
-                                                <% theme.speaking.forEach(function(item) { %>
-                                                    <li class="resume-list-item"
-                                                        <% if (item.image) { %>data-preview-image="<%= url_for(item.image) %>"<% } %>
-                                                        <% if (item.description) { %>data-preview-description="<%= item.description %>"<% } %>
-                                                        data-preview-title="<%= item.title %>"
-                                                        data-preview-year="<%= item.year %>">
-                                                        <span class="resume-item-title"><%= item.title %></span>
-                                                        <span class="resume-item-year"><%= item.year %></span>
-                                                    </li>
-                                                <% }); %>
-                                            </ul>
-                                        </div>
-                                    <% } %>
-                                    <% if (theme.events) { %>
-                                        <div class="resume-list-column">
-                                            <h2 class="resume-section-heading">Events</h2>
-                                            <ul class="resume-list">
-                                                <% theme.events.forEach(function(item) { %>
-                                                    <li
-                                                        <% if (item.image) { %>data-preview-image="<%= url_for(item.image) %>"<% } %>
-                                                        <% if (item.description) { %>data-preview-description="<%= item.description %>"<% } %>
-                                                        data-preview-title="<%= item.title %>"
-                                                        data-preview-year="<%= item.year %>">
-                                                        <span class="resume-item-title"><%= item.title %></span>
-                                                        <span class="resume-item-year"><%= item.year %></span>
-                                                    </li>
-                                                <% }); %>
-                                            </ul>
-                                        </div>
-                                    <% } %>
-                                </div>
-                                <div class="resume-hover-preview">
-                                    <div class="preview-content">
-                                        <div class="preview-media">
-                                            <img src="" alt="" class="preview-image">
-                                        </div>
-                                        <div class="preview-text">
-                                            <div class="preview-header">
-                                                <span class="preview-year"></span>
-                                                <h4 class="preview-title"></h4>
-                                            </div>
-                                            <p class="preview-description"></p>
+                            </section>
+                            <% if (theme.experience.roles) { %>
+                                <section class="about-section about-list-section">
+                                    <div class="cv-experience">
+                                        <h3 class="cv-experience-heading">Experiences</h3>
+                                        <div class="cv-experience-list">
+                                            <% theme.experience.roles.forEach(function(role) { %>
+                                                <div class="cv-experience-row">
+                                                    <div class="cv-experience-role">
+                                                        <h4 class="cv-experience-company"><%= role.company %></h4>
+                                                        <p class="cv-experience-title"><%= role.title %></p>
+                                                    </div>
+                                                    <span class="cv-experience-period"><%= role.period %></span>
+                                                </div>
+                                            <% }); %>
                                         </div>
                                     </div>
+                                </section>
+                            <% } %>
+                            <% if (theme.events) { %>
+                                <section class="about-section about-list-section">
+                                    <div class="cv-experience">
+                                        <h3 class="cv-experience-heading">Events</h3>
+                                        <div class="cv-experience-list">
+                                            <% theme.events.forEach(function(item) { %>
+                                                <div class="cv-experience-row">
+                                                    <div class="cv-experience-role">
+                                                        <h4 class="cv-experience-company"><%= item.title %></h4>
+                                                        <% if (item.role) { %>
+                                                            <p class="cv-experience-label"><%= item.role %></p>
+                                                        <% } %>
+                                                        <% if (item.description) { %>
+                                                            <p class="cv-experience-title"><%= item.description %></p>
+                                                        <% } %>
+                                                    </div>
+                                                    <span class="cv-experience-period"><%= item.year %></span>
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </section>
+                            <% } %>
+                            <div class="resume-hover-preview">
+                                <div class="preview-content">
+                                    <div class="preview-media">
+                                        <img src="" alt="" class="preview-image">
+                                    </div>
+                                    <div class="preview-text">
+                                        <div class="preview-header">
+                                            <span class="preview-year"></span>
+                                            <h4 class="preview-title"></h4>
+                                        </div>
+                                        <p class="preview-description"></p>
+                                    </div>
                                 </div>
-                            </section>
+                            </div>
                         <% } %>
                     </div>
 
@@ -701,7 +706,7 @@
                                                         </a>
                                                         <div class="connect-footer-socials">
                                                             <a href="<%- url_for('images/Michal%20Sambora%20Resume.pdf') %>"
-                                                                target="_blank" style="display: inline-flex; align-items: center; gap: 5px;">
+                                                                target="_blank" class="connect-footer-resume" style="display: inline-flex; align-items: center; gap: 5px;">
                                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                     stroke-width="2" stroke-linecap="round"
                                                                     stroke-linejoin="round"
@@ -914,6 +919,7 @@
         }
 
         function switchToAbout() {
+            document.body.classList.add('about-mode');
             fadeOut(mainContent);
             setTimeout(() => {
                 mainContent.classList.add('is-hidden');
@@ -929,6 +935,7 @@
             setTimeout(() => {
                 aboutView.classList.remove('is-active');
                 mainContent.classList.remove('is-hidden');
+                document.body.classList.remove('about-mode');
                 fadeIn(mainContent);
                 if (scrollTarget) {
                     setTimeout(() => {
@@ -936,8 +943,12 @@
                     }, 50);
                 }
                 setTimeout(() => {
+                    document.dispatchEvent(new CustomEvent('folio:work-visible'));
                     window.dispatchEvent(new Event('resize'));
                     window.dispatchEvent(new MouseEvent('mousemove', { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }));
+                    setTimeout(() => {
+                        document.dispatchEvent(new CustomEvent('folio:work-visible'));
+                    }, 250);
                 }, fadeDuration + 100);
             }, fadeDuration);
         }

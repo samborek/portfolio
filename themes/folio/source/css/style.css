@@ -9,12 +9,67 @@
 */
 
 /* Custom Fonts */
-/* Lexend loaded via Google Fonts in layout.ejs */
 
 @font-face {
-  font-family: 'Quablo';
-  src: url('/font/Quablo-Medium.woff2') format('woff2');
+  font-family: 'CalSansUI';
+  src: url('/font/CalSans/CalSansUI-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansUI';
+  src: url('/font/CalSans/CalSansUI-Medium.woff2') format('woff2');
   font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansUI';
+  src: url('/font/CalSans/CalSansUI-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansUI';
+  src: url('/font/CalSans/CalSansUI-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansText';
+  src: url('/font/CalSans/CalSansText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansText';
+  src: url('/font/CalSans/CalSansText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansText';
+  src: url('/font/CalSans/CalSansText-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CalSansText';
+  src: url('/font/CalSans/CalSansText-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -31,8 +86,8 @@
   --color-accent: #000000;
 
   /* Typography */
-  --font-display-gazpacho: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display-quablo: 'Quablo', 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-gazpacho: 'CalSansUI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-quablo: 'CalSansText', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: var(--font-display-gazpacho);
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -55,6 +110,11 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
   --section-gap: 2rem;
+
+  /* About panels (#about-view): fixed block inset — 2rem ≈ 32px at html 16px; not tied to --space-lg which shrinks at small breakpoints */
+  --about-section-padding-block: 2rem;
+  --about-section-padding-inline: 2.5rem;
+  /* Optional: --about-list-section-padding-block: 2rem; for tighter list cards only */
 
   /* Layout */
   --sidebar-width: 20rem;
@@ -578,7 +638,7 @@ body.index-page {
   color: var(--color-text);
   margin: 0;
   letter-spacing: -0.01em;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .sidebar-cta-wrapper {
@@ -1143,6 +1203,7 @@ body.index-page {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  font-weight: 600;
   transition: opacity 0.2s ease;
 }
 
@@ -2193,8 +2254,12 @@ body.index-page {
 
   /* Full-width Calendly CTA on mobile */
   #connect .unicorn-btn {
-    width: 100%;
-    margin-left: 0;
+    width: calc(100% + 1rem);
+    margin-left: -0.5rem;
+  }
+
+  #connect .unicorn-btn .btn-text {
+    padding-inline: var(--space-sm);
   }
 
   #connect .unicorn-btn canvas {
@@ -2218,6 +2283,14 @@ body.index-page {
   .connect-footer-socials {
     flex-wrap: wrap;
     row-gap: 0.75rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .connect-footer-resume {
+    order: 2;
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -3332,6 +3405,11 @@ body.project-page {
   -webkit-overflow-scrolling: touch;
 }
 
+.index-page.about-mode .projects-column {
+  height: auto;
+  min-height: 0;
+  padding-bottom: 0;
+}
 
 /* Home View Layout - Uses existing classes but confined */
 .portfolio-wrapper {
@@ -3838,7 +3916,7 @@ body.project-page {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-xs);
     --dribbble-grid-section-gap: var(--space-md);
-    padding-inline: var(--space-xs);
+    padding-inline: calc(var(--space-xs) / 2);
   }
 
   .dribbble-grid-intro,
@@ -4259,7 +4337,7 @@ body.project-page {
 /* About View */
 .about-view {
   display: none;
-  padding: 2rem 0;
+  padding: 2rem 0 calc(30px + env(safe-area-inset-bottom, 0px));
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -4273,12 +4351,26 @@ body.project-page {
   margin-bottom: 2rem;
 }
 
-.about-section {
+/* Scoped to #about-view so tooling / cascade cannot miss which cards this targets */
+#about-view .about-section {
   background: color-mix(in srgb, var(--color-bg-secondary), transparent 50%);
   border-radius: var(--radius-xl);
-  padding: 3.75rem 2.5rem;
+  padding-block: var(--about-section-padding-block);
+  padding-inline: var(--about-section-padding-inline);
   max-width: var(--max-project-width);
   width: 100%;
+}
+
+#about-view .about-section + .about-section {
+  margin-top: var(--space-lg);
+}
+
+/* Higher specificity + explicit vars: avoids .about-list-section masking edits to #about-view .about-section */
+#about-view .about-section.about-list-section {
+  padding-block: var(
+    --about-list-section-padding-block,
+    var(--about-section-padding-block)
+  );
 }
 
 .about-title {
@@ -4296,6 +4388,121 @@ body.project-page {
   max-width: 1000px;
 }
 
+.cv-experience {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(0.98rem, 3.92vw, 2.94rem);
+  margin: 0;
+  padding: 0;
+  --cv-experience-row-padding-top: 14px;
+}
+
+.cv-experience-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  flex: 0 1 auto;
+  min-width: min(12rem, 100%);
+}
+
+.cv-experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: min(520px, 100%);
+  max-width: min(520px, 100%);
+  margin-inline-start: auto;
+}
+
+.cv-experience-role {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(0.125rem * 0.49);
+}
+
+.cv-experience-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: calc(var(--space-md) * 0.49);
+  align-items: start;
+  border-bottom: 1px solid var(--color-border);
+  padding-top: var(--cv-experience-row-padding-top, 14px);
+  padding-right: 0;
+  padding-bottom: calc(1.75rem * 0.49);
+  padding-left: 0;
+  margin-bottom: calc(1.75rem * 0.49);
+}
+
+/* Scoped: beats global * reset and any stray section rules */
+#about-view .cv-experience-list > .cv-experience-row {
+  padding-top: var(--cv-experience-row-padding-top, 14px);
+}
+
+.cv-experience-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.cv-experience-company {
+  font-family: var(--font-display);
+  font-size: var(--size-lg);
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.cv-experience-title {
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cv-experience-label {
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.cv-experience-period {
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  #about-view .about-section {
+    padding: 1.75rem 1rem;
+    border-radius: var(--radius-l);
+  }
+
+  #about-view .about-section.about-list-section {
+    padding-block: var(--about-list-section-padding-block, 1.75rem);
+  }
+
+  .cv-experience {
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(var(--space-lg) * 0.49);
+  }
+
+  .cv-experience-list {
+    margin-inline-start: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* Main content wrapper for toggling */
 .projects-main-content {
   display: block;
@@ -4304,6 +4511,7 @@ body.project-page {
 }
 
 .projects-main-content.is-hidden {
+  display: none;
   visibility: hidden;
   height: 0;
   overflow: hidden;
