@@ -3783,11 +3783,6 @@ body.project-page {
   }
 }
 
-/* Dribbble Grid */
-.dribbble-grid > *:nth-child(n+17) {
-  display: none;
-}
-
 .dribbble-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
