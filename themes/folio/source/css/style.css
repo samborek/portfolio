@@ -654,9 +654,9 @@ body.index-page {
   border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
   transition:
-    color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    color 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sidebar-social-icons a:hover {
@@ -665,12 +665,17 @@ body.index-page {
   box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.08);
 }
 
-.sidebar-social-icons .sidebar-social-link--dribbble:hover {
-  color: #EA4C89;
+.sidebar-social-icons .sidebar-social-link--dribbble {
+  --social-brand-color: #EA4C89;
 }
 
+.sidebar-social-icons .sidebar-social-link--behance {
+  --social-brand-color: #0057FF;
+}
+
+.sidebar-social-icons .sidebar-social-link--dribbble:hover,
 .sidebar-social-icons .sidebar-social-link--behance:hover {
-  color: #0057FF;
+  color: var(--social-brand-color);
 }
 
 .sidebar-social-icons svg {
@@ -679,6 +684,10 @@ body.index-page {
   display: block;
   fill: currentColor;
   transform-origin: center;
+}
+
+.sidebar-social-icons svg path {
+  fill: currentColor;
 }
 
 .sidebar-social-link--twitter svg {
@@ -4645,9 +4654,9 @@ body.project-page {
   cursor: pointer;
   text-decoration: none;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+    background 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease;
 }
 
 .sidebar-accordion-toggle:hover,
