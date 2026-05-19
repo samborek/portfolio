@@ -243,7 +243,12 @@ src="<%- previewSrcs[0] || '' %>"
                                                                         </div>
                                                                     </div>
                                                                 <% } %>
-                                                                <% project.carousel.forEach(function(imgUrl, slideIndex)
+                                                                <% const carouselItems = (!project.preview_slideshow && project.carousel.length < 5)
+                                                                    ? Array.from({ length: Math.ceil(6 / project.carousel.length) })
+                                                                        .flatMap(function() { return project.carousel; })
+                                                                        .slice(0, 6)
+                                                                    : project.carousel; %>
+                                                                <% carouselItems.forEach(function(imgUrl, slideIndex)
                                                                     { %>
                                                                     <% const
                                                                         firstStyle=(project.carousel_first_object_position
