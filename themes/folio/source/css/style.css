@@ -730,6 +730,7 @@ body.index-page {
   width: 116px;
   min-width: 0;
   height: 46px;
+  margin-left: -12px;
   padding-inline: 1rem;
   display: inline-flex;
   align-items: center;
@@ -737,7 +738,7 @@ body.index-page {
   text-align: center;
   gap: 0.35rem;
   line-height: 1;
-  margin-inline: 0;
+  margin-right: 0;
 }
 
 .sidebar-cta-wrapper .copy-email-btn .copied-tooltip {
@@ -3168,7 +3169,7 @@ body.index-page {
     width: 116px;
     min-width: 0;
     height: 46px;
-    margin-left: 0;
+    margin-left: -12px;
     padding-inline: 0.8rem;
     justify-content: center;
   }

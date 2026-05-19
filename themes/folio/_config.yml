@@ -72,7 +72,7 @@ events:
 # Connect Section
 connect:
   title: "Connect"
-  intro: "Let's make it happen — book a quick call and we'll take it from there."
+  intro: "Let's make it happen, book a quick call and we'll take it from there."
   secondary_text: "While you wait, feel free to prepare any documentation, Figma files or other details that might help us get on the same page quickly. Chat soon!"
   cta:
     text: "Schedule a call"
