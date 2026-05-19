@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Lenis smooth scroll (homepage only, respects reduced motion) ---
-  let lenisInstance = null;
+  // --- Lenis smooth scroll (app views only, respects reduced motion) ---
+  const lenisInstances = new Map();
 
   function initLenis() {
     if (typeof Lenis === 'undefined') return;
@@ -10,29 +10,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const isIndex = document.body.classList.contains('index-page');
     if (!isIndex) return;
 
-    // The actual scroll container is #home-view (overflow-y: scroll, height: 100dvh)
+    // The actual scroll containers are .app-view nodes (overflow-y: scroll, height: 100dvh)
     // Body and .index-page are position:fixed + overflow:hidden, so window scroll is disabled.
-    const homeView = document.getElementById('home-view');
-    if (!homeView) return;
+    const viewConfigs = [
+      {
+        view: document.getElementById('home-view'),
+        contentSelector: '.portfolio-wrapper',
+        key: 'home',
+      },
+      {
+        view: document.getElementById('playground-view'),
+        contentSelector: '.playground-wrapper',
+        key: 'playground',
+      },
+    ];
 
-    lenisInstance = new Lenis({
-      wrapper: homeView,
-      content: homeView.querySelector('.portfolio-wrapper') || homeView,
-      lerp: 0.1,
-      smoothWheel: true,
-      smoothTouch: false,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1,
+    viewConfigs.forEach(({ view, contentSelector, key }) => {
+      if (!view) return;
+
+      const lenis = new Lenis({
+        wrapper: view,
+        content: view.querySelector(contentSelector) || view,
+        lerp: 0.1,
+        smoothWheel: true,
+        smoothTouch: false,
+        wheelMultiplier: 0.9,
+        touchMultiplier: 1,
+      });
+
+      lenisInstances.set(view, lenis);
+      lenisInstances[key] = lenis;
     });
 
     function raf(time) {
-      lenisInstance.raf(time);
+      lenisInstances.forEach(lenis => lenis.raf(time));
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Expose for debugging / future use
-    window.lenis = lenisInstance;
+    // Expose for debugging / future use. Keep window.lenis as home for old calls.
+    window.folioLenis = lenisInstances;
+    window.lenis = lenisInstances.home || null;
   }
 
   initLenis();
@@ -215,8 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetElement = document.querySelector(targetId);
       if (!targetElement) return;
 
-      if (window.lenis) {
-        window.lenis.scrollTo(targetElement, {
+      const targetView = targetElement.closest('.app-view');
+      const targetLenis = targetView && window.folioLenis ? window.folioLenis.get(targetView) : window.lenis;
+
+      if (targetLenis) {
+        targetLenis.scrollTo(targetElement, {
           offset: -20,
           duration: 1.1,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
