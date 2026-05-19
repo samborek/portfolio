@@ -1,4 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- Lenis smooth scroll (homepage only, respects reduced motion) ---
+  let lenisInstance = null;
+
+  function initLenis() {
+    if (typeof Lenis === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Only on the main portfolio page
+    const isIndex = document.body.classList.contains('index-page');
+    if (!isIndex) return;
+
+    // The actual scroll container is #home-view (overflow-y: scroll, height: 100dvh)
+    // Body and .index-page are position:fixed + overflow:hidden, so window scroll is disabled.
+    const homeView = document.getElementById('home-view');
+    if (!homeView) return;
+
+    lenisInstance = new Lenis({
+      wrapper: homeView,
+      content: homeView.querySelector('.portfolio-wrapper') || homeView,
+      lerp: 0.1,
+      smoothWheel: true,
+      smoothTouch: false,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1,
+    });
+
+    function raf(time) {
+      lenisInstance.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Expose for debugging / future use
+    window.lenis = lenisInstance;
+  }
+
+  initLenis();
+
   // --- Subtle Page Transitions ---
   const pageCover = document.getElementById('page-cover');
   if (pageCover) {
@@ -167,14 +205,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Smooth Scrolling ---
+  // --- Smooth Scrolling (Lenis-aware) ---
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
+
       const targetElement = document.querySelector(targetId);
-      if (targetElement) {
+      if (!targetElement) return;
+
+      if (window.lenis) {
+        window.lenis.scrollTo(targetElement, {
+          offset: -20,
+          duration: 1.1,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      } else {
         targetElement.scrollIntoView({ behavior: 'smooth' });
       }
     });
@@ -196,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    window.dispatchEvent(new Event('resize'));
 
     ['mouseenter', 'mousemove', 'mouseover'].forEach(type => {
       scene.dispatchEvent(new MouseEvent(type, {
@@ -207,18 +253,98 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const getEmblaOptions = () => ({
+    loop: true,
+    align: 'center',
+    dragFree: false,
+    containScroll: 'keepSnaps',
+  });
+
   emblaNodes.forEach(emblaNode => {
     const viewportNode = emblaNode.querySelector('.embla__viewport');
     if (!viewportNode) return;
 
-    const isMobileViewport = window.innerWidth <= 900;
-    const embla = EmblaCarousel(viewportNode, {
-      loop: true,
-      align: isMobileViewport ? 'center' : 'start',
-      dragFree: false,
-      containScroll: isMobileViewport ? 'keepSnaps' : 'trimSnaps'
-    });
+    const embla = EmblaCarousel(viewportNode, getEmblaOptions());
     emblaInstances.push(embla);
+
+    const getSelectedSlideIndex = () => {
+      const slideCount = embla.slideNodes().length;
+      if (!slideCount) return 0;
+
+      const selected = embla.selectedScrollSnap();
+      if (!Number.isInteger(selected)) return 0;
+
+      return Math.min(Math.max(selected, 0), slideCount - 1);
+    };
+
+    const getCenteredSlideIndex = () => {
+      const slides = embla.slideNodes();
+      if (!slides.length) return 0;
+
+      const viewportRect = viewportNode.getBoundingClientRect();
+      if (!viewportRect.width) return getSelectedSlideIndex();
+
+      const viewportCenter = viewportRect.left + viewportRect.width / 2;
+      let centeredIndex = getSelectedSlideIndex();
+      let closestDistance = Infinity;
+
+      slides.forEach((slide, index) => {
+        const rect = slide.getBoundingClientRect();
+        if (!rect.width) return;
+
+        const slideCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(slideCenter - viewportCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          centeredIndex = index;
+        }
+      });
+
+      return centeredIndex;
+    };
+
+    const updateSlideFocus = (selected = getSelectedSlideIndex(), markReady = true) => {
+      const slides = embla.slideNodes();
+      if (!slides.length) return;
+
+      const activeIndex = Math.min(Math.max(selected, 0), slides.length - 1);
+      slides.forEach((slide, index) => {
+        const isActive = index === activeIndex;
+        slide.classList.toggle('is-active-slide', isActive);
+        slide.classList.toggle('is-dimmed-slide', !isActive);
+      });
+      if (markReady) emblaNode.classList.add('is-focus-ready');
+    };
+
+    const updateCenteredSlideFocus = () => {
+      updateSlideFocus(getCenteredSlideIndex());
+    };
+
+    const scheduleCenteredSlideFocus = () => {
+      requestAnimationFrame(() => {
+        updateCenteredSlideFocus();
+        requestAnimationFrame(updateCenteredSlideFocus);
+      });
+    };
+
+    const focusAdjacentSlide = (direction) => {
+      const slideCount = embla.slideNodes().length;
+      if (!slideCount) return;
+
+      const current = getSelectedSlideIndex();
+      updateSlideFocus((current + direction + slideCount) % slideCount);
+    };
+
+    const wakeSelectedUnicornScene = () => {
+      const selectedSlide = embla.slideNodes()[getCenteredSlideIndex()];
+      const unicornScene = selectedSlide && selectedSlide.querySelector('.unicorn-scene');
+      if (!unicornScene) return;
+
+      requestAnimationFrame(() => {
+        wakeUnicornScene(unicornScene);
+        requestAnimationFrame(() => wakeUnicornScene(unicornScene));
+      });
+    };
 
     // Integrated Progress Bar Logic
     const section = emblaNode.closest('.project-section');
@@ -281,8 +407,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const rect = wrapper.getBoundingClientRect();
         if ((e.clientX - rect.left) < rect.width / 2) {
+          focusAdjacentSlide(-1);
           embla.scrollPrev();
         } else {
+          focusAdjacentSlide(1);
           embla.scrollNext();
         }
       });
@@ -305,8 +433,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (Math.abs(wheelAccumulator) > wheelThreshold) {
             if (wheelAccumulator > 0) {
+              focusAdjacentSlide(1);
               embla.scrollNext();
             } else {
+              focusAdjacentSlide(-1);
               embla.scrollPrev();
             }
             wheelAccumulator = 0;
@@ -319,29 +449,41 @@ document.addEventListener('DOMContentLoaded', () => {
       }, { passive: false });
     }
 
-    // Initialise Unicorn scene only when its slide is selected (avoids off-screen coord mapping)
-    embla.on('select', () => {
-      const selectedSlide = embla.slideNodes()[embla.selectedScrollSnap()];
-      const unicornScene = selectedSlide && selectedSlide.querySelector('.unicorn-scene');
-      if (unicornScene) {
-        // After Embla's transition settles, force resize + wake-up mousemove
-        setTimeout(() => {
-          wakeUnicornScene(unicornScene);
-        }, 300);
-      }
-    });
+    const onEmblaSelect = () => {
+      const selected = getSelectedSlideIndex();
+      updateSlideFocus(selected);
+      window.dispatchEvent(new CustomEvent('folio:scroll'));
+      setTimeout(wakeSelectedUnicornScene, 300);
+    };
+
+    const onEmblaSettle = () => {
+      updateCenteredSlideFocus();
+      wakeSelectedUnicornScene();
+    };
+
+    embla.on('select', onEmblaSelect);
+    embla.on('settle', onEmblaSettle);
+    embla.on('reInit', scheduleCenteredSlideFocus);
+    embla.on('init', scheduleCenteredSlideFocus);
+    updateSlideFocus(getSelectedSlideIndex(), false);
+    scheduleCenteredSlideFocus();
+
+    let lastViewportWidth = window.innerWidth;
+    let lastViewportHeight = window.innerHeight;
+    let resizeFrame = null;
 
     window.addEventListener('resize', () => {
-      const wasMobile = isMobileViewport;
-      const nowMobile = window.innerWidth <= 900;
-      if (wasMobile !== nowMobile) {
-        embla.reInit({
-          align: nowMobile ? 'center' : 'start',
-          containScroll: nowMobile ? 'keepSnaps' : 'trimSnaps'
-        });
-      } else {
-        embla.reInit();
-      }
+      if (window.innerWidth === lastViewportWidth && window.innerHeight === lastViewportHeight) return;
+
+      lastViewportWidth = window.innerWidth;
+      lastViewportHeight = window.innerHeight;
+
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => {
+        embla.reInit(getEmblaOptions());
+        scheduleCenteredSlideFocus();
+        resizeFrame = null;
+      });
     });
 
     // --- Auto-reset when out of view ---
@@ -603,12 +745,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Sidebar Accordion Toggle
   document.querySelectorAll('.sidebar-accordion-toggle').forEach(toggle => {
     toggle.addEventListener('click', () => {
+      const content = toggle.nextElementSibling;
+      if (!content || !content.classList.contains('sidebar-accordion-content')) return;
+
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', !isExpanded);
-      const content = toggle.nextElementSibling;
-      if (content) {
-        content.classList.toggle('expanded', !isExpanded);
-      }
+      content.classList.toggle('expanded', !isExpanded);
     });
   });
 
@@ -675,72 +817,6 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     window.addEventListener('load', () => setTimeout(initProjectSequencer, 800));
   }
-
-  // --- Subtle Parallax on Carousel Images ---
-  const initParallax = () => {
-    const carouselWrappers = document.querySelectorAll('.project-carousel-wrapper');
-    if (!carouselWrappers.length) return;
-
-    const PARALLAX_STRENGTH = 0;
-    const visibleWrappers = new Set();
-    const mediaCache = new Map();
-
-    // Use IntersectionObserver to only track carousels in viewport
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          visibleWrappers.add(entry.target);
-          if (!mediaCache.has(entry.target)) {
-            mediaCache.set(entry.target, entry.target.querySelectorAll('.embla__slide img, .embla__slide .unicorn-scene canvas'));
-          }
-        } else {
-          visibleWrappers.delete(entry.target);
-        }
-      });
-    }, { threshold: 0 });
-
-    carouselWrappers.forEach(wrapper => observer.observe(wrapper));
-
-    const updateParallax = () => {
-      const viewportHeight = window.innerHeight;
-      const viewportCenter = viewportHeight / 2;
-
-      visibleWrappers.forEach(wrapper => {
-        if (wrapper.dataset.disableParallax === 'true') return;
-
-        const rect = wrapper.getBoundingClientRect();
-
-        // Element center relative to viewport
-        const elementCenter = rect.top + rect.height / 2;
-        const progress = (elementCenter - viewportCenter) / viewportHeight;
-        const clampedProgress = Math.max(-1, Math.min(1, progress));
-        const parallaxY = clampedProgress * PARALLAX_STRENGTH;
-
-        const media = mediaCache.get(wrapper);
-        if (media) {
-          media.forEach(el => {
-            el.style.setProperty('--parallax-y', `${parallaxY}%`);
-          });
-        }
-      });
-    };
-
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateParallax();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    updateParallax();
-  };
-
-  initParallax();
 
   // --- Resume Hover Preview ---
   const initResumeHoverPreview = () => {

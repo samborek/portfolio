@@ -11,7 +11,7 @@ carousel:
   - /images/work/plaant_1.jpg
   - /images/work/plaant_2.jpg
   - /images/work/plaant_3.jpg
-carousel_image_scale: 1.1
+carousel_image_scale: 1.05
 client: Plaant
 role: UI & UX Design
 tech: Figma

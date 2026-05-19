@@ -9,20 +9,10 @@
             <% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) -
                 (a.order || 0)); %>
 
-                <!-- Left Sidebar -->
+                <!-- Top header -->
                 <aside class="sidebar">
-                    <div class="sidebar-header">
-                        <h1 class="sidebar-logo">michal sambora — sambø</h1>
-                    </div>
-
-                    <div class="sidebar-body">
-                        <div class="sidebar-description-wrapper">
-                            <h2 class="sidebar-description">
-                                Building digital products & exploring technology
-                            </h2>
-                        </div>
-
-                        <div class="sidebar-accordion">
+                    <div class="sidebar-topbar">
+                        <nav class="sidebar-nav sidebar-accordion" aria-label="Site">
                             <div class="sidebar-accordion-item">
                                 <button class="sidebar-accordion-toggle" aria-expanded="false">
                                     <span class="sidebar-accordion-label">Selected works</span>
@@ -47,28 +37,64 @@
                                     <span class="sidebar-accordion-label">Contact</span>
                                 </a>
                             </div>
+                        </nav>
+                        <div class="sidebar-social-icons" aria-label="Social links">
+                                <% if (theme.social?.dribbble) { %>
+                                    <a href="<%= theme.social.dribbble %>" target="_blank" rel="noopener noreferrer" aria-label="Dribbble" class="sidebar-social-link sidebar-social-link--dribbble">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6Zm6.6 5.2a8 8 0 0 1 1.4 4.3 16.2 16.2 0 0 0-5.4-.2 25 25 0 0 0-.8-1.8 15.8 15.8 0 0 0 4.8-2.3ZM12 4a8 8 0 0 1 5.3 2 14 14 0 0 1-4.3 2.1 31.4 31.4 0 0 0-2.9-4A8 8 0 0 1 12 4ZM8.1 4.8a29 29 0 0 1 2.9 4 29.4 29.4 0 0 1-7 .8 8.1 8.1 0 0 1 4.1-4.8Zm-4.2 6.6a30 30 0 0 0 8-1 20 20 0 0 1 .7 1.5 12.5 12.5 0 0 0-6.9 5.2 8 8 0 0 1-1.8-5.7Zm8.1 8.7a8 8 0 0 1-4.9-1.7 10.6 10.6 0 0 1 6.1-4.8 33 33 0 0 1 1.7 5.9 8 8 0 0 1-2.9.6Zm4.6-1.6a36 36 0 0 0-1.6-5.3 14 14 0 0 1 4.8.3 8 8 0 0 1-3.2 5Z"/>
+                                        </svg>
+                                    </a>
+                                <% } %>
+                                <% if (theme.social?.behance) { %>
+                                    <a href="<%= theme.social.behance %>" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="sidebar-social-link sidebar-social-link--behance">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M14.8 6.8h5.5v1.4h-5.5V6.8ZM4 5.8h5.4c1.1 0 2 .3 2.6.8.6.5.9 1.2.9 2.1 0 .6-.1 1.1-.4 1.5-.3.4-.7.7-1.2.9.7.2 1.2.5 1.5 1 .4.5.5 1.1.5 1.9 0 1-.3 1.8-1 2.4-.7.6-1.7.9-2.9.9H4V5.8Zm5 4.6c.5 0 .9-.1 1.2-.4.3-.2.4-.6.4-1s-.1-.8-.4-1c-.3-.2-.7-.3-1.3-.3H6.3v2.7H9Zm.2 5c.6 0 1-.1 1.3-.4.3-.3.5-.7.5-1.2s-.2-.9-.5-1.2c-.3-.3-.8-.4-1.4-.4H6.3v3.2h2.9Zm9.1 2.2c-1.3 0-2.4-.4-3.2-1.2-.8-.8-1.2-1.9-1.2-3.3 0-1.4.4-2.5 1.2-3.3.8-.8 1.8-1.3 3.1-1.3s2.3.4 3 1.2c.7.8 1.1 2 1.1 3.5v.5h-6.1c.1.7.3 1.2.6 1.6.4.4.9.6 1.5.6.9 0 1.5-.4 1.8-1.1h2.1c-.2.9-.7 1.6-1.4 2.1-.6.5-1.5.7-2.5.7Zm1.9-5.3c-.1-.6-.3-1.1-.6-1.4-.3-.3-.8-.5-1.4-.5s-1 .2-1.4.5c-.3.3-.6.8-.7 1.4h4.1Z"/>
+                                        </svg>
+                                    </a>
+                                <% } %>
+                                <% if (theme.social?.twitter) { %>
+                                    <a href="<%= theme.social.twitter %>" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="sidebar-social-link sidebar-social-link--twitter">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M17.6 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.3L5 21H1.9l7.3-8.3L1.5 3h6.5l4.4 5.7L17.6 3Zm-1.1 16.2h1.7L7 4.7H5.2l11.3 14.5Z"/>
+                                        </svg>
+                                    </a>
+                                <% } %>
+                                <% if (theme.social?.linkedin) { %>
+                                    <a href="<%= theme.social.linkedin %>" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="sidebar-social-link sidebar-social-link--linkedin">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M5.1 8.8h3.2V19H5.1V8.8Zm1.6-5a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6Zm4.1 5h3.1v1.4h.1c.4-.8 1.5-1.7 3-1.7 3.2 0 3.8 2.1 3.8 4.8V19h-3.2v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V19h-3.2V8.8Z"/>
+                                        </svg>
+                                    </a>
+                                <% } %>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-intro">
+                        <div class="sidebar-header">
+                            <h1 class="sidebar-logo">michal sambora — sambø</h1>
+                        </div>
+                        <div class="sidebar-description-wrapper">
+                            <h2 class="sidebar-description">
+                                Building digital products & exploring technology
+                            </h2>
                         </div>
 
                         <div class="sidebar-cta-wrapper">
-                            <a href="#connect" class="unicorn-btn sidebar-btn"
+                            <a href="<%= theme.connect?.cta?.link || 'https://calendly.com/sambora/30min' %>"
+                                class="unicorn-btn sidebar-btn" target="_blank" rel="noopener noreferrer"
                                 data-us-project-src="/button-sidebar.json" data-us-scale="0.6" data-us-dpi="4.0"
                                 data-us-production="true">
-                                <span class="btn-text">Get in touch</span>
+                                <span class="btn-text">Schedule a call</span>
                             </a>
-                            <div class="sidebar-channels">
-                                <% if (theme.social?.twitter) { %>
-                                    <a href="<%= theme.social.twitter %>" target="_blank" class="sidebar-channel-link">Twitter</a>
-                                <% } %>
-                                <% if (theme.social?.dribbble) { %>
-                                    <a href="<%= theme.social.dribbble %>" target="_blank" class="sidebar-channel-link">Dribbble</a>
-                                <% } %>
-                                <% if (theme.social?.behance) { %>
-                                    <a href="<%= theme.social.behance %>" target="_blank" class="sidebar-channel-link">Behance</a>
-                                <% } %>
-                                <% if (theme.social?.linkedin) { %>
-                                    <a href="<%= theme.social.linkedin %>" target="_blank" class="sidebar-channel-link">LinkedIn</a>
-                                <% } %>
-                            </div>
+                            <a href="mailto:<%= theme.connect?.email || 'contact@msambora.com' %>"
+                                class="sidebar-accordion-toggle copy-email-btn">
+                                <svg class="sidebar-accordion-icon copy-email-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="9" y="9" width="10" height="10" rx="2" ry="2"></rect>
+                                    <path d="M5 15V7a2 2 0 0 1 2-2h8"></path>
+                                </svg>
+                                <span class="sidebar-accordion-label copy-email-text">email</span>
+                            </a>
                         </div>
                         <a href="mailto:<%= theme.connect?.email || 'contact@msambora.com' %>"
                             class="footer-email-full copy-email-btn">
@@ -183,8 +209,7 @@
                             <section class="project-section reveal-on-scroll" id="project-<%= pindex %>"
                                 data-project-index="<%= pindex %>" <% if (carouselStyle) { %>
                                 style="<%- carouselStyle %>"<% } %>>
-                                        <div class="project-carousel-wrapper" <% if (project.disable_parallax) { %>
-                                            data-disable-parallax="true" <% } %>>
+                                        <div class="project-carousel-wrapper"<% if (project.disable_parallax) { %> data-disable-parallax="true"<% } %>>
                                                 <!-- Navigation Zones -->
                                                 <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev">
                                                 </div>
@@ -206,12 +231,12 @@
                                                                             return url_for((typeof item === 'object' && item !== null) ? item.light : item);
                                                                         })
                                                                     ); %>
-                                                                    <div class="embla__slide preview-slideshow-slide"
+                                                                    <div class="embla__slide preview-slideshow-slide is-active-slide"
                                                                         data-preview-srcs='<%- JSON.stringify(previewSrcs) %>'>
                                                                         <div class="project-slide-item">
                                                                             <div class="image-container loaded">
                                                                                 <img class="preview-slideshow-img"
-                                                                                    src="<%- previewSrcs[0] || '' %>"
+src="<%- previewSrcs[0] || '' %>"
                                                                                     alt="<%= project.title %>"
                                                                                     draggable="false">
                                                                             </div>
@@ -225,8 +250,11 @@
                                                                         && slideIndex===0) ?
                                                                         `style="\--carousel-object-position:${project.carousel_first_object_position};"
                                                                         ` : '' ; %>
-                                                                        <div class="embla__slide" <%=firstStyle %>>
-                                                                            <div class="project-slide-item">
+                                                                    <% const mobileStaticItem=(project.mobile_first_slide
+                                                                        && slideIndex===0) ? project.mobile_first_slide :
+                                                                        null; %>
+                                                                        <div class="embla__slide<%= (!project.preview_slideshow && slideIndex === 0) ? ' is-active-slide' : '' %>" <%=firstStyle %>>
+                                                                            <div class="project-slide-item<%= mobileStaticItem ? ' has-mobile-static-first' : '' %>">
                                                                                 <% const isObject=typeof
                                                                                     imgUrl==='object' && imgUrl !==null;
                                                                                     const lightItem=isObject ?
@@ -235,6 +263,17 @@
                                                                                     null; const isJson=(lightItem &&
                                                                                     lightItem.endsWith('.json')); %>
                                                                                     <% if (isJson) { %>
+                                                                                        <% if (mobileStaticItem) { %>
+                                                                                            <div class="image-container mobile-static-first-slide loaded">
+                                                                                                <img src="<%- url_for(mobileStaticItem) %>"
+                                                                                                    alt="<%= project.title %>"
+                                                                                                    loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                    <%=pindex===0
+                                                                                                    ? 'fetchpriority="high"'
+                                                                                                    : '' %>
+                                                                                                    draggable="false">
+                                                                                            </div>
+                                                                                        <% } %>
                                                                                         <div class="unicorn-scene"
                                                                                             data-us-project-src="<%- url_for(lightItem) %>"
                                                                                             data-us-scale="1"
@@ -261,7 +300,7 @@
                                                                                                         <% if (darkItem)
                                                                                                             { %>
                                                                                                             <img src="<%- url_for(lightItem) %>"
-                                                                                                                alt="<%= project.title %>"
+                            alt="<%= project.title %>"
                                                                                                                 class="theme-light-only"
                                                                                                                 loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
                                                                                                                 <%=pindex===0
@@ -270,7 +309,7 @@
                                                                                                             draggable="false"
                                                                                                             onload="this.parentElement.classList.add('loaded')">
                                                                                                             <img src="<%- url_for(darkItem) %>"
-                                                                                                                alt="<%= project.title %>"
+                            alt="<%= project.title %>"
                                                                                                                 class="theme-dark-only"
                                                                                                                 loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
                                                                                                                 <%=pindex===0
@@ -281,7 +320,7 @@
                                                                                                             <% } else {
                                                                                                                 %>
                                                                                                                 <img src="<%- url_for(lightItem) %>"
-                                                                                                                    alt="<%= project.title %>"
+                                alt="<%= project.title %>"
                                                                                                                     loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
                                                                                                                     <%=pindex===0
                                                                                                                     ? 'fetchpriority="high"'
@@ -296,7 +335,7 @@
                                                                         </div>
                                                                         <% }); %>
                                                                             <% } else if (project.cover) { %>
-                                                                                <div class="embla__slide">
+                                                                                <div class="embla__slide is-active-slide">
                                                                                     <div class="project-slide-item">
                                                                                         <div class="image-container">
                                                                                             <div class="image-skeleton">
@@ -307,7 +346,7 @@
                                                                                                 </div>
                                                                                                 <% } %>
                                                                                                     <img src="<%- url_for(project.cover) %>"
-                                                                                                        alt="<%= project.title %>"
+                    alt="<%= project.title %>"
                                                                                                         loading="lazy"
                                                                                                         draggable="false"
                                                                                                         onload="this.parentElement.classList.add('loaded')">
@@ -327,10 +366,25 @@
                                                 <div class="project-text-container">
                                                     <div class="project-title-row">
                                                         <h3 class="project-title">
-                                                                <a href="<%- url_for(project.path) %>"
-                                                                    class="project-title-link">
+                                                            <% const projectSiteUrl = project.website || project.link; %>
+                                                            <% if (projectSiteUrl) { %>
+                                                                <a href="<%= projectSiteUrl %>" target="_blank"
+                                                                    rel="noopener noreferrer" class="project-title-link">
                                                                     <%= project.title %>
+                                                                    <svg class="world-icon" viewBox="0 0 24 24"
+                                                                        fill="none" stroke="currentColor"
+                                                                        stroke-width="2" stroke-linecap="round"
+                                                                        stroke-linejoin="round" aria-hidden="true">
+                                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                                                        <path
+                                                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                                                        </path>
+                                                                    </svg>
                                                                 </a>
+                                                            <% } else { %>
+                                                                <%= project.title %>
+                                                            <% } %>
                                                         </h3>
                                                     </div>
                                                     <% if (project.solution || project.intro) { %>
@@ -339,19 +393,17 @@
                                                         </p>
                                                     <% } %>
                                                 </div>
-                                                <% if (project.website || project.link) { %>
                                                 <div class="project-actions">
-                                                    <a href="<%= project.website || project.link %>" class="project-pill-button" target="_blank" rel="noopener">
-                                                        <span>Visit site</span>
+                                                    <a href="<%- url_for(project.path) %>" class="project-pill-button">
+                                                        <span>Details</span>
                                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                             stroke-width="2.5" stroke-linecap="round"
-                                                            stroke-linejoin="round">
+                                                            stroke-linejoin="round" aria-hidden="true">
                                                             <line x1="7" y1="17" x2="17" y2="7"></line>
                                                             <polyline points="7 7 17 7 17 17"></polyline>
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                <% } %>
                                             </div>
                                                         <div class="project-meta-row">
                                                             <% if (project.scope && project.scope.length) { %>
@@ -955,7 +1007,11 @@
 
         if (aboutToggle) aboutToggle.addEventListener('click', (e) => {
             e.preventDefault();
-            switchToAbout();
+            if (aboutView.classList.contains('is-active')) {
+                switchToMain();
+            } else {
+                switchToAbout();
+            }
         });
         if (aboutClose) aboutClose.addEventListener('click', (e) => {
             e.preventDefault();
@@ -971,15 +1027,38 @@
             });
         });
 
-        // --- Offer scroll link ---
+        // --- Section scroll links (Contact, Cooperate, etc.) ---
+        const collabSection = document.getElementById('collab-section');
+
+        function openCollabSection() {
+            if (collabSection && !collabSection.classList.contains('is-open')) {
+                collabSection.classList.add('is-open');
+            }
+        }
+
         document.querySelectorAll('.sidebar-scroll-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
+                const shouldOpenCollab = link.hasAttribute('data-open-collab');
+                const href = link.getAttribute('href');
+                const target = document.querySelector(href) || (shouldOpenCollab ? document.getElementById('connect') : null);
+
+                const scrollToTarget = () => {
+                    if (shouldOpenCollab) {
+                        openCollabSection();
+                    }
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                };
+
                 if (aboutView.classList.contains('is-active')) {
                     switchToMain(target);
-                } else if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (shouldOpenCollab) {
+                        setTimeout(openCollabSection, fadeDuration + 80);
+                    }
+                } else {
+                    scrollToTarget();
                 }
             });
         });
@@ -1019,7 +1098,6 @@
         // --- Collaboration Toggle ---
         const collabToggle = document.getElementById('collab-toggle');
         const collabClose = document.getElementById('collab-close');
-        const collabSection = document.getElementById('collab-section');
         function toggleCollab(e) {
             e.preventDefault();
             const isOpen = collabSection.classList.toggle('is-open');

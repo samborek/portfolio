@@ -7,6 +7,7 @@ year: 2024
 order: 1000
 cover: /images/work/hydration_1.jpg
 hero_image: /images/work/hydration_1.jpg
+mobile_first_slide: /images/work/hydration_1.jpg
 preview_extra:
   - /images/work/hydration_1.jpg
 carousel:
@@ -23,7 +24,7 @@ carousel:
     dark: /images/work/hydration_6_dark.jpg
 carousel_object_fit: cover
 disable_parallax: true
-carousel_image_scale: 1
+carousel_image_scale: 1.05
 client: Hydration Protocol
 role: "Lead Product Designer"
 theme_hint: "Try Dark Mode"

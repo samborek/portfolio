@@ -17,7 +17,7 @@ carousel:
   - /images/work/hydra_7.jpg
 carousel_object_fit: cover
 carousel_object_position: "top center"
-carousel_image_scale: 1.1
+carousel_image_scale: 1.05
 client: Volt Industry
 role: Visual Design, UI & UX Design
 intro: "An ocean of liquidity for Polkadot"
