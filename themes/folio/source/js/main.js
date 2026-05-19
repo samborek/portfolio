@@ -277,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const getEmblaOptions = () => ({
     loop: true,
     align: 'center',
+    duration: 34,
     dragFree: false,
     containScroll: 'keepSnaps',
   });
@@ -472,13 +473,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const onEmblaSelect = () => {
       const selected = getSelectedSlideIndex();
+      emblaNode.classList.add('is-sliding');
       updateSlideFocus(selected);
       window.dispatchEvent(new CustomEvent('folio:scroll'));
-      setTimeout(wakeSelectedUnicornScene, 300);
     };
 
     const onEmblaSettle = () => {
       updateCenteredSlideFocus();
+      emblaNode.classList.remove('is-sliding');
       wakeSelectedUnicornScene();
     };
 
@@ -488,6 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
     embla.on('init', scheduleCenteredSlideFocus);
     updateSlideFocus(getSelectedSlideIndex(), false);
     scheduleCenteredSlideFocus();
+    requestAnimationFrame(() => emblaNode.classList.remove('is-sliding'));
 
     let lastViewportWidth = window.innerWidth;
     let lastViewportHeight = window.innerHeight;
