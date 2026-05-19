@@ -129,9 +129,9 @@
     calc(100vw - 2 * var(--carousel-bleed-padding) - 2 * var(--project-column-padding-inline))
   );
   /* Inactive-slide focus effect (homepage carousel) — tune in :root */
-  --carousel-focus-duration: 0.18s;
+  --carousel-focus-duration: 0.32s;
   --carousel-focus-easing: cubic-bezier(0.4, 0, 0.2, 1);
-  --carousel-inactive-opacity: 0.1;
+  --carousel-inactive-opacity: 0.5;
   --carousel-inactive-filter: grayscale(1) sepia(0.22) saturate(0.8) brightness(1.03);
   --carousel-inactive-tint: color-mix(in srgb, var(--color-bg) 50%, transparent);
   --carousel-inactive-tint-opacity: 0;
