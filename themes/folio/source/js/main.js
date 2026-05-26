@@ -541,18 +541,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Loading States (Images & Unicorn Studio) ---
-  const MIN_SKELETON_TIME = 0; // Removed delay for instant show when cached
+  // --- Loading States (Images, Videos & Unicorn Studio) ---
+  const MIN_SKELETON_TIME = 120;
 
-  // Standard Image Handler
-  const handleImageLoad = (img) => {
-    const container = img.closest('.image-container');
+  const markMediaLoaded = (media) => {
+    const container = media.closest('.image-container, .tile-image-wrapper');
     if (container) container.classList.add('loaded');
   };
 
+  const handleImageLoad = (img) => {
+    if (img.decode && img.currentSrc) {
+      img.decode().catch(() => { }).finally(() => markMediaLoaded(img));
+    } else {
+      markMediaLoaded(img);
+    }
+  };
+
   document.querySelectorAll('img').forEach(img => {
-    if (img.complete) handleImageLoad(img);
-    else img.addEventListener('load', () => handleImageLoad(img));
+    if (!img.hasAttribute('decoding')) img.decoding = 'async';
+    if (img.complete && img.naturalWidth > 0) {
+      handleImageLoad(img);
+    } else {
+      img.addEventListener('load', () => handleImageLoad(img), { once: true });
+      img.addEventListener('error', () => markMediaLoaded(img), { once: true });
+    }
+  });
+
+  document.querySelectorAll('video').forEach(video => {
+    if (video.readyState >= 2) {
+      markMediaLoaded(video);
+    } else {
+      video.addEventListener('loadeddata', () => markMediaLoaded(video), { once: true });
+      video.addEventListener('loadedmetadata', () => markMediaLoaded(video), { once: true });
+      video.addEventListener('error', () => markMediaLoaded(video), { once: true });
+    }
   });
 
   // Unicorn Studio Handler
@@ -778,68 +800,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Project-by-Project Sequencer ---
-  // Batches loading per project to prevent network congestion while ensuring readiness.
-  const initProjectSequencer = () => {
+  // --- Near-Viewport Project Media Preloader ---
+  // Warms the next projects shortly before they enter the scroll viewport.
+  const initProjectMediaPreloader = () => {
     const projects = Array.from(document.querySelectorAll('.project-section[data-project-index]'))
       .sort((a, b) => parseInt(a.dataset.projectIndex) - parseInt(b.dataset.projectIndex));
 
-    if (projects.length <= 1) return; // Only 1 project (already eager) or none
+    if (projects.length <= 1) return;
 
-    // Start from Project 1 (Project 0 is standard eager load)
-    let currentProjectIndex = 1;
+    const warmProject = (project) => {
+      if (project.dataset.mediaPreloaded === 'true') return;
+      project.dataset.mediaPreloaded = 'true';
 
-    const loadNextProject = () => {
-      if (currentProjectIndex >= projects.length) return;
-
-      const project = projects[currentProjectIndex];
-      const assets = [];
-
-      // Collect assets in this project
-      const images = project.querySelectorAll('img[loading="lazy"]');
-      const scenes = project.querySelectorAll('.unicorn-scene[data-us-lazyload="true"]');
-
-      images.forEach(img => {
-        assets.push(new Promise(resolve => {
-          if (img.complete) return resolve();
-          img.onload = resolve;
-          img.onerror = resolve; // Continue even on error
-          img.loading = 'eager'; // Trigger load
-        }));
+      project.querySelectorAll('img[loading="lazy"]').forEach(img => {
+        img.loading = 'eager';
+        if (img.decode && img.currentSrc) img.decode().catch(() => { });
       });
 
-      scenes.forEach(scene => {
-        assets.push(new Promise(resolve => {
-          // Unicorn doesn't have a standard load event on the DIV wrapper, 
-          // but we can flip the attribute to trigger its internal logic
-          scene.setAttribute('data-us-lazyload', 'false');
-          // Give it a fixed time budget to "start" - we can't easily await full canvas ready here
-          // without deeper hooks, but flipping the bit starts the network request.
-          setTimeout(resolve, 200);
-        }));
-      });
-
-      // Wait for all assets in this project (or timeout safety)
-      const batchPromise = Promise.all(assets);
-      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000)); // 3s max per project
-
-      Promise.race([batchPromise, timeoutPromise]).then(() => {
-        // Project loaded (or timed out), move to next
-        currentProjectIndex++;
-        // Small breathing room for main thread
-        setTimeout(loadNextProject, 100);
-      });
+      project.querySelectorAll('.unicorn-scene[data-us-lazyload="true"]').forEach(wakeUnicornScene);
     };
 
-    // Kick off the sequencer
-    loadNextProject();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        warmProject(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, {
+      root: homeView || null,
+      rootMargin: '900px 0px',
+      threshold: 0
+    });
+
+    projects.slice(1).forEach(project => observer.observe(project));
   };
 
-  // Run slightly after load to ensure critical path is clear
+  // Run after load so the first viewport keeps the network priority.
   if (document.readyState === 'complete') {
-    setTimeout(initProjectSequencer, 800);
+    setTimeout(initProjectMediaPreloader, 500);
   } else {
-    window.addEventListener('load', () => setTimeout(initProjectSequencer, 800));
+    window.addEventListener('load', () => setTimeout(initProjectMediaPreloader, 500));
   }
 
   // --- Resume Hover Preview ---
