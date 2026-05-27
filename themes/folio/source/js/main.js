@@ -577,43 +577,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const enableDesktopUnicornScenes = () => {
+    if (window.matchMedia('(max-width: 900px)').matches) return;
+
+    document.querySelectorAll('.unicorn-scene[data-us-project-src-desktop]').forEach(scene => {
+      if (scene.hasAttribute('data-us-project-src')) return;
+      scene.setAttribute('data-us-project-src', scene.getAttribute('data-us-project-src-desktop'));
+    });
+  };
+
   // Unicorn Studio Handler
   if (window.UnicornStudio) {
+    enableDesktopUnicornScenes();
+
     UnicornStudio.init().then(() => {
       document.querySelectorAll('.unicorn-scene').forEach(scene => {
         const startTime = performance.now();
+        let sceneLoaded = false;
 
-        const checkSceneLoaded = () => {
-          if (scene.classList.contains('loaded')) return true;
+        const markSceneLoaded = () => {
+          if (sceneLoaded || scene.classList.contains('loaded')) return;
+          sceneLoaded = true;
+
+          const remaining = Math.max(0, MIN_SKELETON_TIME - (performance.now() - startTime));
+          setTimeout(() => {
+            scene.classList.add('loaded');
+            const container = scene.closest('.image-container');
+            if (container) container.classList.add('loaded');
+          }, remaining);
+        };
+
+        const waitForCanvasPaint = () => {
           const canvas = scene.querySelector('canvas');
           if (!canvas) return false;
 
-          const ctx = canvas.getContext('2d', { willReadFrequently: true });
-          if (!ctx) return false;
-
-          try {
-            const hasContent = ctx.getImageData(0, 0, 1, 1).data.some(v => v !== 0);
-            if (hasContent) {
-              const remaining = Math.max(0, MIN_SKELETON_TIME - (performance.now() - startTime));
-              setTimeout(() => {
-                scene.classList.add('loaded');
-                const container = scene.closest('.image-container');
-                if (container) container.classList.add('loaded');
-              }, remaining);
-              return true;
-            }
-          } catch (e) { }
-          return false;
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setTimeout(markSceneLoaded, 250);
+            });
+          });
+          return true;
         };
 
         scene.addEventListener('us-load', () => {
-          scene.classList.add('loaded');
-          const container = scene.closest('.image-container');
-          if (container) container.classList.add('loaded');
+          waitForCanvasPaint() || markSceneLoaded();
         });
 
-        const itv = setInterval(() => { if (checkSceneLoaded()) clearInterval(itv); }, 200);
-        setTimeout(() => { clearInterval(itv); scene.classList.add('loaded'); }, 600); // Quick fallback
+        const canvasObserver = new MutationObserver(() => {
+          if (waitForCanvasPaint()) canvasObserver.disconnect();
+        });
+        canvasObserver.observe(scene, { childList: true });
+        if (waitForCanvasPaint()) canvasObserver.disconnect();
+        setTimeout(() => canvasObserver.disconnect(), 8000);
 
         // Workaround for mouse-tracking scenes that break after scrolling
         // Workaround for mouse-tracking scenes that break after visibility changes

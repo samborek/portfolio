@@ -117,13 +117,35 @@
                                             lightItem=isObject ? item.light : item; const darkItem=isObject ? item.dark
                                             : null; const isJson=(lightItem && lightItem.endsWith('.json')); %>
                                             <% if (isJson) { %>
+                                                <% const staticPosterItem = page.mobile_first_slide || page.cover || page.hero_image; %>
+                                                <% const hasMobileStaticScene = page.mobile_first_slide && index === 0; %>
+                                                <% if (hasMobileStaticScene) { %>
+                                                    <img class="mobile-static-project-scene"
+                                                        src="<%- url_for(page.mobile_first_slide) %>"
+                                                        alt="<%= page.title %>"
+                                                        loading="eager"
+                                                        decoding="async"
+                                                        fetchpriority="high">
+                                                <% } %>
                                                 <div class="unicorn-scene"
-                                                    data-us-project-src="<%- url_for(lightItem) %>" data-us-scale="1"
+                                                    <% if (hasMobileStaticScene) { %>
+                                                        data-us-project-src-desktop="<%- url_for(lightItem) %>"
+                                                    <% } else { %>
+                                                        data-us-project-src="<%- url_for(lightItem) %>"
+                                                    <% } %>
+                                                    data-us-scale="1"
                                                     data-us-dpi="1.5"
-                                                    data-us-lazyload="<%= index === 0 ? 'false' : 'true' %>" <%=index> 0
-                                                    ?
-                                                    'data-background-lazy-us="true"' : '' %>
+                                                    data-us-lazyload="false"
+                                                    data-background-lazy-us="true"
                                                     data-us-production="true">
+                                                    <% if (staticPosterItem) { %>
+                                                        <img class="unicorn-scene-poster"
+                                                            src="<%- url_for(staticPosterItem) %>"
+                                                            alt="<%= page.title %>"
+                                                            loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                                                            decoding="async"
+                                                            <%=index===0 ? 'fetchpriority="high"' : '' %>>
+                                                    <% } %>
                                                     <div class="unicorn-scene-skeleton"></div>
                                                 </div>
                                                 <% } else { %>

@@ -1361,10 +1361,11 @@ body.index-page {
   object-fit: cover;
   transform: none !important;
   -webkit-user-drag: none;
-  z-index: 0;
+  z-index: 2;
 }
 
-.project-slide-item .mobile-static-first-slide {
+.project-slide-item .mobile-static-first-slide,
+.mobile-static-project-scene {
   display: none;
 }
 
@@ -1378,22 +1379,53 @@ body.index-page {
   background: transparent;
 }
 
+.projects-main-content .embla__slide .unicorn-scene {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-text) 7%, transparent), transparent 42%),
+    color-mix(in srgb, var(--color-bg-secondary) 88%, var(--color-text) 12%);
+}
+
+.unicorn-scene-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(var(--carousel-image-scale, 1.05));
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity 0.45s ease,
+    filter 0.55s ease;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 0;
+}
+
 /* Canvas fade-in effect */
-.embla__slide .unicorn-scene canvas {
+.embla__slide .unicorn-scene canvas,
+.project-image-stack .unicorn-scene canvas {
   opacity: 0;
   transition: opacity 0.4s ease;
+  position: relative;
+  z-index: 2;
 }
 
-/* Instant snap for background-preloaded scenes */
-.unicorn-scene[data-background-lazy-us="true"] canvas {
-  opacity: 1 !important;
-  transition: none !important;
-}
-
-.embla__slide .unicorn-scene.loaded canvas {
+.embla__slide .unicorn-scene.loaded canvas,
+.project-image-stack .unicorn-scene.loaded canvas {
   opacity: 1;
   user-select: none;
   border-radius: inherit;
+}
+
+.embla__slide .unicorn-scene.loaded .unicorn-scene-poster,
+.project-image-stack .unicorn-scene.loaded .unicorn-scene-poster {
+  opacity: 0;
+  filter: blur(10px);
 }
 
 /* ============================================
@@ -3836,6 +3868,7 @@ body.project-page {
 }
 
 .unicorn-scene.loaded .unicorn-scene-skeleton,
+.unicorn-scene.loaded .unicorn-scene-poster,
 .image-container.loaded .image-placeholder,
 .image-container.loaded .image-skeleton,
 .image-container:has(.unicorn-scene.loaded) .image-placeholder {
@@ -4056,6 +4089,17 @@ body.project-page {
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-text) 7%, transparent), transparent 42%),
+    color-mix(in srgb, var(--color-bg-secondary) 88%, var(--color-text) 12%);
+}
+
+.project-image-stack .unicorn-scene canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
 }
 
 
@@ -4238,6 +4282,22 @@ body.project-page {
   .project-image-stack .image-container,
   .project-gallery .image-container {
     border-radius: var(--radius-l) !important;
+  }
+
+  .project-image-stack .image-container:has(.mobile-static-project-scene) .unicorn-scene {
+    display: none;
+  }
+
+  .project-image-stack .mobile-static-project-scene {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(var(--carousel-image-scale, 1.05));
+    opacity: 1;
+    filter: none;
   }
 
   .project-info-grid {
