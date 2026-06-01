@@ -2,81 +2,95 @@
     <div class="blob-violet"></div>
 </div>
 
+<% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) -
+    (a.order || 0)); %>
+
+<!-- Persists across Home / Playground (outside sliding #app-viewport) -->
+<div class="sidebar-topbar-wrapper">
+                <div class="sidebar-topbar-bg"></div>
+                <div class="sidebar-topbar">
+                    <nav class="sidebar-nav sidebar-accordion" aria-label="Site">
+                        <div class="sidebar-accordion-item">
+                            <button class="sidebar-accordion-toggle" aria-expanded="false">
+                                <span class="sidebar-accordion-label">Recent works</span>
+                                <span class="sidebar-accordion-icon">+</span>
+                            </button>
+                            <nav class="sidebar-accordion-content">
+                                <% projects.forEach(function(project, index) { %>
+                                    <a href="#project-<%= index %>" class="footer-link-item project-link-item">
+                                        <%= project.short_title || project.title %>
+                                    </a>
+                                <% }); %>
+                                <a href="#more-works" class="footer-link-item">More</a>
+                            </nav>
+                        </div>
+                        <div class="sidebar-accordion-item">
+                            <a href="#" class="sidebar-accordion-toggle" id="about-toggle">
+                                <span class="sidebar-accordion-label">About</span>
+                            </a>
+                        </div>
+                        <div class="sidebar-accordion-item">
+                            <a href="#clients" class="sidebar-accordion-toggle sidebar-scroll-link">
+                                <span class="sidebar-accordion-label">Clients</span>
+                            </a>
+                        </div>
+                        <div class="sidebar-accordion-item sidebar-playground-link">
+                            <a href="#" class="sidebar-accordion-toggle navbar-playground-btn" id="navbar-playground-toggle">
+                                <span class="sidebar-accordion-label">Playground</span>
+                            </a>
+                        </div>
+                        <div class="sidebar-accordion-item sidebar-contact-link">
+                            <a href="#connect" class="sidebar-accordion-toggle sidebar-scroll-link">
+                                <span class="sidebar-accordion-label">Contact</span>
+                            </a>
+                        </div>
+                    </nav>
+                    <div class="sidebar-social-icons" aria-label="Social links">
+                        <% if (theme.social?.dribbble) { %>
+                            <a href="<%= theme.social.dribbble %>" target="_blank" rel="noopener noreferrer" aria-label="Dribbble" class="sidebar-social-link sidebar-social-link--dribbble">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6Zm6.6 5.2a8 8 0 0 1 1.4 4.3 16.2 16.2 0 0 0-5.4-.2 25 25 0 0 0-.8-1.8 15.8 15.8 0 0 0 4.8-2.3ZM12 4a8 8 0 0 1 5.3 2 14 14 0 0 1-4.3 2.1 31.4 31.4 0 0 0-2.9-4A8 8 0 0 1 12 4ZM8.1 4.8a29 29 0 0 1 2.9 4 29.4 29.4 0 0 1-7 .8 8.1 8.1 0 0 1 4.1-4.8Zm-4.2 6.6a30 30 0 0 0 8-1 20 20 0 0 1 .7 1.5 12.5 12.5 0 0 0-6.9 5.2 8 8 0 0 1-1.8-5.7Zm8.1 8.7a8 8 0 0 1-4.9-1.7 10.6 10.6 0 0 1 6.1-4.8 33 33 0 0 1 1.7 5.9 8 8 0 0 1-2.9.6Zm4.6-1.6a36 36 0 0 0-1.6-5.3 14 14 0 0 1 4.8.3 8 8 0 0 1-3.2 5Z"/>
+                                </svg>
+                            </a>
+                        <% } %>
+                        <% if (theme.social?.behance) { %>
+                            <a href="<%= theme.social.behance %>" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="sidebar-social-link sidebar-social-link--behance">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M14.8 6.8h5.5v1.4h-5.5V6.8ZM4 5.8h5.4c1.1 0 2 .3 2.6.8.6.5.9 1.2.9 2.1 0 .6-.1 1.1-.4 1.5-.3.4-.7.7-1.2.9.7.2 1.2.5 1.5 1 .4.5.5 1.1.5 1.9 0 1-.3 1.8-1 2.4-.7.6-1.7.9-2.9.9H4V5.8Zm5 4.6c.5 0 .9-.1 1.2-.4.3-.2.4-.6.4-1s-.1-.8-.4-1c-.3-.2-.7-.3-1.3-.3H6.3v2.7H9Zm.2 5c.6 0 1-.1 1.3-.4.3-.3.5-.7.5-1.2s-.2-.9-.5-1.2c-.3-.3-.8-.4-1.4-.4H6.3v3.2h2.9Zm9.1 2.2c-1.3 0-2.4-.4-3.2-1.2-.8-.8-1.2-1.9-1.2-3.3 0-1.4.4-2.5 1.2-3.3.8-.8 1.8-1.3 3.1-1.3s2.3.4 3 1.2c.7.8 1.1 2 1.1 3.5v.5h-6.1c.1.7.3 1.2.6 1.6.4.4.9.6 1.5.6.9 0 1.5-.4 1.8-1.1h2.1c-.2.9-.7 1.6-1.4 2.1-.6.5-1.5.7-2.5.7Zm1.9-5.3c-.1-.6-.3-1.1-.6-1.4-.3-.3-.8-.5-1.4-.5s-1 .2-1.4.5c-.3.3-.6.8-.7 1.4h4.1Z"/>
+                                </svg>
+                            </a>
+                        <% } %>
+                        <% if (theme.social?.twitter) { %>
+                            <a href="<%= theme.social.twitter %>" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="sidebar-social-link sidebar-social-link--twitter">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M17.6 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.3L5 21H1.9l7.3-8.3L1.5 3h6.5l4.4 5.7L17.6 3Zm-1.1 16.2h1.7L7 4.7H5.2l11.3 14.5Z"/>
+                                </svg>
+                            </a>
+                        <% } %>
+                        <% if (theme.social?.linkedin) { %>
+                            <a href="<%= theme.social.linkedin %>" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="sidebar-social-link sidebar-social-link--linkedin">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M5.1 8.8h3.2V19H5.1V8.8Zm1.6-5a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6Zm4.1 5h3.1v1.4h.1c.4-.8 1.5-1.7 3-1.7 3.2 0 3.8 2.1 3.8 4.8V19h-3.2v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V19h-3.2V8.8Z"/>
+                                </svg>
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
 <div id="app-viewport">
     <!-- VIEW 1: HOME (Sidebar + Work) -->
     <div id="home-view" class="app-view">
         <div class="portfolio-wrapper">
-            <% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) -
-                (a.order || 0)); %>
-
                 <!-- Top header -->
                 <aside class="sidebar">
-                    <div class="sidebar-topbar">
-                        <nav class="sidebar-nav sidebar-accordion" aria-label="Site">
-                            <div class="sidebar-accordion-item">
-                                <button class="sidebar-accordion-toggle" aria-expanded="false">
-                                    <span class="sidebar-accordion-label">Selected works</span>
-                                    <span class="sidebar-accordion-icon">+</span>
-                                </button>
-                                <nav class="sidebar-accordion-content">
-                                    <% projects.forEach(function(project, index) { %>
-                                        <a href="#project-<%= index %>" class="footer-link-item project-link-item">
-                                            <%= project.short_title || project.title %>
-                                        </a>
-                                    <% }); %>
-                                    <a href="#more-works" class="footer-link-item">More</a>
-                                </nav>
-                            </div>
-                            <div class="sidebar-accordion-item">
-                                <a href="#" class="sidebar-accordion-toggle" id="about-toggle">
-                                    <span class="sidebar-accordion-label">About</span>
-                                </a>
-                            </div>
-                            <div class="sidebar-accordion-item sidebar-contact-link">
-                                <a href="#connect" class="sidebar-accordion-toggle sidebar-scroll-link">
-                                    <span class="sidebar-accordion-label">Contact</span>
-                                </a>
-                            </div>
-                        </nav>
-                        <div class="sidebar-social-icons" aria-label="Social links">
-                                <% if (theme.social?.dribbble) { %>
-                                    <a href="<%= theme.social.dribbble %>" target="_blank" rel="noopener noreferrer" aria-label="Dribbble" class="sidebar-social-link sidebar-social-link--dribbble">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6Zm6.6 5.2a8 8 0 0 1 1.4 4.3 16.2 16.2 0 0 0-5.4-.2 25 25 0 0 0-.8-1.8 15.8 15.8 0 0 0 4.8-2.3ZM12 4a8 8 0 0 1 5.3 2 14 14 0 0 1-4.3 2.1 31.4 31.4 0 0 0-2.9-4A8 8 0 0 1 12 4ZM8.1 4.8a29 29 0 0 1 2.9 4 29.4 29.4 0 0 1-7 .8 8.1 8.1 0 0 1 4.1-4.8Zm-4.2 6.6a30 30 0 0 0 8-1 20 20 0 0 1 .7 1.5 12.5 12.5 0 0 0-6.9 5.2 8 8 0 0 1-1.8-5.7Zm8.1 8.7a8 8 0 0 1-4.9-1.7 10.6 10.6 0 0 1 6.1-4.8 33 33 0 0 1 1.7 5.9 8 8 0 0 1-2.9.6Zm4.6-1.6a36 36 0 0 0-1.6-5.3 14 14 0 0 1 4.8.3 8 8 0 0 1-3.2 5Z"/>
-                                        </svg>
-                                    </a>
-                                <% } %>
-                                <% if (theme.social?.behance) { %>
-                                    <a href="<%= theme.social.behance %>" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="sidebar-social-link sidebar-social-link--behance">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M14.8 6.8h5.5v1.4h-5.5V6.8ZM4 5.8h5.4c1.1 0 2 .3 2.6.8.6.5.9 1.2.9 2.1 0 .6-.1 1.1-.4 1.5-.3.4-.7.7-1.2.9.7.2 1.2.5 1.5 1 .4.5.5 1.1.5 1.9 0 1-.3 1.8-1 2.4-.7.6-1.7.9-2.9.9H4V5.8Zm5 4.6c.5 0 .9-.1 1.2-.4.3-.2.4-.6.4-1s-.1-.8-.4-1c-.3-.2-.7-.3-1.3-.3H6.3v2.7H9Zm.2 5c.6 0 1-.1 1.3-.4.3-.3.5-.7.5-1.2s-.2-.9-.5-1.2c-.3-.3-.8-.4-1.4-.4H6.3v3.2h2.9Zm9.1 2.2c-1.3 0-2.4-.4-3.2-1.2-.8-.8-1.2-1.9-1.2-3.3 0-1.4.4-2.5 1.2-3.3.8-.8 1.8-1.3 3.1-1.3s2.3.4 3 1.2c.7.8 1.1 2 1.1 3.5v.5h-6.1c.1.7.3 1.2.6 1.6.4.4.9.6 1.5.6.9 0 1.5-.4 1.8-1.1h2.1c-.2.9-.7 1.6-1.4 2.1-.6.5-1.5.7-2.5.7Zm1.9-5.3c-.1-.6-.3-1.1-.6-1.4-.3-.3-.8-.5-1.4-.5s-1 .2-1.4.5c-.3.3-.6.8-.7 1.4h4.1Z"/>
-                                        </svg>
-                                    </a>
-                                <% } %>
-                                <% if (theme.social?.twitter) { %>
-                                    <a href="<%= theme.social.twitter %>" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="sidebar-social-link sidebar-social-link--twitter">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M17.6 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.3L5 21H1.9l7.3-8.3L1.5 3h6.5l4.4 5.7L17.6 3Zm-1.1 16.2h1.7L7 4.7H5.2l11.3 14.5Z"/>
-                                        </svg>
-                                    </a>
-                                <% } %>
-                                <% if (theme.social?.linkedin) { %>
-                                    <a href="<%= theme.social.linkedin %>" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="sidebar-social-link sidebar-social-link--linkedin">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M5.1 8.8h3.2V19H5.1V8.8Zm1.6-5a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6Zm4.1 5h3.1v1.4h.1c.4-.8 1.5-1.7 3-1.7 3.2 0 3.8 2.1 3.8 4.8V19h-3.2v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V19h-3.2V8.8Z"/>
-                                        </svg>
-                                    </a>
-                                <% } %>
-                        </div>
-                    </div>
-
                     <div class="sidebar-intro">
                         <div class="sidebar-header">
                             <h1 class="sidebar-logo">michal sambora — sambø</h1>
                         </div>
                         <div class="sidebar-description-wrapper">
                             <h2 class="sidebar-description">
-                                Building digital products & exploring technology
+                                Building digital products<br>& exploring technology
                             </h2>
                         </div>
 
@@ -151,6 +165,57 @@
                                             <% }); %>
                                         </div>
                                     </div>
+                                </section>
+                            <% } %>
+                            <% if (theme.experience.clients) { %>
+                                <section class="about-section about-list-section client-section">
+                                    <div class="client-section-header">
+                                        <h3 class="cv-experience-heading"><%= theme.experience.clients.title %></h3>
+                                        <% if (theme.experience.clients.intro) { %>
+                                            <p class="client-section-intro"><%= theme.experience.clients.intro %></p>
+                                        <% } %>
+                                    </div>
+                                    <% if (theme.experience.clients.featured && theme.experience.clients.featured.length) { %>
+                                        <div class="client-featured-grid" aria-label="Featured clients">
+                                            <% theme.experience.clients.featured.forEach(function(client) { %>
+                                                <% if (client.url) { %>
+                                                    <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-featured-item" data-client-tooltip="<%= client.name %>" aria-label="<%= client.name %>" title="<%= client.name %>">
+                                                        <% if (client.logo) { %>
+                                                            <img src="<%- url_for(client.logo) %>" alt="<%= client.name %> logo" class="client-featured-logo<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                        <% } else { %>
+                                                            <span class="client-featured-name"><%= client.name %></span>
+                                                        <% } %>
+                                                    </a>
+                                                <% } else { %>
+                                                    <span class="client-featured-item" data-client-tooltip="<%= client.name %>" aria-label="<%= client.name %>" title="<%= client.name %>" tabindex="0">
+                                                        <% if (client.logo) { %>
+                                                            <img src="<%- url_for(client.logo) %>" alt="<%= client.name %> logo" class="client-featured-logo<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                        <% } else { %>
+                                                            <span class="client-featured-name"><%= client.name %></span>
+                                                        <% } %>
+                                                    </span>
+                                                <% } %>
+                                            <% }); %>
+                                        </div>
+                                    <% } %>
+                                    <% if (theme.experience.clients.groups && theme.experience.clients.groups.length) { %>
+                                        <div class="client-group-list">
+                                            <% theme.experience.clients.groups.forEach(function(group) { %>
+                                                <div class="client-group-row">
+                                                    <h4 class="client-group-title"><%= group.title %></h4>
+                                                    <div class="client-name-list">
+                                                        <% group.items.forEach(function(client) { %>
+                                                            <% if (client.url) { %>
+                                                                <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-name"><%= client.name %></a>
+                                                            <% } else { %>
+                                                                <span class="client-name"><%= client.name %></span>
+                                                            <% } %>
+                                                        <% }); %>
+                                                    </div>
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                    <% } %>
                                 </section>
                             <% } %>
                             <% if (theme.events) { %>
@@ -450,10 +515,79 @@ src="<%- previewSrcs[0] || '' %>"
                             </section>
                             <% }); %>
 
+                                <% if (theme.experience && theme.experience.clients) { %>
+                                    <section class="home-client-section reveal-on-scroll" id="clients">
+                                        <div class="home-client-header">
+                                            <h2 class="project-title"><%= theme.experience.clients.home_title || theme.experience.clients.title %></h2>
+                                            <% if (theme.experience.clients.intro) { %>
+                                                <p class="project-info-text section-intro"><%= theme.experience.clients.intro %></p>
+                                            <% } %>
+                                        </div>
+                                        <% if (theme.experience.clients.featured && theme.experience.clients.featured.length) { %>
+                                            <div class="client-featured-grid home-client-grid" aria-label="Featured clients">
+                                                <% theme.experience.clients.featured.forEach(function(client) { %>
+                                                    <% var homeClientLogo = client.logo_home || client.logo; %>
+                                                    <% var homeClientLogoHover = client.logo_home_hover || null; %>
+                                                    <% if (client.url) { %>
+                                                        <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-featured-item" data-client-tooltip="<%= client.name %>" aria-label="<%= client.name %>" title="<%= client.name %>">
+                                                            <% if (homeClientLogo) { %>
+                                                                <% if (homeClientLogoHover) { %>
+                                                                <span class="client-featured-logo-stack">
+                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo client-featured-logo--rest<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="client-featured-logo client-featured-logo--hover<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" aria-hidden="true" loading="eager" decoding="async">
+                                                                </span>
+                                                                <% } else { %>
+                                                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <span class="client-featured-name"><%= client.name %></span>
+                                                            <% } %>
+                                                        </a>
+                                                    <% } else { %>
+                                                        <span class="client-featured-item" data-client-tooltip="<%= client.name %>" aria-label="<%= client.name %>" title="<%= client.name %>" tabindex="0">
+                                                            <% if (homeClientLogo) { %>
+                                                                <% if (homeClientLogoHover) { %>
+                                                                <span class="client-featured-logo-stack">
+                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo client-featured-logo--rest<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="client-featured-logo client-featured-logo--hover<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" aria-hidden="true" loading="eager" decoding="async">
+                                                                </span>
+                                                                <% } else { %>
+                                                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <span class="client-featured-name"><%= client.name %></span>
+                                                            <% } %>
+                                                        </span>
+                                                    <% } %>
+                                                <% }); %>
+                                            </div>
+                                        <% } %>
+                                        <% if (theme.experience.clients.groups && theme.experience.clients.groups.length) { %>
+                                            <div class="home-client-groups" aria-label="Client categories">
+                                                <% theme.experience.clients.groups.forEach(function(group) { %>
+                                                    <div class="home-client-group">
+                                                        <h3 class="home-client-group-title"><%= group.title %></h3>
+                                                        <div class="home-client-name-list">
+                                                            <% group.items.forEach(function(client) { %>
+                                                                <% if (client.url) { %>
+                                                                    <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="home-client-name"><%= client.name %></a>
+                                                                <% } else { %>
+                                                                    <span class="home-client-name"><%= client.name %></span>
+                                                                <% } %>
+                                                            <% }); %>
+                                                        </div>
+                                                    </div>
+                                                <% }); %>
+                                            </div>
+                                        <% } %>
+                                    </section>
+                                <% } %>
+
                                 <!-- MORE WORK AREA -->
                                 <div id="more-works">
                                     <section class="more-work-section reveal-on-scroll" id="more-works-combined">
                                         <div class="dribbble-grid">
+                                            <div class="dribbble-grid-group">
                                             <!-- Behance intro + shots -->
                                             <a href="https://www.behance.net/samborek" target="_blank" class="dribbble-grid-intro work-tile intro-tile">
                                                 <div class="intro-arrow-wrapper">
@@ -479,7 +613,8 @@ src="<%- previewSrcs[0] || '' %>"
                                                     <img src="<%- url_for('/images/work/behance/Editing%20PRO%20Voice%20Site%20Design.png') %>" alt="PRO Voice Site Design" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
-                                            <div class="dribbble-grid-separator" aria-hidden="true"></div>
+                                            </div>
+                                            <div class="dribbble-grid-group">
                                             <!-- Dribbble intro + shots -->
                                             <a href="https://dribbble.com/samborek" target="_blank" class="dribbble-grid-intro work-tile intro-tile">
                                                 <div class="intro-arrow-wrapper">
@@ -545,6 +680,7 @@ src="<%- previewSrcs[0] || '' %>"
                                                     <img src="<%- url_for('/images/work/dribbble/9403747.webp') %>" alt="" loading="lazy" decoding="async">
                                                 </div>
                                             </a>
+                                            </div>
                                         </div>
                                     </section>
                                 </div>
@@ -976,6 +1112,23 @@ src="<%- previewSrcs[0] || '' %>"
         const viewport = document.getElementById('app-viewport');
         const homeView = document.getElementById('home-view');
         const playgroundView = document.getElementById('playground-view');
+
+        const isPlaygroundActive = () => homeView && homeView.getAttribute('aria-hidden') === 'true';
+
+        const ensureHomeView = (callback) => {
+            if (!isPlaygroundActive()) {
+                callback();
+                return;
+            }
+            const homeTab = document.querySelector('.tab-button[data-tab="home"]');
+            if (homeTab) {
+                homeTab.click();
+                setTimeout(callback, 780);
+            } else {
+                callback();
+            }
+        };
+
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabIndicator = document.querySelector('.tab-indicator');
         const floatControls = document.querySelector('.floating-controls');
@@ -1034,12 +1187,26 @@ src="<%- previewSrcs[0] || '' %>"
 
         if (aboutToggle) aboutToggle.addEventListener('click', (e) => {
             e.preventDefault();
-            if (aboutView.classList.contains('is-active')) {
-                switchToMain();
-            } else {
-                switchToAbout();
-            }
+            ensureHomeView(() => {
+                if (aboutView.classList.contains('is-active')) {
+                    switchToMain();
+                } else {
+                    switchToAbout();
+                }
+            });
         });
+
+        // --- Playground Toggle from Navbar ---
+        const navbarPlaygroundToggle = document.getElementById('navbar-playground-toggle');
+        if (navbarPlaygroundToggle) {
+            navbarPlaygroundToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                const playgroundTabBtn = document.querySelector('.floating-controls .tab-button[data-tab="playground"]');
+                if (playgroundTabBtn) {
+                    playgroundTabBtn.click();
+                }
+            });
+        }
         if (aboutClose) aboutClose.addEventListener('click', (e) => {
             e.preventDefault();
             switchToMain();
@@ -1048,9 +1215,11 @@ src="<%- previewSrcs[0] || '' %>"
         // Close About when clicking any sidebar project/section link
         document.querySelectorAll('.sidebar-accordion-content .footer-link-item').forEach(link => {
             link.addEventListener('click', () => {
-                if (aboutView.classList.contains('is-active')) {
-                    switchToMain();
-                }
+                ensureHomeView(() => {
+                    if (aboutView.classList.contains('is-active')) {
+                        switchToMain();
+                    }
+                });
             });
         });
 
@@ -1079,14 +1248,16 @@ src="<%- previewSrcs[0] || '' %>"
                     }
                 };
 
-                if (aboutView.classList.contains('is-active')) {
-                    switchToMain(target);
-                    if (shouldOpenCollab) {
-                        setTimeout(openCollabSection, fadeDuration + 80);
+                ensureHomeView(() => {
+                    if (aboutView.classList.contains('is-active')) {
+                        switchToMain(target);
+                        if (shouldOpenCollab) {
+                            setTimeout(openCollabSection, fadeDuration + 80);
+                        }
+                    } else {
+                        scrollToTarget();
                     }
-                } else {
-                    scrollToTarget();
-                }
+                });
             });
         });
 
