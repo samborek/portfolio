@@ -1,0 +1,111 @@
+<% var clientsVariant = typeof variant !== 'undefined' ? variant : 'home'; %>
+<% var clientsSectionId = typeof sectionId !== 'undefined' ? sectionId : 'clients'; %>
+<% var clientsSectionClass = typeof sectionClass !== 'undefined' ? sectionClass : 'home-client-section reveal-on-scroll'; %>
+<% var clientsHeading = theme.clients.home_title || theme.clients.title; %>
+<% if (clientsVariant === 'about') { %>
+<div class="about-clients" id="about-clients">
+    <h3 class="cv-experience-heading"><%= clientsHeading %></h3>
+    <% if (theme.clients.intro) { %>
+        <p class="about-clients-intro"><%= theme.clients.intro %></p>
+    <% } %>
+<% } else { %>
+<section class="<%= clientsSectionClass %>"<% if (clientsSectionId) { %> id="<%= clientsSectionId %>"<% } %>>
+    <div class="home-client-header">
+        <h2 class="project-title"><%= clientsHeading %></h2>
+        <% if (theme.clients.intro) { %>
+            <p class="project-info-text section-intro"><%= theme.clients.intro %></p>
+        <% } %>
+    </div>
+<% } %>
+    <% if (theme.clients.featured && theme.clients.featured.length) { %>
+        <div class="client-featured-grid home-client-grid" aria-label="Featured clients">
+            <% theme.clients.featured.forEach(function(client) { %>
+                <% var homeClientLogo = client.logo_home || client.logo; %>
+                <% var homeClientLogoDark = client.logo_home_dark || null; %>
+                <% var homeClientLogoHover = client.logo_home_hover || null; %>
+                <% var homeClientLogoHoverDark = client.logo_home_hover_dark || null; %>
+                <% var homeClientHasThemedLogos = !!(homeClientLogo && homeClientLogoDark); %>
+                <% var homeClientLogoClass = 'client-featured-logo' + (client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '') + (client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : ''); %>
+                <% if (client.url) { %>
+                    <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-featured-item" aria-label="<%= client.name %>">
+                        <% if (homeClientLogo) { %>
+                            <% if (homeClientLogoHover) { %>
+                            <span class="client-featured-logo-stack">
+                                <% if (homeClientHasThemedLogos) { %>
+                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-light-only" loading="eager" decoding="async">
+                                <img src="<%- url_for(homeClientLogoDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                <% } else { %>
+                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest" loading="eager" decoding="async">
+                                <% } %>
+                                <% if (homeClientLogoHoverDark) { %>
+                                <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-light-only" aria-hidden="true" loading="eager" decoding="async">
+                                <img src="<%- url_for(homeClientLogoHoverDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                <% } else { %>
+                                <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover" aria-hidden="true" loading="eager" decoding="async">
+                                <% } %>
+                            </span>
+                            <% } else if (homeClientHasThemedLogos) { %>
+                            <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> theme-light-only" loading="eager" decoding="async">
+                            <img src="<%- url_for(homeClientLogoDark) %>" alt="" class="<%= homeClientLogoClass %> theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                            <% } else { %>
+                            <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %>" loading="eager" decoding="async">
+                            <% } %>
+                        <% } else { %>
+                            <span class="client-featured-name"><%= client.name %></span>
+                        <% } %>
+                    </a>
+                <% } else { %>
+                    <span class="client-featured-item" aria-label="<%= client.name %>" tabindex="0">
+                        <% if (homeClientLogo) { %>
+                            <% if (homeClientLogoHover) { %>
+                            <span class="client-featured-logo-stack">
+                                <% if (homeClientHasThemedLogos) { %>
+                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-light-only" loading="eager" decoding="async">
+                                <img src="<%- url_for(homeClientLogoDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                <% } else { %>
+                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest" loading="eager" decoding="async">
+                                <% } %>
+                                <% if (homeClientLogoHoverDark) { %>
+                                <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-light-only" aria-hidden="true" loading="eager" decoding="async">
+                                <img src="<%- url_for(homeClientLogoHoverDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                <% } else { %>
+                                <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover" aria-hidden="true" loading="eager" decoding="async">
+                                <% } %>
+                            </span>
+                            <% } else if (homeClientHasThemedLogos) { %>
+                            <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> theme-light-only" loading="eager" decoding="async">
+                            <img src="<%- url_for(homeClientLogoDark) %>" alt="" class="<%= homeClientLogoClass %> theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                            <% } else { %>
+                            <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %>" loading="eager" decoding="async">
+                            <% } %>
+                        <% } else { %>
+                            <span class="client-featured-name"><%= client.name %></span>
+                        <% } %>
+                    </span>
+                <% } %>
+            <% }); %>
+        </div>
+    <% } %>
+    <% if (theme.clients.groups && theme.clients.groups.length) { %>
+        <div class="home-client-groups" aria-label="Client categories">
+            <% theme.clients.groups.forEach(function(group) { %>
+                <div class="home-client-group">
+                    <h4 class="home-client-group-title"><%= group.title %></h4>
+                    <div class="home-client-name-list">
+                        <% group.items.forEach(function(client) { %>
+                            <% if (client.url) { %>
+                                <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="home-client-name"><%= client.name %></a>
+                            <% } else { %>
+                                <span class="home-client-name"><%= client.name %></span>
+                            <% } %>
+                        <% }); %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+<% if (clientsVariant === 'about') { %>
+</div>
+<% } else { %>
+</section>
+<% } %>
