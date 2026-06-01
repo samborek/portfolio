@@ -5564,6 +5564,26 @@ a.home-client-name:active {
   transition: opacity var(--transition-fast);
 }
 
+/* Themed logo stacks: keep img layout inside flex (global theme utilities use display:block) */
+.home-client-grid .client-featured-logo-stack .client-featured-logo.theme-light-only,
+.home-client-grid .client-featured-logo-stack .client-featured-logo.theme-dark-only {
+  display: block;
+  width: auto;
+  height: 1.1rem;
+  min-height: 1.1rem;
+  max-height: 1.1rem;
+}
+
+[data-theme='dark'] .home-client-grid .client-featured-logo-stack .client-featured-logo--hover.theme-light-only {
+  display: none !important;
+}
+
+[data-theme='dark'] .home-client-grid a.client-featured-item:hover .client-featured-logo-stack .client-featured-logo--hover.theme-dark-only,
+[data-theme='dark'] .home-client-grid a.client-featured-item:focus-visible .client-featured-logo-stack .client-featured-logo--hover.theme-dark-only {
+  filter: none;
+  opacity: 1;
+}
+
 /* Logos with opaque backgrounds or multi-tone art that break mono filters */
 .home-client-grid .client-featured-logo--native {
   filter: none;

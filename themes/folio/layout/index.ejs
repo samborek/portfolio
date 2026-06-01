@@ -527,17 +527,33 @@ src="<%- previewSrcs[0] || '' %>"
                                             <div class="client-featured-grid home-client-grid" aria-label="Featured clients">
                                                 <% theme.experience.clients.featured.forEach(function(client) { %>
                                                     <% var homeClientLogo = client.logo_home || client.logo; %>
+                                                    <% var homeClientLogoDark = client.logo_home_dark || null; %>
                                                     <% var homeClientLogoHover = client.logo_home_hover || null; %>
+                                                    <% var homeClientLogoHoverDark = client.logo_home_hover_dark || null; %>
+                                                    <% var homeClientHasThemedLogos = !!(homeClientLogo && homeClientLogoDark); %>
+                                                    <% var homeClientLogoClass = 'client-featured-logo' + (client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '') + (client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : ''); %>
                                                     <% if (client.url) { %>
                                                         <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-featured-item" data-client-tooltip="<%= client.name %>" aria-label="<%= client.name %>" title="<%= client.name %>">
                                                             <% if (homeClientLogo) { %>
-                                                                <% if (homeClientLogoHover) { %>
+                                                                <% if (homeClientLogoHover || homeClientHasThemedLogos) { %>
                                                                 <span class="client-featured-logo-stack">
-                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo client-featured-logo--rest<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
-                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="client-featured-logo client-featured-logo--hover<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% if (homeClientHasThemedLogos) { %>
+                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-light-only" loading="eager" decoding="async">
+                                                                    <img src="<%- url_for(homeClientLogoDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% } else { %>
+                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest" loading="eager" decoding="async">
+                                                                    <% } %>
+                                                                    <% if (homeClientLogoHover) { %>
+                                                                    <% if (homeClientLogoHoverDark) { %>
+                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-light-only" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <img src="<%- url_for(homeClientLogoHoverDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% } else { %>
+                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% } %>
+                                                                    <% } %>
                                                                 </span>
                                                                 <% } else { %>
-                                                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %>" loading="eager" decoding="async">
                                                                 <% } %>
                                                             <% } else { %>
                                                                 <span class="client-featured-name"><%= client.name %></span>
@@ -546,13 +562,25 @@ src="<%- previewSrcs[0] || '' %>"
                                                     <% } else { %>
                                                         <span class="client-featured-item" data-client-tooltip="<%= client.name %>" aria-label="<%= client.name %>" title="<%= client.name %>" tabindex="0">
                                                             <% if (homeClientLogo) { %>
-                                                                <% if (homeClientLogoHover) { %>
+                                                                <% if (homeClientLogoHover || homeClientHasThemedLogos) { %>
                                                                 <span class="client-featured-logo-stack">
-                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo client-featured-logo--rest<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
-                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="client-featured-logo client-featured-logo--hover<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% if (homeClientHasThemedLogos) { %>
+                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-light-only" loading="eager" decoding="async">
+                                                                    <img src="<%- url_for(homeClientLogoDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--rest theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% } else { %>
+                                                                    <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %> client-featured-logo--rest" loading="eager" decoding="async">
+                                                                    <% } %>
+                                                                    <% if (homeClientLogoHover) { %>
+                                                                    <% if (homeClientLogoHoverDark) { %>
+                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-light-only" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <img src="<%- url_for(homeClientLogoHoverDark) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover theme-dark-only" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% } else { %>
+                                                                    <img src="<%- url_for(homeClientLogoHover) %>" alt="" class="<%= homeClientLogoClass %> client-featured-logo--hover" aria-hidden="true" loading="eager" decoding="async">
+                                                                    <% } %>
+                                                                    <% } %>
                                                                 </span>
                                                                 <% } else { %>
-                                                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="client-featured-logo<%= client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '' %><%= client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : '' %>" loading="eager" decoding="async">
+                                                                <img src="<%- url_for(homeClientLogo) %>" alt="<%= client.name %> logo" class="<%= homeClientLogoClass %>" loading="eager" decoding="async">
                                                                 <% } %>
                                                             <% } else { %>
                                                                 <span class="client-featured-name"><%= client.name %></span>

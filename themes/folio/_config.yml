@@ -34,13 +34,15 @@ experience:
   clients:
     title: "Clients & Collaborators"
     home_title: "Clients & cooperation"
-    intro: "Mostly product and interface design — sometimes branding and illustration when the brief needs it. Fintech, crypto, legal tech, mobility, and consumer apps."
+    intro: "Product design for startups and product teams - leading with fintech and crypto, with legal tech, mobility, and consumer along the way."
     featured:
       - name: "Definely"
         url: "https://www.definely.com/"
         logo: "/images/clients/definely.svg"
         logo_home: "/images/clients/definely-home.svg"
+        logo_home_dark: "/images/clients/definely-home-dark.svg"
         logo_home_hover: "/images/clients/definely-home-hover.svg"
+        logo_home_hover_dark: "/images/clients/definely-home-dark.svg"
         logo_treatment: soft
       - name: "Moss"
         url: "https://www.getmoss.com/"
