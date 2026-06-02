@@ -580,7 +580,7 @@ body.index-page {
   width: 100%;
   max-width: var(--max-project-width);
   margin: 0 auto;
-  padding: 1.25rem var(--space-lg);
+  padding: 12px 12px 0px 12px;
   box-sizing: border-box;
   pointer-events: auto; /* Restore interaction for menu links & social icons */
 }
@@ -598,8 +598,7 @@ body.index-page {
 
 @media (min-width: 901px) {
   .sidebar-topbar {
-    padding-inline: 0;
-    padding-block: 1.25rem;
+    padding: 12px 12px 0px 12px;
   }
 }
 
@@ -611,7 +610,7 @@ body.index-page {
   width: 100%;
   max-width: 40rem;
   margin-inline: auto;
-  padding-top: 55px;
+  padding-top: 28px;
   text-align: center;
 }
 
@@ -2949,7 +2948,7 @@ body.index-page {
 @media (min-width: 901px) and (max-width: 1199px) {
   .sidebar {
     padding: var(--top-header-padding-top) var(--space-md) var(--top-header-padding-bottom);
-    padding-top: 0;
+    padding-top: 28px;
   }
 
   .sidebar-accordion-item:first-child {
@@ -3146,7 +3145,7 @@ body.index-page {
     top: unset;
     border: none;
     padding: var(--top-header-padding-top) var(--space-md) var(--top-header-padding-bottom);
-    padding-top: 0;
+    padding-top: 28px;
     padding-bottom: 1.75rem;
     box-sizing: border-box;
     display: flex;
@@ -3184,7 +3183,7 @@ body.index-page {
     width: 100%;
     max-width: var(--max-project-width);
     margin: 0 auto;
-    padding: 1.1rem var(--space-md);
+    padding: 12px 12px 0px 12px;
     box-sizing: border-box;
     pointer-events: auto;
   }
@@ -3196,6 +3195,7 @@ body.index-page {
   .sidebar-intro {
     order: 2;
     margin-block: 0;
+    padding-top: 28px;
   }
 
   .sidebar-social-icons {
@@ -5037,8 +5037,8 @@ body.project-page {
   width: auto;
   padding-top: 16px;
   padding-bottom: 0px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 0px;
+  padding-right: 0px;
   box-sizing: border-box;
 }
 
