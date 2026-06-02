@@ -1684,8 +1684,8 @@ body.index-page {
 .project-info-header {
   grid-column: 1 / -1;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   gap: var(--space-md);
 }
 
@@ -1695,14 +1695,22 @@ body.index-page {
   flex-direction: column;
   gap: 0.25rem;
   /* 50% reduced gap between title and subtitle */
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .project-title-row {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: auto;
+  width: 100%;
   margin-bottom: 0;
+  gap: 0.75rem;
+}
+
+.project-title {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .project-actions {
@@ -1714,8 +1722,13 @@ body.index-page {
 .project-pill-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1.75rem;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: var(--project-pill-size, 32px);
+  height: var(--project-pill-size, 32px);
+  padding: 0;
+  gap: 0.5rem;
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
@@ -1726,6 +1739,10 @@ body.index-page {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
   white-space: nowrap;
+}
+
+.project-pill-button span {
+  display: none;
 }
 
 .project-title-link {
@@ -1754,8 +1771,8 @@ body.index-page {
 }
 
 .project-pill-button svg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.95rem;
+  height: 0.95rem;
   transition: transform 0.3s ease;
 }
 
