@@ -2,6 +2,60 @@
 <% var clientsSectionId = typeof sectionId !== 'undefined' ? sectionId : 'clients'; %>
 <% var clientsSectionClass = typeof sectionClass !== 'undefined' ? sectionClass : 'home-client-section reveal-on-scroll'; %>
 <% var clientsHeading = theme.clients.home_title || theme.clients.title; %>
+<%
+    var clientsIntroFull = theme.clients && theme.clients.intro ? String(theme.clients.intro) : '';
+    var clientsIntroMobile = clientsIntroFull;
+    if (clientsIntroFull) {
+        var introLower = clientsIntroFull.toLowerCase();
+        var cutToken = 'interface work';
+        var tokenIndex = introLower.indexOf(cutToken);
+        if (tokenIndex !== -1) {
+            // Mobile variant: always end exactly with " other interface work"
+            // even if the source sentence differs (e.g. "and interface work across ...").
+            clientsIntroMobile = clientsIntroFull.slice(0, tokenIndex).trimEnd() + ' other interface work.';
+        }
+    }
+
+    var clientsFeatured = (theme.clients && theme.clients.featured) ? theme.clients.featured : [];
+    var clientsMobileFeaturedLimit = (theme.clients && Number.isFinite(theme.clients.mobile_featured_limit))
+        ? Math.max(0, Math.floor(theme.clients.mobile_featured_limit))
+        : 6;
+
+    // Mobile "more" count should include *all* clients hidden on smartphones:
+    // - featured items beyond the mobile limit
+    // - every client only shown in the grouped list (which is hidden on smartphones)
+    var clientsGroups = (theme.clients && theme.clients.groups) ? theme.clients.groups : [];
+    var allClientsByKey = Object.create(null);
+    var displayedMobileByKey = Object.create(null);
+
+    (clientsFeatured || []).forEach(function (client) {
+        if (!client) return;
+        var key = String(client.name || client.url || '');
+        if (!key) return;
+        allClientsByKey[key] = true;
+    });
+
+    (clientsGroups || []).forEach(function (group) {
+        if (!group || !group.items) return;
+        group.items.forEach(function (client) {
+            if (!client) return;
+            var key = String(client.name || client.url || '');
+            if (!key) return;
+            allClientsByKey[key] = true;
+        });
+    });
+
+    (clientsFeatured || []).slice(0, clientsMobileFeaturedLimit).forEach(function (client) {
+        if (!client) return;
+        var key = String(client.name || client.url || '');
+        if (!key) return;
+        displayedMobileByKey[key] = true;
+    });
+
+    var allClientCount = Object.keys(allClientsByKey).length;
+    var displayedMobileCount = Object.keys(displayedMobileByKey).length;
+    var clientsMobileRemaining = Math.max(0, allClientCount - displayedMobileCount);
+%>
 <% if (clientsVariant === 'about') { %>
 <div class="about-clients" id="about-clients">
     <h3 class="cv-experience-heading"><%= clientsHeading %></h3>
@@ -12,22 +66,24 @@
 <section class="<%= clientsSectionClass %>"<% if (clientsSectionId) { %> id="<%= clientsSectionId %>"<% } %>>
     <div class="home-client-header">
         <h2 class="project-title"><%= clientsHeading %></h2>
-        <% if (theme.clients.intro) { %>
-            <p class="project-info-text section-intro"><%= theme.clients.intro %></p>
+        <% if (clientsIntroFull) { %>
+            <p class="project-info-text section-intro section-intro--desktop"><%= clientsIntroFull %></p>
+            <p class="project-info-text section-intro section-intro--mobile"><%= clientsIntroMobile %></p>
         <% } %>
     </div>
 <% } %>
     <% if (theme.clients.featured && theme.clients.featured.length) { %>
         <div class="client-featured-grid home-client-grid" aria-label="Featured clients">
-            <% theme.clients.featured.forEach(function(client) { %>
+            <% theme.clients.featured.forEach(function(client, index) { %>
                 <% var homeClientLogo = client.logo_home || client.logo; %>
                 <% var homeClientLogoDark = client.logo_home_dark || null; %>
                 <% var homeClientLogoHover = client.logo_home_hover || null; %>
                 <% var homeClientLogoHoverDark = client.logo_home_hover_dark || null; %>
                 <% var homeClientHasThemedLogos = !!(homeClientLogo && homeClientLogoDark); %>
                 <% var homeClientLogoClass = 'client-featured-logo' + (client.logo_scale ? ' client-featured-logo--' + client.logo_scale : '') + (client.logo_treatment ? ' client-featured-logo--' + client.logo_treatment : ''); %>
+                <% var mobileHiddenClass = (index >= clientsMobileFeaturedLimit) ? ' client-featured-item--mobile-hidden' : ''; %>
                 <% if (client.url) { %>
-                    <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-featured-item" aria-label="<%= client.name %>">
+                    <a href="<%= client.url %>" target="_blank" rel="noopener noreferrer" class="client-featured-item<%= mobileHiddenClass %>" aria-label="<%= client.name %>">
                         <% if (homeClientLogo) { %>
                             <% if (homeClientLogoHover) { %>
                             <span class="client-featured-logo-stack">
@@ -55,7 +111,7 @@
                         <% } %>
                     </a>
                 <% } else { %>
-                    <span class="client-featured-item" aria-label="<%= client.name %>" tabindex="0">
+                    <span class="client-featured-item<%= mobileHiddenClass %>" aria-label="<%= client.name %>" tabindex="0">
                         <% if (homeClientLogo) { %>
                             <% if (homeClientLogoHover) { %>
                             <span class="client-featured-logo-stack">
@@ -84,6 +140,11 @@
                     </span>
                 <% } %>
             <% }); %>
+            <% if (clientsMobileRemaining > 0) { %>
+                <span class="client-featured-item client-featured-item--more client-featured-item--mobile-only" aria-label="+ <%= clientsMobileRemaining %> more clients" tabindex="0">
+                    + <%= clientsMobileRemaining %> more
+                </span>
+            <% } %>
         </div>
     <% } %>
     <% if (theme.clients.groups && theme.clients.groups.length) { %>
