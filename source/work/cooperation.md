@@ -1,15 +1,18 @@
 ---
-title: Cooperation
+title: Offer
 layout: page
+meta_title: Product Design Offer
+meta_description: Product design, UI/UX, design systems, prototyping, visual direction, and design-to-development support for digital products, websites, mobile apps, and AI-assisted front-end work.
+keywords: Product Design Offer, Product Designer for Hire, UI UX Design Services, Design Systems, Landing Page Design, Mobile App Design, Web App Design, Figma Prototyping, Design to Development
 ---
 
 # Let's Build Together
 
-I see every project as a real partnership. I'm not just delivering a Figma file and moving on—I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
+I see every project as a real partnership. I'm not just delivering a Figma file and moving on. I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
 
 ### What I handle
 
-I move fluidly between disciplines—no handoffs between specialists, just one designer who connects the dots end to end. I see every project as a real partnership. I'm not just delivering a Figma file and moving on—I'll dive into your business, grasp your key challenges, and help drive real results. We iterate quickly, prioritize MVPs when needed, and focus on what delivers impact.
+I move fluidly between disciplines, with one designer who connects the dots end to end.
 
 #### Product UI & UX
 - Initial product discovery, meetings and vision
@@ -28,7 +31,6 @@ I move fluidly between disciplines—no handoffs between specialists, just one d
 - 3D illustrations and simple motion elements 
 - Social media materials
 - Pitch decks (Figma)
-- 
 
 #### Development handoff
 - Development-ready deliverables (Figma)

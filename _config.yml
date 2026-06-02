@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Michal Sambora // Design works
-subtitle: 'Creative Designer'
-description: 'Web & product design'
-keywords: Michal Sambora, Product Designer, Creative Developer, Design Portfolio, 3D Design, Brand Identity, Web Development, Fintech Designer, Crypto Designer
+title: Michal Sambora // Product Designer
+subtitle: 'Product Design, UI/UX, Design Systems & Creative Direction'
+description: 'Product designer and UI/UX designer creating digital products, design systems, mobile apps, web apps, landing pages, prototypes, and visual direction for fintech, crypto, Web3, SaaS, and consumer products.'
+keywords: Michal Sambora, Product Designer, UI Designer, UX Designer, UI UX Designer, Product Design, Digital Product Designer, Web Designer, Mobile App Designer, Design Systems Designer, Fintech Designer, Crypto Designer, Web3 Designer, SaaS Designer, Landing Page Designer, Visual Designer, Creative Developer, Prototyping, Figma Designer, DeFi Designer, Brand Identity, Interaction Design, Product Design Consultant, Fractional Product Designer
 author: michal sambora — sambø
 language: en
 timezone: 'Europe/Warsaw'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://samborek.xyz/
+url: https://msambora.com/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:

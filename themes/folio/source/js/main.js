@@ -810,6 +810,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!content || !content.classList.contains('sidebar-accordion-content')) return;
 
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.sidebar-accordion-toggle[aria-expanded="true"]').forEach(openToggle => {
+        if (openToggle === toggle) return;
+        const openContent = openToggle.nextElementSibling;
+        openToggle.setAttribute('aria-expanded', 'false');
+        if (openContent && openContent.classList.contains('sidebar-accordion-content')) {
+          openContent.classList.remove('expanded');
+        }
+      });
       toggle.setAttribute('aria-expanded', !isExpanded);
       content.classList.toggle('expanded', !isExpanded);
     });

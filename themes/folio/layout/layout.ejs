@@ -2,6 +2,21 @@
 <html lang="<%= config.language %>">
 
 <head>
+    <%
+        const siteUrl = (config.url || '').replace(/\/$/, '');
+        const pageTitle = page.meta_title || (
+            page.layout === 'project' && page.title
+                ? page.title + (page.category ? ' ' + page.category : '') + ' Product Design Case Study'
+                : page.title
+        );
+        const metaTitle = pageTitle ? pageTitle + ' // ' + config.title : config.title;
+        const metaDescription = page.meta_description || page.description || page.solution || page.problem || page.intro || config.description;
+        const metaKeywords = page.keywords || config.keywords;
+        const metaImagePath = page.og_image || page.cover || page.hero_image || '/images/work/hydration_1.jpg';
+        const metaImage = /^https?:\/\//.test(metaImagePath) ? metaImagePath : siteUrl + url_for(metaImagePath);
+        const canonicalPath = page.path === 'index.html' ? '/' : url_for(page.path || '');
+        const canonicalUrl = siteUrl + canonicalPath;
+    %>
     <script>
         // Initialize theme BEFORE any content renders to prevent flash
         (function () {
@@ -16,25 +31,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>
-        <%= page.title ? page.title + ' // ' + config.title : config.title %>
+        <%= metaTitle %>
     </title>
-    <meta name="description" content="<%= page.description || config.description %>">
-    <meta name="keywords" content="<%= config.keywords %>">
+    <meta name="description" content="<%= metaDescription %>">
+    <meta name="keywords" content="<%= metaKeywords %>">
     <meta name="author" content="<%= config.author %>">
+    <link rel="canonical" href="<%= canonicalUrl %>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<%= config.url %><%= url_for(page.path) %>">
-    <meta property="og:title" content="<%= page.title ? page.title + ' // ' + config.title : config.title %>">
-    <meta property="og:description" content="<%= page.description || config.description %>">
-    <meta property="og:image" content="<%= config.url %>/images/work/hydration_1.jpg">
+    <meta property="og:site_name" content="Michal Sambora">
+    <meta property="og:url" content="<%= canonicalUrl %>">
+    <meta property="og:title" content="<%= metaTitle %>">
+    <meta property="og:description" content="<%= metaDescription %>">
+    <meta property="og:image" content="<%= metaImage %>">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="<%= config.url %><%= url_for(page.path) %>">
-    <meta name="twitter:title" content="<%= page.title ? page.title + ' // ' + config.title : config.title %>">
-    <meta name="twitter:description" content="<%= page.description || config.description %>">
-    <meta name="twitter:image" content="<%= config.url %>/images/work/hydration_1.jpg">
+    <meta name="twitter:creator" content="@samborekpk">
+    <meta name="twitter:url" content="<%= canonicalUrl %>">
+    <meta name="twitter:title" content="<%= metaTitle %>">
+    <meta name="twitter:description" content="<%= metaDescription %>">
+    <meta name="twitter:image" content="<%= metaImage %>">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,8 +87,8 @@
             <div class="footer-content">
                 <div class="footer-cta">
                     <h2>Let's make something<br>great together</h2>
-                    <a href="mailto:<%= theme.email || 'hello@example.com' %>" class="footer-email copy-email-btn">
-                        <%= theme.email || 'hello@example.com' %>
+                    <a href="mailto:<%= theme.email || theme.connect?.email || 'contact@msambora.com' %>" class="footer-email copy-email-btn">
+                        <%= theme.email || theme.connect?.email || 'contact@msambora.com' %>
                     </a>
                 </div>
                 <div class="footer-bottom">
@@ -104,7 +122,6 @@
             <!-- Unicorn Studio SDK -->
             <script src="/js/unicorn/unicornStudio.umd.js"></script>
             <%- js('js/embla-carousel') %>
-                <%- js('js/dithered-text') %>
                 <%- js('js/main') %>
 </body>
 
