@@ -140,6 +140,7 @@
   --top-nav-pill-height: 2.35rem;
   --top-nav-pill-py: 0.55rem;
   --top-nav-pill-px: 1.05rem;
+  --topbar-pill-gap: 0.5rem;
   --sidebar-cta-height: 4.125rem;
   --top-header-padding-top: clamp(2.5rem, 6vw, 4.5rem);
   --top-header-padding-bottom: clamp(2.5rem, 5vw, 4rem);
@@ -576,11 +577,12 @@ body.index-page {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-md);
+  gap: var(--topbar-pill-gap);
   width: 100%;
   max-width: var(--max-project-width);
   margin: 0 auto;
-  padding: 12px 12px 0px 12px;
+  min-height: var(--top-nav-pill-height);
+  padding: 12px;
   box-sizing: border-box;
   pointer-events: auto; /* Restore interaction for menu links & social icons */
 }
@@ -588,18 +590,28 @@ body.index-page {
 .sidebar-nav {
   flex: 1 1 auto;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.sidebar-topbar .sidebar-nav.sidebar-accordion {
+  padding-top: 0;
+  padding-bottom: 0;
+  align-self: center;
+}
+
+.sidebar-topbar .sidebar-accordion-item {
+  display: flex;
+  align-items: center;
 }
 
 .sidebar-topbar .sidebar-social-icons {
   flex: 0 0 auto;
   justify-content: flex-end;
   align-self: center;
-}
-
-@media (min-width: 901px) {
-  .sidebar-topbar {
-    padding: 12px 12px 0px 12px;
-  }
+  align-items: center;
+  gap: var(--topbar-pill-gap);
 }
 
 .sidebar-intro {
@@ -673,7 +685,7 @@ body.index-page {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--topbar-pill-gap);
   border-top: none;
   padding: 0;
 }
@@ -3224,7 +3236,8 @@ body.index-page {
     width: 100%;
     max-width: var(--max-project-width);
     margin: 0 auto;
-    padding: 12px 12px 0px 12px;
+    min-height: var(--top-nav-pill-height);
+    padding: 12px;
     box-sizing: border-box;
     pointer-events: auto;
   }
@@ -5076,7 +5089,7 @@ body.project-page {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: var(--topbar-pill-gap);
   width: auto;
   padding-top: 16px;
   padding-bottom: 0px;
@@ -5232,9 +5245,116 @@ body.project-page {
   color: var(--color-text);
 }
 
-/* Contact nav hidden — reach connect via CTA / scroll to #connect section */
+/* Contact nav hidden in hero — desktop only, revealed after scrolling past intro */
 .sidebar-contact-link {
   display: none !important;
+}
+
+@media (min-width: 901px) {
+  .index-page.past-hero:not(.about-mode) .sidebar-topbar .sidebar-contact-link {
+    display: flex !important;
+    align-items: center;
+    align-self: center;
+    margin-left: auto;
+  }
+
+  /* Dark CTA pill — mirrors Schedule a call without Unicorn canvas */
+  .sidebar-contact-link .sidebar-accordion-toggle {
+    border-color: var(--color-text);
+    background: var(--color-text);
+    transition:
+      opacity 0.24s ease,
+      border-color 0.24s ease,
+      background-color 0.24s ease;
+  }
+
+  .sidebar-contact-link .sidebar-accordion-toggle::before {
+    display: none;
+  }
+
+  .sidebar-contact-link .sidebar-accordion-toggle .sidebar-accordion-label {
+    color: var(--color-bg);
+    font-weight: 600;
+  }
+
+  .sidebar-contact-link .sidebar-accordion-toggle:hover,
+  .sidebar-contact-link .sidebar-accordion-toggle:focus-visible {
+    border-color: var(--color-text);
+    background: var(--color-text);
+    opacity: 0.88;
+  }
+
+  .sidebar-contact-link .sidebar-accordion-toggle:hover .sidebar-accordion-label,
+  .sidebar-contact-link .sidebar-accordion-toggle:focus-visible .sidebar-accordion-label {
+    color: var(--color-bg);
+  }
+
+  [data-theme='dark'] .sidebar-contact-link .sidebar-accordion-toggle .sidebar-accordion-label {
+    color: #000;
+  }
+
+  [data-theme='dark'] .sidebar-contact-link .sidebar-accordion-toggle:hover .sidebar-accordion-label,
+  [data-theme='dark'] .sidebar-contact-link .sidebar-accordion-toggle:focus-visible .sidebar-accordion-label {
+    color: #000;
+  }
+}
+
+/* All topbar nav pills flip together over genuinely dark backdrops */
+.index-page.topbar-on-dark .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):not(:hover):not([aria-expanded='true']) {
+  border-color: color-mix(in srgb, #fff 36%, transparent);
+}
+
+.index-page.topbar-on-dark .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):not(:hover):not([aria-expanded='true'])::before {
+  background: color-mix(in srgb, #fff 12%, transparent);
+}
+
+.index-page.topbar-on-dark .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):not(:hover):not([aria-expanded='true']) .sidebar-accordion-label,
+.index-page.topbar-on-dark .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):not(:hover):not([aria-expanded='true']) .sidebar-accordion-icon {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* Topbar nav: always white hover/expanded — never black fill */
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):hover,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):focus-visible,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta)[aria-expanded='true'] {
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):hover::before,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):focus-visible::before,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta)[aria-expanded='true']::before {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):hover .sidebar-accordion-label,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):hover .sidebar-accordion-icon,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):focus-visible .sidebar-accordion-label,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta):focus-visible .sidebar-accordion-icon,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta)[aria-expanded='true'] .sidebar-accordion-label,
+.index-page .sidebar-topbar .sidebar-nav .sidebar-accordion-toggle:not(.sidebar-contact-cta)[aria-expanded='true'] .sidebar-accordion-icon {
+  color: #1a1a1a;
+}
+
+/* Hero email pill — white hover/border to match topbar over dark imagery */
+.sidebar-cta-wrapper .copy-email-btn:hover,
+.sidebar-cta-wrapper .copy-email-btn:focus-visible {
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.sidebar-cta-wrapper .copy-email-btn:hover::before,
+.sidebar-cta-wrapper .copy-email-btn:focus-visible::before {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.sidebar-cta-wrapper .copy-email-btn:hover .sidebar-accordion-label,
+.sidebar-cta-wrapper .copy-email-btn:hover .copy-email-icon,
+.sidebar-cta-wrapper .copy-email-btn:focus-visible .sidebar-accordion-label,
+.sidebar-cta-wrapper .copy-email-btn:focus-visible .copy-email-icon {
+  color: #1a1a1a;
 }
 
 /* Playground nav hidden — use floating tab control instead */
@@ -5909,11 +6029,6 @@ a.home-client-name:active {
     justify-content: center;
     width: 100%;
     margin-top: 0.1rem;
-  }
-
-  .sidebar-contact-link {
-    order: 2;
-    margin-left: auto;
   }
 
   .sidebar-accordion-item:first-child {

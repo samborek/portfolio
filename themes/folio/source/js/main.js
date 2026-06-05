@@ -760,6 +760,269 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(section => observer.observe(section));
   }
 
+  // --- Topbar Contact: reveal after hero scroll (desktop only) ---
+  const heroSection = document.querySelector('.sidebar-intro');
+  const contactNavMq = window.matchMedia('(min-width: 901px)');
+  if (homeView && heroSection && document.body.classList.contains('index-page')) {
+    const updateContactNavVisibility = (heroVisible) => {
+      if (!contactNavMq.matches) {
+        document.body.classList.remove('past-hero');
+        return;
+      }
+
+      const activeTab = document.querySelector('.tab-button.active');
+      const onHomeTab = !activeTab || activeTab.dataset.tab === 'home';
+      const showContact = !heroVisible && onHomeTab && !document.body.classList.contains('about-mode');
+      document.body.classList.toggle('past-hero', showContact);
+    };
+
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => updateContactNavVisibility(entry.isIntersecting));
+    }, {
+      root: homeView,
+      threshold: 0,
+    });
+
+    heroObserver.observe(heroSection);
+
+    const refreshContactNavVisibility = () => {
+      const homeViewRect = homeView.getBoundingClientRect();
+      const heroRect = heroSection.getBoundingClientRect();
+      const heroVisible = heroRect.bottom > homeViewRect.top && heroRect.top < homeViewRect.bottom;
+      updateContactNavVisibility(heroVisible);
+    };
+
+    document.querySelectorAll('.tab-button').forEach((btn) => {
+      btn.addEventListener('click', () => setTimeout(refreshContactNavVisibility, 750));
+    });
+
+    ['about-toggle', 'about-close'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', () => setTimeout(refreshContactNavVisibility, 450));
+    });
+
+    const homeLenis = window.folioLenis?.home || window.folioLenis?.get?.(homeView);
+    if (homeLenis && typeof homeLenis.on === 'function') {
+      homeLenis.on('scroll', refreshContactNavVisibility);
+    }
+
+    if (typeof contactNavMq.addEventListener === 'function') {
+      contactNavMq.addEventListener('change', refreshContactNavVisibility);
+    } else if (typeof contactNavMq.addListener === 'function') {
+      contactNavMq.addListener(refreshContactNavVisibility);
+    }
+
+    refreshContactNavVisibility();
+  }
+
+  // --- Topbar contrast: all nav pills flip together over genuinely dark backdrops ---
+  const topbarEl = document.querySelector('.sidebar-topbar');
+  const topbarSampleCanvas = document.createElement('canvas');
+  topbarSampleCanvas.width = 1;
+  topbarSampleCanvas.height = 1;
+  const topbarSampleCtx = topbarSampleCanvas.getContext('2d', { willReadFrequently: true });
+  const TOPBAR_DARK_LUMINANCE_MAX = 0.28;
+  const TOPBAR_DARK_SAMPLE_COUNT = 5;
+  const TOPBAR_DARK_REQUIRED_RATIO = 0.8;
+
+  const parseRgbColor = (color) => {
+    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if (!match) return null;
+    return [Number(match[1]), Number(match[2]), Number(match[3])];
+  };
+
+  const getRelativeLuminance = ([r, g, b]) => {
+    const channel = (value) => {
+      const c = value / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    };
+    return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+  };
+
+  const isTopbarChrome = (el) => el.closest('.sidebar-topbar-wrapper, .floating-controls');
+
+  const findBackdropElementAt = (x, y) => {
+    const stack = document.elementsFromPoint(x, y);
+    for (const el of stack) {
+      if (isTopbarChrome(el)) continue;
+      return el;
+    }
+    return null;
+  };
+
+  const sampleMediaLuminanceAt = (media, x, y) => {
+    const rect = media.getBoundingClientRect();
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return null;
+
+    try {
+      if (media instanceof HTMLCanvasElement) {
+        const scaleX = media.width / rect.width;
+        const scaleY = media.height / rect.height;
+        const sx = Math.min(media.width - 1, Math.max(0, (x - rect.left) * scaleX));
+        const sy = Math.min(media.height - 1, Math.max(0, (y - rect.top) * scaleY));
+        topbarSampleCtx.clearRect(0, 0, 1, 1);
+        topbarSampleCtx.drawImage(media, sx, sy, 1, 1, 0, 0, 1, 1);
+        const { data } = topbarSampleCtx.getImageData(0, 0, 1, 1);
+        return getRelativeLuminance([data[0], data[1], data[2]]);
+      }
+
+      if (media instanceof HTMLImageElement) {
+        if (!media.complete || !media.naturalWidth) return null;
+        const scaleX = media.naturalWidth / rect.width;
+        const scaleY = media.naturalHeight / rect.height;
+        const sx = Math.min(media.naturalWidth - 1, Math.max(0, (x - rect.left) * scaleX));
+        const sy = Math.min(media.naturalHeight - 1, Math.max(0, (y - rect.top) * scaleY));
+        topbarSampleCtx.clearRect(0, 0, 1, 1);
+        topbarSampleCtx.drawImage(media, sx, sy, 1, 1, 0, 0, 1, 1);
+        const { data } = topbarSampleCtx.getImageData(0, 0, 1, 1);
+        return getRelativeLuminance([data[0], data[1], data[2]]);
+      }
+
+      if (media instanceof HTMLVideoElement && media.readyState >= 2) {
+        const scaleX = media.videoWidth / rect.width;
+        const scaleY = media.videoHeight / rect.height;
+        const sx = Math.min(media.videoWidth - 1, Math.max(0, (x - rect.left) * scaleX));
+        const sy = Math.min(media.videoHeight - 1, Math.max(0, (y - rect.top) * scaleY));
+        topbarSampleCtx.clearRect(0, 0, 1, 1);
+        topbarSampleCtx.drawImage(media, sx, sy, 1, 1, 0, 0, 1, 1);
+        const { data } = topbarSampleCtx.getImageData(0, 0, 1, 1);
+        return getRelativeLuminance([data[0], data[1], data[2]]);
+      }
+    } catch {
+      return null;
+    }
+
+    return null;
+  };
+
+  const getSolidBackgroundLuminance = (el) => {
+    let node = el;
+    while (node && node !== document.documentElement) {
+      if (node.matches?.('#connect, [data-topbar-dark]')) return 0;
+
+      const bg = getComputedStyle(node).backgroundColor;
+      const rgb = parseRgbColor(bg);
+      if (rgb) {
+        const alphaMatch = bg.match(/rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*([\d.]+)/);
+        const alpha = alphaMatch ? Number(alphaMatch[1]) : 1;
+        if (alpha >= 0.08) return getRelativeLuminance(rgb);
+      }
+      node = node.parentElement;
+    }
+    return null;
+  };
+
+  const isActiveFirstSlideLightBackdrop = (el) => {
+    const slide = el.closest('.embla__slide');
+    if (!slide?.classList.contains('is-active-slide')) return false;
+
+    const slides = slide.parentElement?.querySelectorAll('.embla__slide');
+    if (!slides?.length || slides[0] !== slide) return false;
+
+    const slideItem = slide.querySelector('.project-slide-item');
+    if (!slideItem) return false;
+
+    return slideItem.classList.contains('has-mobile-static-first')
+      || Boolean(slideItem.querySelector('.unicorn-scene-poster, .mobile-static-first-slide img'));
+  };
+
+  const sampleBackdropLuminance = (x, y) => {
+    const el = findBackdropElementAt(x, y);
+    if (!el) return 1;
+
+    if (el.closest('#connect, [data-topbar-dark]')) return 0;
+    if (el.closest('[data-topbar-light]')) return 1;
+
+    // First carousel slide with a light poster/static image (e.g. Hydration slide 1)
+    if (isActiveFirstSlideLightBackdrop(el)) return 1;
+
+    const media = el.closest('img, video, canvas') || (el.matches('img, video, canvas') ? el : null);
+    const sceneCanvas = el.closest('.unicorn-scene')?.querySelector('canvas');
+    const visualMedia = media || sceneCanvas;
+
+    if (visualMedia) {
+      const mediaLum = sampleMediaLuminanceAt(visualMedia, x, y);
+      if (mediaLum !== null) return mediaLum;
+    }
+
+    const solidLum = getSolidBackgroundLuminance(el);
+    if (solidLum !== null) return solidLum;
+
+    return 1;
+  };
+
+  const isReallyDarkLuminance = (lum) => lum < TOPBAR_DARK_LUMINANCE_MAX;
+
+  const getTopbarSamplePoints = (topbarRect, probeY) => {
+    const navEl = topbarEl.querySelector('.sidebar-nav');
+    const sampleRect = navEl?.getBoundingClientRect() || topbarRect;
+
+    return Array.from({ length: TOPBAR_DARK_SAMPLE_COUNT }, (_, index) => {
+      const ratio = (index + 0.5) / TOPBAR_DARK_SAMPLE_COUNT;
+      return {
+        x: sampleRect.left + sampleRect.width * ratio,
+        y: probeY,
+      };
+    });
+  };
+
+  const isTopbarOverDarkBackdrop = (samples) => {
+    if (!samples.length) return false;
+
+    const darkCount = samples.filter(isReallyDarkLuminance).length;
+    return darkCount / samples.length >= TOPBAR_DARK_REQUIRED_RATIO;
+  };
+
+  const refreshTopbarContrast = () => {
+    if (!topbarEl || !document.body.classList.contains('index-page')) {
+      document.body.classList.remove('topbar-on-dark');
+      return;
+    }
+
+    if (document.body.classList.contains('about-mode')) {
+      document.body.classList.remove('topbar-on-dark');
+      return;
+    }
+
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab && activeTab.dataset.tab !== 'home') {
+      document.body.classList.remove('topbar-on-dark');
+      return;
+    }
+
+    const topbarRect = topbarEl.getBoundingClientRect();
+    const probeY = topbarRect.bottom + 12;
+    const samplePoints = getTopbarSamplePoints(topbarRect, probeY);
+    const luminances = samplePoints.map(({ x, y }) => sampleBackdropLuminance(x, y));
+
+    const hitsForcedDarkSection = samplePoints.some(({ x, y }) => {
+      const el = findBackdropElementAt(x, y);
+      return Boolean(el?.closest('#connect, [data-topbar-dark]'));
+    });
+
+    const isDark = hitsForcedDarkSection || isTopbarOverDarkBackdrop(luminances);
+
+    document.body.classList.toggle('topbar-on-dark', isDark);
+  };
+
+  if (topbarEl && document.body.classList.contains('index-page')) {
+    let topbarContrastLoopId = null;
+
+    const runTopbarContrastLoop = () => {
+      refreshTopbarContrast();
+      topbarContrastLoopId = requestAnimationFrame(runTopbarContrastLoop);
+    };
+
+    topbarContrastLoopId = requestAnimationFrame(runTopbarContrastLoop);
+
+    window.addEventListener('pagehide', () => {
+      if (topbarContrastLoopId) {
+        cancelAnimationFrame(topbarContrastLoopId);
+        topbarContrastLoopId = null;
+      }
+    });
+  }
+
   // --- Reveal on Scroll ---
   const revealElements = document.querySelectorAll('.reveal-on-scroll');
   if (revealElements.length > 0 && homeView) {
