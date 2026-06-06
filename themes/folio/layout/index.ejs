@@ -265,10 +265,17 @@
                             `\--carousel-image-height:${project.carousel_image_height};` : '' ,
                             project.carousel_image_top ? `\--carousel-image_top:${project.carousel_image_top};` : '' ,
                             ].join(''); %>
+                            <% const firstCarouselItem = project.carousel && project.carousel[0]; %>
+                            <% const firstCarouselIsJson = firstCarouselItem && (
+                              typeof firstCarouselItem === 'string'
+                                ? firstCarouselItem.endsWith('.json')
+                                : (firstCarouselItem.light && String(firstCarouselItem.light).endsWith('.json'))
+                            ); %>
+                            <% const needsTopbarLight = Boolean(project.topbar_light || firstCarouselIsJson); %>
                             <section class="project-section reveal-on-scroll" id="project-<%= pindex %>"
-                                data-project-index="<%= pindex %>" <% if (carouselStyle) { %>
+                                data-project-index="<%= pindex %>"<% if (needsTopbarLight) { %> data-topbar-light="true"<% } %><% if (carouselStyle) { %>
                                 style="<%- carouselStyle %>"<% } %>>
-                                        <div class="project-carousel-wrapper"<% if (project.disable_parallax) { %> data-disable-parallax="true"<% } %>>
+                                        <div class="project-carousel-wrapper"<% if (project.disable_parallax) { %> data-disable-parallax="true"<% } %><% if (needsTopbarLight) { %> data-topbar-light="true"<% } %>>
                                                 <!-- Navigation Zones -->
                                                 <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev">
                                                 </div>

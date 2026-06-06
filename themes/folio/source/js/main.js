@@ -822,14 +822,6 @@ document.addEventListener('DOMContentLoaded', () => {
   topbarSampleCanvas.height = 1;
   const topbarSampleCtx = topbarSampleCanvas.getContext('2d', { willReadFrequently: true });
   const TOPBAR_DARK_LUMINANCE_MAX = 0.28;
-  const TOPBAR_DARK_SAMPLE_COUNT = 5;
-  const TOPBAR_DARK_REQUIRED_RATIO = 0.8;
-
-  const parseRgbColor = (color) => {
-    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
-    if (!match) return null;
-    return [Number(match[1]), Number(match[2]), Number(match[3])];
-  };
 
   const getRelativeLuminance = ([r, g, b]) => {
     const channel = (value) => {
@@ -837,17 +829,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
     };
     return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-  };
-
-  const isTopbarChrome = (el) => el.closest('.sidebar-topbar-wrapper, .floating-controls');
-
-  const findBackdropElementAt = (x, y) => {
-    const stack = document.elementsFromPoint(x, y);
-    for (const el of stack) {
-      if (isTopbarChrome(el)) continue;
-      return el;
-    }
-    return null;
   };
 
   const sampleMediaLuminanceAt = (media, x, y) => {
@@ -895,121 +876,287 @@ document.addEventListener('DOMContentLoaded', () => {
     return null;
   };
 
-  const getSolidBackgroundLuminance = (el) => {
-    let node = el;
-    while (node && node !== document.documentElement) {
-      if (node.matches?.('#connect, [data-topbar-dark]')) return 0;
+  const isDarkTheme = () => document.documentElement.getAttribute('data-theme') === 'dark';
 
-      const bg = getComputedStyle(node).backgroundColor;
-      const rgb = parseRgbColor(bg);
-      if (rgb) {
-        const alphaMatch = bg.match(/rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*([\d.]+)/);
-        const alpha = alphaMatch ? Number(alphaMatch[1]) : 1;
-        if (alpha >= 0.08) return getRelativeLuminance(rgb);
-      }
-      node = node.parentElement;
-    }
-    return null;
+  const isHeroAtTop = () => {
+    if (!heroSection || !homeView) return false;
+    const homeViewRect = homeView.getBoundingClientRect();
+    const heroRect = heroSection.getBoundingClientRect();
+    return heroRect.bottom > homeViewRect.top + 8;
   };
 
-  const isActiveFirstSlideLightBackdrop = (el) => {
-    const slide = el.closest('.embla__slide');
-    if (!slide?.classList.contains('is-active-slide')) return false;
+  const isAtPageHero = () => {
+    if (document.body.classList.contains('past-hero')) return false;
+    return isHeroAtTop();
+  };
 
-    const slides = slide.parentElement?.querySelectorAll('.embla__slide');
-    if (!slides?.length || slides[0] !== slide) return false;
+  const SLIDE_PROFILE_GRID = 5;
+  let topbarContrastCache = { key: '', useLightNav: false };
 
-    const slideItem = slide.querySelector('.project-slide-item');
+  const invalidateTopbarContrast = () => {
+    topbarContrastCache.key = '';
+  };
+
+  const getSlideIndex = (slide) => {
+    if (!slide?.parentElement) return -1;
+    return Array.from(slide.parentElement.children).indexOf(slide);
+  };
+
+  const getActiveSectionFromNav = () => {
+    const activeLink = document.querySelector('.project-link-item.active[href^="#project-"]');
+    if (!activeLink) return null;
+    const id = activeLink.getAttribute('href')?.slice(1);
+    return id ? document.getElementById(id) : null;
+  };
+
+  const sectionNeedsLightTopbar = (section) => {
+    if (!section) return false;
+    return section.hasAttribute('data-topbar-light')
+      || Boolean(section.querySelector('[data-topbar-light]'));
+  };
+
+  const slideNeedsLightTopbar = (section, slide) => {
+    if (sectionNeedsLightTopbar(section)) return true;
+
+    const slideItem = slide?.querySelector('.project-slide-item');
     if (!slideItem) return false;
 
-    return slideItem.classList.contains('has-mobile-static-first')
-      || Boolean(slideItem.querySelector('.unicorn-scene-poster, .mobile-static-first-slide img'));
-  };
-
-  const sampleBackdropLuminance = (x, y) => {
-    const el = findBackdropElementAt(x, y);
-    if (!el) return 1;
-
-    if (el.closest('#connect, [data-topbar-dark]')) return 0;
-    if (el.closest('[data-topbar-light]')) return 1;
-
-    // First carousel slide with a light poster/static image (e.g. Hydration slide 1)
-    if (isActiveFirstSlideLightBackdrop(el)) return 1;
-
-    const media = el.closest('img, video, canvas') || (el.matches('img, video, canvas') ? el : null);
-    const sceneCanvas = el.closest('.unicorn-scene')?.querySelector('canvas');
-    const visualMedia = media || sceneCanvas;
-
-    if (visualMedia) {
-      const mediaLum = sampleMediaLuminanceAt(visualMedia, x, y);
-      if (mediaLum !== null) return mediaLum;
+    if (slideItem.querySelector('.unicorn-scene-poster, .mobile-static-first-slide img')) {
+      return true;
     }
 
-    const solidLum = getSolidBackgroundLuminance(el);
-    if (solidLum !== null) return solidLum;
+    const slides = slide.parentElement?.children;
+    if (slides?.[0] === slide && slideItem.querySelector('.unicorn-scene')) {
+      return true;
+    }
 
-    return 1;
+    return false;
   };
 
-  const isReallyDarkLuminance = (lum) => lum < TOPBAR_DARK_LUMINANCE_MAX;
+  const getActiveSectionNearTopbar = () => {
+    if (!homeView) return getActiveSectionFromNav();
 
-  const getTopbarSamplePoints = (topbarRect, probeY) => {
-    const navEl = topbarEl.querySelector('.sidebar-nav');
-    const sampleRect = navEl?.getBoundingClientRect() || topbarRect;
+    const viewRect = homeView.getBoundingClientRect();
+    const topbarRect = topbarEl.getBoundingClientRect();
+    const winTop = topbarRect.bottom;
+    const winBot = viewRect.top + viewRect.height * 0.55;
 
-    return Array.from({ length: TOPBAR_DARK_SAMPLE_COUNT }, (_, index) => {
-      const ratio = (index + 0.5) / TOPBAR_DARK_SAMPLE_COUNT;
-      return {
-        x: sampleRect.left + sampleRect.width * ratio,
-        y: probeY,
-      };
+    let bestSection = null;
+    let maxIntersect = 0;
+
+    document.querySelectorAll('.project-section, #connect, #clients').forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      const intersect = Math.max(0, Math.min(rect.bottom, winBot) - Math.max(rect.top, winTop));
+      if (intersect > maxIntersect) {
+        maxIntersect = intersect;
+        bestSection = section;
+      }
     });
+
+    return bestSection || getActiveSectionFromNav();
   };
 
-  const isTopbarOverDarkBackdrop = (samples) => {
-    if (!samples.length) return false;
+  const getTopbarBackdropContext = () => {
+    const section = getActiveSectionNearTopbar();
 
-    const darkCount = samples.filter(isReallyDarkLuminance).length;
-    return darkCount / samples.length >= TOPBAR_DARK_REQUIRED_RATIO;
+    if (section?.matches('#connect') || section?.hasAttribute('data-topbar-dark')) {
+      return { kind: 'forced-dark', sectionId: section.id };
+    }
+
+    if (sectionNeedsLightTopbar(section)) {
+      return { kind: 'forced-light', sectionId: section.id };
+    }
+
+    if (section?.classList.contains('project-section')) {
+      const slide = section.querySelector('.embla__slide.is-active-slide');
+      if (slide) {
+        if (slideNeedsLightTopbar(section, slide)) {
+          return { kind: 'forced-light', sectionId: section.id };
+        }
+
+        return {
+          kind: 'slide',
+          sectionId: section.id,
+          slideIndex: getSlideIndex(slide),
+          slide,
+          section,
+        };
+      }
+    }
+
+    if (section) {
+      return { kind: 'section', sectionId: section.id, section };
+    }
+
+    if (isAtPageHero()) return { kind: 'hero' };
+
+    return { kind: 'neutral' };
+  };
+
+  const buildTopbarContrastKey = (ctx) => {
+    const theme = isDarkTheme() ? 'dark' : 'light';
+    if (ctx.kind === 'slide') {
+      return `${theme}:${ctx.kind}:${ctx.sectionId}:${ctx.slideIndex}`;
+    }
+    if (ctx.sectionId) {
+      return `${theme}:${ctx.kind}:${ctx.sectionId}`;
+    }
+    return `${theme}:${ctx.kind}`;
+  };
+
+  const profileSlideBackdrop = (slide, section) => {
+    if (slideNeedsLightTopbar(section, slide)) return 'light';
+
+    const slideItem = slide?.querySelector('.project-slide-item');
+    if (!slideItem) return 'light';
+
+    const canvas = slideItem.querySelector('.unicorn-scene canvas');
+    const img = slideItem.querySelector('.image-container img, .unicorn-scene-poster, .mobile-static-first-slide img, .preview-slideshow-img');
+    const media = [canvas, img].find((node) => {
+      if (!node) return false;
+      const rect = node.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    });
+
+    if (!media) return 'light';
+
+    const rect = media.getBoundingClientRect();
+    const luminances = [];
+
+    for (let row = 0; row < SLIDE_PROFILE_GRID; row += 1) {
+      for (let col = 0; col < SLIDE_PROFILE_GRID; col += 1) {
+        const x = rect.left + (rect.width * (col + 0.5)) / SLIDE_PROFILE_GRID;
+        const y = rect.top + (rect.height * (row + 0.5)) / SLIDE_PROFILE_GRID;
+        const lum = sampleMediaLuminanceAt(media, x, y);
+        if (lum !== null) luminances.push(lum);
+      }
+    }
+
+    if (!luminances.length) return 'light';
+
+    const average = luminances.reduce((sum, value) => sum + value, 0) / luminances.length;
+    const brightest = Math.max(...luminances);
+    const backdropLum = Math.max(average, brightest * 0.72);
+    return backdropLum < TOPBAR_DARK_LUMINANCE_MAX ? 'dark' : 'light';
+  };
+
+  const resolveTopbarContrast = (ctx) => {
+    if (ctx.kind === 'forced-dark') return true;
+
+    if (isDarkTheme()) {
+      if (ctx.kind === 'hero' || ctx.kind === 'forced-light' || ctx.kind === 'neutral' || ctx.kind === 'section') {
+        return false;
+      }
+
+      if (ctx.kind === 'slide') {
+        return profileSlideBackdrop(ctx.slide, ctx.section) === 'dark';
+      }
+
+      return false;
+    }
+
+    if (ctx.kind === 'hero' || ctx.kind === 'neutral' || ctx.kind === 'forced-light' || ctx.kind === 'section') {
+      return false;
+    }
+
+    if (ctx.kind === 'slide') {
+      return profileSlideBackdrop(ctx.slide, ctx.section) === 'dark';
+    }
+
+    return false;
+  };
+
+  const applyTopbarContrast = (useLightNav) => {
+    document.body.classList.toggle('topbar-on-dark', useLightNav);
   };
 
   const refreshTopbarContrast = () => {
     if (!topbarEl || !document.body.classList.contains('index-page')) {
-      document.body.classList.remove('topbar-on-dark');
+      applyTopbarContrast(false);
+      topbarContrastCache = { key: '', useLightNav: false };
       return;
     }
 
     if (document.body.classList.contains('about-mode')) {
-      document.body.classList.remove('topbar-on-dark');
+      applyTopbarContrast(false);
+      topbarContrastCache = { key: '', useLightNav: false };
       return;
     }
 
     const activeTab = document.querySelector('.tab-button.active');
     if (activeTab && activeTab.dataset.tab !== 'home') {
-      document.body.classList.remove('topbar-on-dark');
+      applyTopbarContrast(false);
+      topbarContrastCache = { key: '', useLightNav: false };
       return;
     }
 
-    const topbarRect = topbarEl.getBoundingClientRect();
-    const probeY = topbarRect.bottom + 12;
-    const samplePoints = getTopbarSamplePoints(topbarRect, probeY);
-    const luminances = samplePoints.map(({ x, y }) => sampleBackdropLuminance(x, y));
+    const ctx = getTopbarBackdropContext();
+    const key = buildTopbarContrastKey(ctx);
 
-    const hitsForcedDarkSection = samplePoints.some(({ x, y }) => {
-      const el = findBackdropElementAt(x, y);
-      return Boolean(el?.closest('#connect, [data-topbar-dark]'));
-    });
+    if (key === topbarContrastCache.key) {
+      applyTopbarContrast(topbarContrastCache.useLightNav);
+      return;
+    }
 
-    const isDark = hitsForcedDarkSection || isTopbarOverDarkBackdrop(luminances);
+    const useLightNav = resolveTopbarContrast(ctx);
+    topbarContrastCache = { key, useLightNav };
+    applyTopbarContrast(useLightNav);
+  };
 
-    document.body.classList.toggle('topbar-on-dark', isDark);
+  const scheduleTopbarContrastRefresh = (delayMs = 0) => {
+    invalidateTopbarContrast();
+    if (delayMs > 0) {
+      window.setTimeout(refreshTopbarContrast, delayMs);
+      return;
+    }
+    requestAnimationFrame(refreshTopbarContrast);
   };
 
   if (topbarEl && document.body.classList.contains('index-page')) {
+    emblaInstances.forEach((embla) => {
+      embla.on('select', () => scheduleTopbarContrastRefresh(100));
+      embla.on('settle', () => scheduleTopbarContrastRefresh(0));
+    });
+
+    document.querySelectorAll('.unicorn-scene').forEach((scene) => {
+      if (scene.classList.contains('loaded')) return;
+
+      const sceneObserver = new MutationObserver(() => {
+        if (!scene.classList.contains('loaded')) return;
+        scheduleTopbarContrastRefresh(120);
+        sceneObserver.disconnect();
+      });
+
+      sceneObserver.observe(scene, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    const themeObserver = new MutationObserver(() => scheduleTopbarContrastRefresh(0));
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    const homeLenisForTopbar = window.folioLenis?.home || window.folioLenis?.get?.(homeView);
+    if (homeLenisForTopbar && typeof homeLenisForTopbar.on === 'function') {
+      homeLenisForTopbar.on('scroll', () => {
+        const ctx = getTopbarBackdropContext();
+        const key = buildTopbarContrastKey(ctx);
+        if (key !== topbarContrastCache.key) {
+          scheduleTopbarContrastRefresh(0);
+        }
+      });
+    }
+
     let topbarContrastLoopId = null;
+    let lastLoopKey = '';
 
     const runTopbarContrastLoop = () => {
-      refreshTopbarContrast();
+      const ctx = getTopbarBackdropContext();
+      const key = buildTopbarContrastKey(ctx);
+      if (key !== lastLoopKey) {
+        lastLoopKey = key;
+        refreshTopbarContrast();
+      }
       topbarContrastLoopId = requestAnimationFrame(runTopbarContrastLoop);
     };
 
@@ -1020,6 +1167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelAnimationFrame(topbarContrastLoopId);
         topbarContrastLoopId = null;
       }
+      themeObserver.disconnect();
     });
   }
 

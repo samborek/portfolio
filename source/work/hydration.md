@@ -24,6 +24,7 @@ carousel:
     dark: /images/work/hydration_6_dark.jpg
 carousel_object_fit: cover
 disable_parallax: true
+topbar_light: true
 carousel_image_scale: 1.05
 client: Hydration Protocol
 role: "Lead Product Designer"
