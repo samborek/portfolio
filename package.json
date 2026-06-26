@@ -6,7 +6,7 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "server": "hexo server -p 4100"
   },
   "hexo": {
     "version": "7.3.0"
@@ -25,7 +25,6 @@
     "hexo-server": "^3.0.0"
   },
   "devDependencies": {
-    "agentation": "^3.0.1",
-    "hexo-browsersync": "^0.3.0"
+    "agentation": "^3.0.1"
   }
 }

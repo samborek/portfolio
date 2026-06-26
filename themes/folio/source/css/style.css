@@ -1208,10 +1208,12 @@ body.index-page {
   margin-bottom: 0;
 }
 
-/* #more-works uses display:contents — combined is not a direct DOM child */
 .projects-main-content > #more-works {
-  display: contents;
+  width: 100%;
+  max-width: var(--max-project-width);
+  margin-inline: auto;
   margin-bottom: 0;
+  box-sizing: border-box;
 }
 
 .projects-main-content #more-works-combined {
@@ -1224,10 +1226,7 @@ body.index-page {
   gap: var(--projects-section-gap);
 }
 
-/* Homepage clients: vertical padding only; horizontal comes from .home-client-section on desktop */
 .projects-main-content > #clients.home-client-section {
-  padding-block: clamp(2rem, 5vw, 3.75rem);
-  padding-inline: 0;
   box-sizing: border-box;
 }
 
@@ -3592,6 +3591,23 @@ body.index-page {
   .project-info-right .project-info-section:last-child {
     order: 4;
     /* When */
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-column {
+    --projects-section-gap: 1.25rem;
+    --section-gap: var(--projects-section-gap);
+  }
+
+  .projects-main-content .project-section,
+  #project-0 {
+    padding-top: 0.75rem;
+  }
+
+  .projects-main-content .project-section.reveal-on-scroll {
+    opacity: 1;
+    transform: none;
   }
 }
 
