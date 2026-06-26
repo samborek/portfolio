@@ -81,9 +81,10 @@ clients:
     - name: "Seez"
       url: "https://www.seez.co/"
       logo: "/images/clients/seez.svg"
-    - name: "Obi"
-      url: "https://rideobi.com/"
-      logo: "/images/clients/obi.svg"
+    - name: "66Audio"
+      url: "https://www.behance.net/gallery/37357861/66AUDIO-Site-Revolution-Product-Page-Design"
+      logo: "/images/clients/66audio.svg"
+      logo_scale: wide
     - name: "YAP"
       url: "https://www.yap.com/"
       logo: "/images/clients/yap.svg"
@@ -122,8 +123,6 @@ clients:
         - name: "Shuttleone"
     - title: "Consumer / Marketplace"
       items:
-        - name: "Bellhop / Obi"
-          url: "https://rideobi.com/"
         - name: "Lovely"
         - name: "NoHalftime"
         - name: "Plaant"
