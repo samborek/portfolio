@@ -106,16 +106,25 @@
                 <% if (page.carousel && page.carousel.length) { %>
                     <div class="project-image-stack">
                         <% page.carousel.forEach(function(item, index) { %>
-                            <div class="image-container">
-                                <div class="image-skeleton"></div>
-                                <% if (page.blur) { %>
-                                    <div class="image-placeholder"
-                                        style="background-image: url(' <%- url_for(page.blur) %>');">
-                                    </div>
-                                    <% } %>
-                                        <% const isObject=typeof item==='object' && item !==null; const
-                                            lightItem=isObject ? item.light : item; const darkItem=isObject ? item.dark
-                                            : null; const isJson=(lightItem && lightItem.endsWith('.json')); %>
+                            <% const isObject=typeof item==='object' && item !==null; const
+                                lightItem=isObject ? item.light : item; const darkItem=isObject ? item.dark
+                                : null; const isJson=(lightItem && lightItem.endsWith('.json'));
+                                const useShaderImage=page.shader_effect && index === 0 && !isJson && !darkItem; %>
+                            <% if (useShaderImage) { %>
+                                <div class="raw-shader-image loaded" data-shader-effect="<%= page.shader_effect %>" <% if (page.shader_settings) { %>data-shader-settings='<%- JSON.stringify(page.shader_settings) %>'<% } %>>
+                                    <img src="<%- url_for(lightItem) %>" alt="<%= page.title %>"
+                                        loading="<%= index === 0 ? 'eager' : 'lazy' %>"
+                                        <%=index===0 ? 'fetchpriority="high"' : '' %>
+                                    onload="this.parentElement.classList.add('loaded')">
+                                </div>
+                            <% } else { %>
+                                <div class="image-container">
+                                    <div class="image-skeleton"></div>
+                                    <% if (page.blur) { %>
+                                        <div class="image-placeholder"
+                                            style="background-image: url(' <%- url_for(page.blur) %>');">
+                                        </div>
+                                        <% } %>
                                             <% if (isJson) { %>
                                                 <% const staticPosterItem = page.mobile_first_slide || page.cover || page.hero_image; %>
                                                 <% const hasMobileStaticScene = page.mobile_first_slide && index === 0; %>
@@ -167,7 +176,8 @@
                                                             onload="this.parentElement.classList.add('loaded')">
                                                             <% } %>
                                                                 <% } %>
-                            </div>
+                                </div>
+                            <% } %>
                             <% }); %>
                     </div>
                     <% } else if (page.hero_image) { %>

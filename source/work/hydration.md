@@ -10,8 +10,39 @@ hero_image: /images/work/hydration_1.jpg
 mobile_first_slide: /images/work/hydration_1.jpg
 preview_extra:
   - /images/work/hydration_1.jpg
+# Trial: static image plus raw WebGL shader. Revert first carousel item to
+# /images/work/hydration.json and remove shader_effect to restore Unicorn.
+shader_effect: soft-ripple
+# Hexo dev server applies these after save/refresh; static /public output needs `npm run build`.
+shader_settings:
+  # Overall image displacement strength. Higher = more watery/smeared image movement.
+  distortion: 4.72
+  # Amount of bright cursor sheen and ripple highlight. 0 disables extra light.
+  light: 0.72
+  # Global animation clock speed for the shader.
+  speed: 0.28
+  # How fast ripple rings expand away from cursor/touch points.
+  ripple_speed: 1.58
+  # How long ripple energy stays visible before fading.
+  ripple_fade: 1.28
+  # Trail length behind cursor movement. Higher = longer falloff tail.
+  tail: 2.42
+  # How much cursor/ripple motion can deform the image mask edge.
+  edge: 1.56
+  # Mouse-follow smoothing. Higher = slower, more delayed follow.
+  cursor_lag: 1.12
+  # Cursor influence radius. Higher = wider distortion area around pointer.
+  cursor_area: 0.40
+  # Cursor falloff steepness. Higher = tighter/faster fade from pointer.
+  cursor_falloff: 3.6
+  # Ripple spatial width. Higher = broader rings and wake.
+  ripple_area: 0.4
+  # Ripple overlap smoothing. Higher = less stagger/stacking, but softer detail.
+  ripple_smoothing: 0.7
+  # RGB channel split near active distortion. Higher = stronger chromatic fringe.
+  chromatic_aberration: 0.13
 carousel:
-  - /images/work/hydration.json
+  - /images/work/hydration_1.jpg
   - light: /images/work/hydration_2.jpg
     dark: /images/work/hydration_2_dark.jpg
   - light: /images/work/hydration_3.jpg

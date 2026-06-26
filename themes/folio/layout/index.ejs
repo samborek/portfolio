@@ -274,6 +274,7 @@
                                 ? firstCarouselItem.endsWith('.json')
                                 : (firstCarouselItem.light && String(firstCarouselItem.light).endsWith('.json'))
                             ); %>
+                            <% const useCustomShaderCarousel = project.shader_effect && pindex === 0 && project.carousel && project.carousel.length && !project.preview_slideshow; %>
                             <% const needsTopbarLight = Boolean(project.topbar_light || firstCarouselIsJson); %>
                             <section class="project-section reveal-on-scroll" id="project-<%= pindex %>"
                                 data-project-index="<%= pindex %>"<% if (needsTopbarLight) { %> data-topbar-light="true"<% } %><% if (carouselStyle) { %>
@@ -285,9 +286,9 @@
                                                 <div class="carousel-nav-zone carousel-nav-zone--right" data-nav="next">
                                                 </div>
 
-                                                <div class="embla">
-                                                    <div class="embla__viewport">
-                                                        <div class="embla__container">
+                                                <div class="<%= useCustomShaderCarousel ? 'custom-shader-carousel' : 'embla' %>">
+                                                    <div class="<%= useCustomShaderCarousel ? 'custom-shader-viewport' : 'embla__viewport' %>">
+                                                        <div class="<%= useCustomShaderCarousel ? 'custom-shader-track' : 'embla__container' %>">
                                                             <% if (project.carousel && project.carousel.length) { %>
                                                                 <% if (project.preview_slideshow) { %>
                                                                     <% const previewSrcs = (project.preview_extra || []).map(function(src) { return url_for(src); }).concat(
@@ -328,7 +329,7 @@ src="<%- previewSrcs[0] || '' %>"
                                                                     <% const mobileStaticItem=(project.mobile_first_slide
                                                                         && slideIndex===0) ? project.mobile_first_slide :
                                                                         null; %>
-                                                                        <div class="embla__slide<%= (!project.preview_slideshow && slideIndex === 0) ? ' is-active-slide' : '' %>" <%=firstStyle %>>
+                                                                        <div class="<%= useCustomShaderCarousel ? 'custom-shader-slide' : 'embla__slide' %><%= (!project.preview_slideshow && slideIndex === 0) ? ' is-active-slide' : '' %>" <%=firstStyle %>>
                                                                             <div class="project-slide-item<%= mobileStaticItem ? ' has-mobile-static-first' : '' %>">
                                                                                 <% const isObject=typeof
                                                                                     imgUrl==='object' && imgUrl !==null;
@@ -378,6 +379,21 @@ src="<%- previewSrcs[0] || '' %>"
                                                                                             </div>
                                                                                         </div>
                                                                                         <% } else { %>
+                                                                                            <% const useShaderImage = project.shader_effect && slideIndex === 0 && !darkItem; %>
+                                                                                            <% if (useShaderImage) { %>
+                                                                                                <div class="raw-shader-image loaded" data-shader-effect="<%= project.shader_effect %>" <% if (project.shader_settings) { %>data-shader-settings='<%- JSON.stringify(project.shader_settings) %>'<% } %>>
+                                                                                                    <img src="<%- url_for(lightItem) %>"
+                                                                                                        alt="<%= project.title %>"
+                                                                                                        loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                        decoding="async"
+                                                                                                        <%=pindex===0
+                                                                                                        ? 'fetchpriority="high"'
+                                                                                                        : ''
+                                                                                                        %>
+                                                                                                    draggable="false"
+                                                                                                    onload="this.parentElement.classList.add('loaded')">
+                                                                                                </div>
+                                                                                            <% } else { %>
                                                                                             <div
                                                                                                 class="image-container">
                                                                                                 <div
@@ -426,11 +442,12 @@ src="<%- previewSrcs[0] || '' %>"
                                                                                                                 <% } %>
                                                                                             </div>
                                                                                             <% } %>
+                                                                                            <% } %>
                                                                             </div>
                                                                         </div>
                                                                         <% }); %>
                                                                             <% } else if (project.cover) { %>
-                                                                                <div class="embla__slide is-active-slide">
+                                                                                <div class="<%= useCustomShaderCarousel ? 'custom-shader-slide' : 'embla__slide' %> is-active-slide">
                                                                                     <div class="project-slide-item">
                                                                                         <div class="image-container">
                                                                                             <div class="image-skeleton">
