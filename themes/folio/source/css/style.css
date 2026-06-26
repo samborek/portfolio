@@ -659,7 +659,7 @@ body.index-page {
 
 .sidebar-description {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.2vw, 2.625rem);
+  font-size: 2.625rem;
   line-height: 1.15;
   color: var(--color-text);
   margin: 0;
@@ -668,6 +668,47 @@ body.index-page {
   text-align: center;
   max-width: 26ch;
   margin-inline: auto;
+}
+
+.sidebar-description-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.sidebar-description-line--mobile {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .sidebar-description {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar-description {
+    font-size: 1.5rem;
+  }
+
+  .sidebar-description-line--desktop {
+    display: none;
+  }
+
+  .sidebar-description-line--mobile {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-description {
+    font-size: 1.5625rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .sidebar-description {
+    font-size: 1.40625rem;
+  }
 }
 
 .sidebar-cta-wrapper {
@@ -3317,6 +3358,10 @@ body.index-page {
   .sidebar-description {
     text-align: center;
     max-width: 100%;
+  }
+
+  .sidebar-description-line {
+    white-space: nowrap;
   }
 
   /* Hide Works accordion on mobile — projects are right below */

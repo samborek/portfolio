@@ -16,6 +16,139 @@
         const metaImage = /^https?:\/\//.test(metaImagePath) ? metaImagePath : siteUrl + url_for(metaImagePath);
         const canonicalPath = page.path === 'index.html' ? '/' : url_for(page.path || '');
         const canonicalUrl = siteUrl + canonicalPath;
+        const isHomePage = page.path === 'index.html';
+        const jsonLdGraph = [
+            {
+                '@type': 'Person',
+                '@id': siteUrl + '/#person',
+                name: 'Michal Sambora',
+                alternateName: ['Michal Sambora', 'sambø', 'samborek'],
+                jobTitle: 'Senior Product Designer',
+                description: 'Senior product designer, UI/UX designer, startup design partner, and AI-assisted design engineering collaborator based in Poland, working from Krakow on digital products, design systems, fintech, crypto, Web3, SaaS, mobile apps, web apps, and prototypes.',
+                url: siteUrl + '/',
+                image: metaImage,
+                email: theme.email || theme.connect?.email || 'contact@msambora.com',
+                address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: 'Krakow',
+                    addressRegion: 'Malopolskie',
+                    addressCountry: 'PL'
+                },
+                sameAs: [
+                    theme.social?.linkedin,
+                    theme.social?.dribbble,
+                    theme.social?.behance,
+                    theme.social?.twitter
+                ].filter(Boolean),
+                knowsAbout: [
+                    'Product design',
+                    'UI/UX design',
+                    'Startup product design',
+                    'Startup design partner',
+                    'AI-assisted product design',
+                    'AI prototyping',
+                    'Design engineering',
+                    'Design-to-code workflows',
+                    'Design systems',
+                    'Figma prototyping',
+                    'Mobile app design',
+                    'Web app design',
+                    'SaaS product design',
+                    'Fintech design',
+                    'Crypto and Web3 design',
+                    'DeFi UX',
+                    'Design tokens',
+                    'Development handoff'
+                ],
+                areaServed: [
+                    { '@type': 'Country', name: 'Poland' },
+                    { '@type': 'City', name: 'Krakow' },
+                    { '@type': 'City', name: 'Kraków' },
+                    { '@type': 'AdministrativeArea', name: 'Europe' }
+                ]
+            },
+            {
+                '@type': 'WebSite',
+                '@id': siteUrl + '/#website',
+                name: 'Michal Sambora Portfolio',
+                alternateName: [
+                    'Product Designer Poland',
+                    'Product Designer Krakow',
+                    'Product Designer Kraków',
+                    'Startup Design Partner',
+                    'UI/UX Designer Poland'
+                ],
+                url: siteUrl + '/',
+                publisher: { '@id': siteUrl + '/#person' },
+                inLanguage: 'en'
+            }
+        ];
+        if (isHomePage) {
+            jsonLdGraph.push({
+                '@type': 'ProfessionalService',
+                '@id': siteUrl + '/#product-design-service',
+                name: 'Michal Sambora Product Design',
+                alternateName: [
+                    'Product designer in Poland',
+                    'Product designer in Krakow',
+                    'Product designer in Kraków',
+                    'Startup design partner',
+                    'Product design partner for startups',
+                    'Skilled product designer in Poland',
+                    'AI product designer',
+                    'AI UX designer',
+                    'AI design engineer',
+                    'Design engineering partner',
+                    'Senior UI/UX designer in Krakow',
+                    'UI/UX designer in Poland',
+                    'Design systems consultant Poland'
+                ],
+                description: 'Senior product design, UI/UX, design systems, AI-assisted prototyping, design engineering, and design-to-development support from Krakow, Poland for startups, SaaS, fintech, crypto, Web3, mobile app, and web app teams.',
+                url: siteUrl + '/',
+                image: metaImage,
+                founder: { '@id': siteUrl + '/#person' },
+                priceRange: '$$',
+                areaServed: [
+                    { '@type': 'Country', name: 'Poland' },
+                    { '@type': 'City', name: 'Krakow' },
+                    { '@type': 'City', name: 'Kraków' },
+                    { '@type': 'AdministrativeArea', name: 'Europe' },
+                    { '@type': 'Place', name: 'Remote worldwide' }
+                ],
+                serviceType: [
+                    'Product design',
+                    'Startup product design',
+                    'Product design partner for startups',
+                    'AI-assisted product design',
+                    'AI prototyping',
+                    'Design engineering',
+                    'Design-to-code workflows',
+                    'UI/UX design',
+                    'Design systems',
+                    'Mobile app design',
+                    'Web app design',
+                    'SaaS product design',
+                    'Fintech product design',
+                    'Crypto and Web3 UX design',
+                    'Figma prototyping',
+                    'Design-to-development handoff'
+                ],
+                knowsAbout: [
+                    'Digital products',
+                    'Interface design',
+                    'Design tokens',
+                    'Responsive web apps',
+                    'Landing pages',
+                    'UX audits',
+                    'AI-assisted prototyping',
+                    'Design engineering'
+                ]
+            });
+        }
+        const structuredData = {
+            '@context': 'https://schema.org',
+            '@graph': jsonLdGraph
+        };
     %>
     <script>
         // Initialize theme BEFORE any content renders to prevent flash
@@ -53,6 +186,7 @@
     <meta name="twitter:title" content="<%= metaTitle %>">
     <meta name="twitter:description" content="<%= metaDescription %>">
     <meta name="twitter:image" content="<%= metaImage %>">
+    <script type="application/ld+json"><%- JSON.stringify(structuredData) %></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
