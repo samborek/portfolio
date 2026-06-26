@@ -1426,6 +1426,8 @@ body.index-page {
   --custom-slider-duration: 1.72s;
   --custom-slider-easing: cubic-bezier(0.16, 1, 0.3, 1);
   --custom-slider-focus-duration: 0.72s;
+  --custom-slider-desaturate-duration: 1.35s;
+  --custom-slider-desaturate-easing: cubic-bezier(0.22, 1, 0.36, 1);
   overflow: visible;
   width: 100%;
 }
@@ -1465,14 +1467,19 @@ body.index-page {
 
 .custom-shader-slide:has(.raw-shader-image),
 .custom-shader-slide:has(.raw-shader-image) .project-slide-item {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .custom-shader-slide .project-slide-item {
   transition:
     opacity var(--custom-slider-focus-duration) var(--carousel-focus-easing),
-    filter var(--custom-slider-focus-duration) var(--carousel-focus-easing);
+    filter var(--custom-slider-desaturate-duration) var(--custom-slider-desaturate-easing);
   will-change: opacity;
+}
+
+.custom-shader-carousel.is-loop-resetting .custom-shader-slide .project-slide-item,
+.custom-shader-carousel.is-loop-resetting .custom-shader-slide .project-slide-item::after {
+  transition: none;
 }
 
 .custom-shader-carousel.is-focus-ready .custom-shader-slide.is-dimmed-slide .project-slide-item {
@@ -1495,7 +1502,7 @@ body.index-page {
   border-radius: inherit;
   background: var(--carousel-inactive-tint);
   opacity: 0;
-  transition: opacity var(--custom-slider-focus-duration) var(--carousel-focus-easing);
+  transition: opacity var(--custom-slider-desaturate-duration) var(--custom-slider-desaturate-easing);
   pointer-events: none;
   z-index: 2;
 }
@@ -4400,20 +4407,19 @@ body.project-page {
 
 .projects-main-content .embla__slide:has(.raw-shader-image),
 .projects-main-content .project-slide-item:has(.raw-shader-image) {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .image-shader-canvas {
   position: absolute;
-  top: var(--shader-edge-bleed-outset);
-  left: var(--shader-edge-bleed-outset);
+  inset: 0;
   z-index: 3;
-  width: calc(100% + var(--shader-edge-bleed, 0px) + var(--shader-edge-bleed, 0px));
-  height: calc(100% + var(--shader-edge-bleed, 0px) + var(--shader-edge-bleed, 0px));
+  width: 100%;
+  height: 100%;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.45s ease;
-  border-radius: calc(var(--radius-l) + var(--shader-edge-bleed, 0px));
+  border-radius: inherit;
 }
 
 .raw-shader-image::before,

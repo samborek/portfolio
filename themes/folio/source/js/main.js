@@ -363,13 +363,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const finishLoopIfNeeded = () => {
+      let didReset = false;
       if (activeIndex === 0) {
+        sliderNode.classList.add('is-loop-resetting');
         activeIndex = lastRealIndex;
         updatePosition(false);
+        didReset = true;
       } else if (activeIndex === slides.length - 1) {
+        sliderNode.classList.add('is-loop-resetting');
         activeIndex = firstRealIndex;
         updatePosition(false);
+        didReset = true;
       }
+      return didReset;
+    };
+
+    const releaseLoopReset = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          sliderNode.classList.remove('is-loop-resetting');
+        });
+      });
     };
 
     const goTo = (index, options = {}) => {
@@ -379,14 +393,19 @@ document.addEventListener('DOMContentLoaded', () => {
       updatePosition(options.animate !== false);
       window.dispatchEvent(new CustomEvent('folio:scroll'));
       settleTimer = setTimeout(() => {
-        finishLoopIfNeeded();
+        const didLoopReset = finishLoopIfNeeded();
         sliderNode.classList.remove('is-sliding');
+        if (didLoopReset) releaseLoopReset();
         window.dispatchEvent(new CustomEvent('folio:scroll'));
       }, getSliderSettleMs());
     };
 
     const goBy = (direction) => {
-      finishLoopIfNeeded();
+      const didLoopReset = finishLoopIfNeeded();
+      if (didLoopReset) {
+        track.offsetHeight;
+        sliderNode.classList.remove('is-loop-resetting');
+      }
       goTo(activeIndex + direction);
     };
 
