@@ -34,11 +34,11 @@ shader_settings:
   # Mouse-follow smoothing. Higher = slower, more delayed follow.
   cursor_lag: 1.12
   # Cursor influence radius. Higher = wider distortion area around pointer.
-  cursor_area: 0.40
+  cursor_area: 0.20
   # Cursor falloff steepness. Higher = tighter/faster fade from pointer.
-  cursor_falloff: 3.6
+  cursor_falloff: 8.6
   # Ripple spatial width. Higher = broader rings and wake.
-  ripple_area: 0.4
+  ripple_area: 0.2
   # Ripple overlap smoothing. Higher = less stagger/stacking, but softer detail.
   ripple_smoothing: 0.7
   # RGB channel split near active distortion. Higher = stronger chromatic fringe.
