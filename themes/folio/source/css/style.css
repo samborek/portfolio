@@ -1176,9 +1176,8 @@ body.index-page {
   margin-inline: auto;
   padding: var(--space-md) var(--project-column-padding-inline) var(--space-lg);
   background: transparent;
-  /* Homepage: roomy project stack; tighter rhythm for clients / more work / connect */
+  /* Homepage: consistent section rhythm across projects, clients, more work, connect */
   --projects-section-gap: calc(clamp(3rem, 6vw, 5rem) * 1.3);
-  --projects-bottom-gap: clamp(1.5rem, 3vw, 2.5rem);
   --section-gap: var(--projects-section-gap);
   --project-carousel-to-info-gap: var(--space-md);
   --project-info-padding-top: var(--space-sm);
@@ -1201,30 +1200,35 @@ body.index-page {
 
 .projects-main-content > #clients {
   margin-top: 0;
-}
-
-/* Flex gap is section-sized; pull bottom stack together to --projects-bottom-gap */
-.projects-main-content > #connect {
-  margin-top: calc(var(--projects-bottom-gap) - var(--projects-section-gap));
-}
-
-/* #more-works uses display:contents — combined is not a direct DOM child */
-.projects-main-content #more-works-combined {
   margin-bottom: 0;
 }
 
+.projects-main-content > #connect {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* #more-works uses display:contents — combined is not a direct DOM child */
 .projects-main-content > #more-works {
   display: contents;
   margin-bottom: 0;
 }
 
-/* Behance / Dribbble stack gap matches bottom-stack rhythm */
-.projects-main-content .dribbble-grid {
-  gap: var(--projects-bottom-gap);
+.projects-main-content #more-works-combined {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-.projects-main-content > #connect {
-  margin-bottom: 0;
+/* Behance / Dribbble stack gap matches section rhythm */
+.projects-main-content .dribbble-grid {
+  gap: var(--projects-section-gap);
+}
+
+/* Homepage clients: vertical padding only; horizontal comes from .home-client-section on desktop */
+.projects-main-content > #clients.home-client-section {
+  padding-block: clamp(2rem, 5vw, 3.75rem);
+  padding-inline: 0;
+  box-sizing: border-box;
 }
 
 .projects-heading {
@@ -2771,6 +2775,9 @@ body.index-page {
   text-decoration: none;
   transition: opacity 0.2s;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .connect-footer-email.copy-email-btn::after {
@@ -2855,9 +2862,31 @@ body.index-page {
 
   .connect-footer-bottom {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     gap: 1.5rem;
     margin-top: 3.75rem;
+    text-align: center;
+  }
+
+  .connect-footer-email {
+    align-self: center;
+    width: auto;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .connect-footer-email:not(.copied) .copied-tooltip {
+    display: none;
+  }
+
+  .connect-footer-email.copied .copied-tooltip {
+    position: absolute;
+    left: calc(100% + 0.5rem);
+    top: 50%;
+    margin-left: 0;
+    transform: translateY(-50%) scale(0.75);
+    animation: connect-footer-copied-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .connect-footer-socials {
@@ -3027,7 +3056,6 @@ body.index-page {
     padding-right: 0;
     padding-bottom: 0;
     --projects-section-gap: calc(clamp(2rem, 4vw, 3rem) * 1.3);
-    --projects-bottom-gap: clamp(1.25rem, 2.5vw, 1.75rem);
     --section-gap: var(--projects-section-gap);
     --project-carousel-to-info-gap: 0px;
     /* Ensure no independent scroll */
@@ -4688,7 +4716,6 @@ body.project-page {
 @media (max-width: 900px) {
   .dribbble-grid {
     gap: var(--space-lg);
-    padding-inline: var(--space-md);
   }
 
   .dribbble-grid-group {
@@ -4696,14 +4723,13 @@ body.project-page {
   }
 
   .projects-main-content .dribbble-grid {
-    gap: var(--projects-bottom-gap);
+    gap: var(--projects-section-gap);
   }
 }
 
 @media (max-width: 600px) {
   .dribbble-grid {
     gap: var(--space-md);
-    padding-inline: calc(var(--space-xs) / 2);
   }
 
   .dribbble-grid-group {
@@ -4712,7 +4738,7 @@ body.project-page {
   }
 
   .projects-main-content .dribbble-grid {
-    gap: var(--projects-bottom-gap);
+    gap: var(--projects-section-gap);
   }
 
   .dribbble-grid-intro,
@@ -4739,7 +4765,7 @@ body.project-page {
 }
 
 .projects-main-content #more-works-combined.more-work-section {
-  margin-top: calc(var(--projects-bottom-gap) - var(--projects-section-gap));
+  margin-top: 0;
   margin-bottom: 0;
 }
 
@@ -4919,11 +4945,6 @@ body.project-page {
     margin-bottom: 0;
   }
 
-  /* Keep clients → case-studies gap on the tighter bottom-stack rhythm */
-  .projects-main-content #more-works-combined.more-work-section {
-    margin-top: calc(var(--projects-bottom-gap) - var(--projects-section-gap));
-  }
-
   .more-work-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -4952,8 +4973,7 @@ body.project-page {
   }
 
   .projects-main-content #more-works-combined.more-work-section {
-    margin-top: calc(var(--projects-bottom-gap) - var(--projects-section-gap));
-    padding-inline: var(--more-work-mobile-space);
+    margin-top: 0;
   }
 
   /* Single 20px gap between sections; remove first section margin-bottom to avoid doubling */
@@ -5036,6 +5056,13 @@ body.project-page {
 .connect-footer-email .copied-tooltip {
   background: #fff;
   color: #1a1a1a;
+}
+
+@keyframes connect-footer-copied-bounce {
+  0%   { opacity: 0; transform: translateY(-50%) scale(0.75); }
+  55%  { opacity: 1; transform: translateY(-50%) scale(1.08); }
+  75%  { transform: translateY(-50%) scale(0.96); }
+  100% { opacity: 1; transform: translateY(-50%) scale(1); }
 }
 
 @keyframes tooltip-bounce-in {
@@ -6205,6 +6232,23 @@ a.home-client-name:active {
     margin-top: 0;
     padding: 1.5rem 1rem;
     border-radius: var(--radius-l);
+  }
+
+  /* Smartphones: outer inset from browser edge — clients + behance/dribbble only */
+  .projects-main-content {
+    --homepage-section-padding-inline: 1rem;
+  }
+
+  .projects-main-content > #clients.home-client-section {
+    width: calc(100% - 2 * var(--homepage-section-padding-inline));
+    margin-inline: var(--homepage-section-padding-inline);
+    padding-block: 1.5rem;
+    padding-inline: 1rem;
+  }
+
+  .projects-main-content #more-works-combined {
+    padding-inline: var(--homepage-section-padding-inline);
+    box-sizing: border-box;
   }
 
   .home-client-section .project-title {
