@@ -27,6 +27,8 @@ shader_settings:
   ripple_fade: 1.28
   # Trail length behind cursor movement. Higher = longer falloff tail.
   tail: 2.42
+  # How many ripple samples are laid down along cursor movement. Higher = denser/longer mouse trail.
+  trail_density: 0.5
   # How much cursor/ripple motion can deform the image mask edge.
   edge: 1.56
   # Mouse-follow smoothing. Higher = slower, more delayed follow.

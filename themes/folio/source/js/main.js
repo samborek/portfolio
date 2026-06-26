@@ -786,9 +786,10 @@ document.addEventListener('DOMContentLoaded', () => {
       uniform float u_hover;
       uniform vec4 u_effects;
       uniform vec4 u_rippleSettings;
+      uniform vec4 u_trailSettings;
       uniform vec4 u_areaSettings;
       uniform float u_chromaticAberration;
-      uniform vec4 u_ripples[12];
+      uniform vec4 u_ripples[20];
 
       varying vec2 v_uv;
 
@@ -828,14 +829,15 @@ document.addEventListener('DOMContentLoaded', () => {
         float rippleSpeed = max(u_rippleSettings.x, 0.05);
         float rippleFade = max(u_rippleSettings.y, 0.1);
         float tail = max(u_rippleSettings.z, 0.1);
+        float tailStretch = max(u_trailSettings.x, 0.1);
         float rippleArea = max(u_areaSettings.z, 0.05);
         float rippleSmoothing = clamp(u_areaSettings.w, 0.0, 1.5);
         float ringFrequency = mix(58.0, 40.0, min(rippleSmoothing, 1.0));
         float wakeFrequency = mix(34.0, 22.0, min(rippleSmoothing, 1.0));
         float ringDecay = mix(15.0, 10.0, min(rippleSmoothing, 1.0)) / rippleArea;
-        float wakeDecay = mix(5.4, 3.9, min(rippleSmoothing, 1.0)) / rippleArea;
+        float wakeDecay = mix(5.4, 3.9, min(rippleSmoothing, 1.0)) / (rippleArea * mix(0.75, 1.65, min(tailStretch / 4.0, 1.0)));
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 20; i++) {
           vec4 ripple = u_ripples[i];
           float age = t - ripple.z;
           float isAlive = step(0.0, ripple.w) * step(0.0, age) * (1.0 - smoothstep(2.15 * tail, 2.85 * tail, age));
@@ -845,7 +847,7 @@ document.addEventListener('DOMContentLoaded', () => {
           float ring = sin((dist - radius) * ringFrequency) * exp(-abs(dist - radius) * ringDecay);
           float wake = sin((dist * wakeFrequency - age * 10.0 * rippleSpeed)) * exp(-dist * wakeDecay) * exp(-age * 1.05 / rippleFade);
           float onset = smoothstep(0.0, 0.06, age);
-          total += (ring * 0.6 + wake * 0.18) * exp(-age * 0.62 / rippleFade) * ripple.w * isAlive * onset;
+          total += (ring * 0.6 + wake * 0.18) * exp(-age * 0.62 / (rippleFade * mix(0.9, 1.45, min(tailStretch / 4.0, 1.0)))) * ripple.w * isAlive * onset;
         }
 
         return total / (1.0 + abs(total) * mix(0.35, 0.9, min(rippleSmoothing, 1.0)));
@@ -985,6 +987,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rippleSpeed: clampSetting(parsed.ripple_speed ?? parsed.rippleSpeed, 0.78, 0.05, 6),
         rippleFade: clampSetting(parsed.ripple_fade ?? parsed.rippleFade, 1.28, 0.1, 12),
         tail: clampSetting(parsed.tail, 1.42, 0.2, 80),
+        trailDensity: clampSetting(parsed.trail_density ?? parsed.trailDensity, 1, 0.4, 12),
         edge: clampSetting(parsed.edge, 0.36, 0, 8),
         cursorLag: clampSetting(parsed.cursor_lag ?? parsed.cursorLag, 1.12, 0.4, 24),
         cursorArea: clampSetting(parsed.cursor_area ?? parsed.cursorArea, 1, 0.1, 6),
@@ -1064,6 +1067,7 @@ document.addEventListener('DOMContentLoaded', () => {
           hover: gl.getUniformLocation(program, 'u_hover'),
           effects: gl.getUniformLocation(program, 'u_effects'),
           rippleSettings: gl.getUniformLocation(program, 'u_rippleSettings'),
+          trailSettings: gl.getUniformLocation(program, 'u_trailSettings'),
           areaSettings: gl.getUniformLocation(program, 'u_areaSettings'),
           chromaticAberration: gl.getUniformLocation(program, 'u_chromaticAberration'),
           ripples: gl.getUniformLocation(program, 'u_ripples[0]'),
@@ -1085,8 +1089,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let lastRippleTime = 0;
         let lastRippleX = 0.5;
         let lastRippleY = 0.5;
+        let hasRipplePosition = false;
         const startTime = performance.now();
-        const rippleCount = 12;
+        const rippleCount = 20;
         const ripples = new Float32Array(rippleCount * 4);
 
         for (let i = 0; i < ripples.length; i += 4) {
@@ -1098,19 +1103,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const getShaderTime = () => (performance.now() - startTime) / 1000;
 
-        const addRipple = (x, y, strength = 1) => {
-          const nowSeconds = getShaderTime();
-          const distance = Math.hypot(x - lastRippleX, y - lastRippleY);
-          const elapsed = nowSeconds - lastRippleTime;
-          if (elapsed < 0.028 && distance < 0.026) return;
-
+        const writeRipple = (x, y, time, strength) => {
           const index = rippleIndex * 4;
           ripples[index] = Math.min(1, Math.max(0, x));
           ripples[index + 1] = Math.min(1, Math.max(0, y));
-          ripples[index + 2] = nowSeconds;
-          ripples[index + 3] = strength * Math.min(1, 0.42 + distance * 8 + elapsed * 5);
-
+          ripples[index + 2] = time;
+          ripples[index + 3] = strength;
           rippleIndex = (rippleIndex + 1) % rippleCount;
+        };
+
+        const addRipple = (x, y, strength = 1) => {
+          const nowSeconds = getShaderTime();
+
+          if (!hasRipplePosition) {
+            writeRipple(x, y, nowSeconds, strength * 0.65);
+            hasRipplePosition = true;
+            lastRippleTime = nowSeconds;
+            lastRippleX = x;
+            lastRippleY = y;
+            return;
+          }
+
+          const originX = lastRippleX;
+          const originY = lastRippleY;
+          const originTime = lastRippleTime;
+          const distance = Math.hypot(x - originX, y - originY);
+          const elapsed = nowSeconds - originTime;
+          const density = Math.max(settings.trailDensity, 0.4);
+          const minElapsed = 0.028 / Math.max(0.75, density);
+          const minDistance = 0.026 / Math.max(0.75, density);
+          if (elapsed < minElapsed && distance < minDistance) return;
+
+          const stepDistance = 0.055 / density;
+          const steps = Math.min(12, Math.max(1, Math.ceil(distance / stepDistance)));
+          const baseStrength = strength * Math.min(1, 0.42 + distance * 8 + elapsed * 5);
+
+          for (let step = 1; step <= steps; step += 1) {
+            const progress = step / steps;
+            const sampleX = originX + (x - originX) * progress;
+            const sampleY = originY + (y - originY) * progress;
+            const sampleTime = nowSeconds - elapsed * (1 - progress);
+            const sampleStrength = baseStrength * (steps > 1 ? 0.82 : 1);
+            writeRipple(sampleX, sampleY, sampleTime, sampleStrength);
+          }
+
           lastRippleTime = nowSeconds;
           lastRippleX = x;
           lastRippleY = y;
@@ -1170,6 +1206,7 @@ document.addEventListener('DOMContentLoaded', () => {
           gl.uniform1f(locations.hover, hover);
           gl.uniform4f(locations.effects, settings.distortion, settings.light, settings.speed, settings.edge);
           gl.uniform4f(locations.rippleSettings, settings.rippleSpeed, settings.rippleFade, settings.tail, settings.cursorLag);
+          gl.uniform4f(locations.trailSettings, settings.tail, settings.trailDensity, 0, 0);
           gl.uniform4f(locations.areaSettings, settings.cursorArea, settings.cursorFalloff, settings.rippleArea, settings.rippleSmoothing);
           gl.uniform1f(locations.chromaticAberration, settings.chromaticAberration);
           gl.uniform4fv(locations.ripples, ripples);
