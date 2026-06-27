@@ -21,7 +21,7 @@ when: Q2 2022
 carousel_object_fit: cover
 carousel_image_scale: 1.05
 problem: "Present complex DeFi actions in a way that feels approachable, fast, and trustworthy."
-solution: "Designed a dark, data-forward interface with clear hierarchy, strong contrast, and consistent components across wallet, trading, and farming flows along full responsive design, landing page and Framer prototype for handoff."
+solution: "I designed the interface around making trading, wallet, and farming flows easier to scan and use, while keeping the darker, more technical character of the product."
 scope:
   - UI/UX Design
   - Design System
@@ -33,6 +33,3 @@ website: https://bsx.fi/
 Basilisk is a liquidity protocol built for the Kusama ecosystem. Its mission is to enable frictionless liquidity that caters to the evolving needs of crypto assets – both fungible, and non-fungible (NFTs).
 
 I was responsible for building UI for exchange from ground up to allow the team of lanuching their first product after bootstraping the project. I was also responsible for building the new Design System and continue improving the exchange interface, create new sub products and pages along with our internal team and community feedback.
-
-
-

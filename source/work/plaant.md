@@ -17,7 +17,7 @@ role: UI & UX Design
 tech: Figma
 intro: "Smart home hydroponics made simple"
 problem: "Bringing nature indoors can be complex and intimidating for urban dwellers with limited space and no green thumb. Existing hydroponic solutions were often too industrial or overly complicated for a domestic setting."
-solution: "Created an intuitive digital ecosystem and brand identity that balances organic softness with smart technology. The design system uses biophilic principles to make plant care an effortless and rewarding experience through a minimalist, nature-first interface."
+solution: "Product experience and visual direction for a home hydroponics app, making plant care feel calmer, clearer, and less intimidating."
 scope:
   - Brand Identity
   - App Design
@@ -33,4 +33,3 @@ credits:
 
 
 Plaant aims to bridge the gap between urban living and nature. The goal was to create interface that feels simple, clean yet alive and modern. Project included cooperation with brand designer and full scalable UI for native mobile ap and web app.
-

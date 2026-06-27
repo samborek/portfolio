@@ -64,7 +64,7 @@ role: "Lead Product Designer"
 theme_hint: "Try Dark Mode"
 intro: "Decentralized exchange & lending platform"
 problem: "The existing interface felt fragmented and inconsistent, making complex DeFi operations confusing for users. The brand identity lacked cohesion, and the mobile experience was an afterthought."
-solution: "Handled a complete UI overhaul with a unified, simple design language, built a comprehensive design tokens system for consistency and easy theming, and updated the mobile-first approach to make DeFi accessible anywhere."
+solution: "Simplified the UI across the whole platform and strengthened the design system underneath, so a complex DeFi product could feel more consistent and easier to use."
 scope:
   - Design System
   - Design Tokens
