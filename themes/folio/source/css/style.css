@@ -1448,6 +1448,12 @@ body.index-page {
   will-change: transform;
 }
 
+.project-carousel-wrapper:has(.custom-shader-carousel),
+.custom-shader-carousel,
+.custom-shader-viewport {
+  touch-action: pan-y pinch-zoom;
+}
+
 .custom-shader-slide {
   flex: 0 0 var(--slide-size);
   min-width: 0;
@@ -3321,6 +3327,10 @@ body.index-page {
     display: none;
   }
 
+  .projects-main-content .project-slide-item.has-mobile-static-first .raw-shader-image {
+    display: none;
+  }
+
   .projects-main-content .project-slide-item.has-mobile-static-first .mobile-static-first-slide {
     display: block;
   }
@@ -4461,6 +4471,18 @@ body.project-page {
 .raw-shader-image.shader-ready > img {
   opacity: 0 !important;
   filter: blur(0);
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  .raw-shader-image .image-shader-canvas {
+    display: none;
+  }
+
+  .raw-shader-image.shader-ready > img,
+  .raw-shader-image > img {
+    opacity: 1 !important;
+    filter: blur(0);
+  }
 }
 
 .raw-shader-image > img {

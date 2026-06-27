@@ -415,8 +415,76 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.style.setProperty('--slider-cursor', cursor);
     });
 
+    let swipePointerId = null;
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeLatestX = 0;
+    let swipeLatestY = 0;
+    let hasSwipeIntent = false;
+    let lastSwipeTime = 0;
+
+    wrapper.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || event.pointerType === 'mouse') return;
+      if (event.target.closest('.project-carousel-progress')) return;
+
+      swipePointerId = event.pointerId;
+      swipeStartX = event.clientX;
+      swipeStartY = event.clientY;
+      swipeLatestX = event.clientX;
+      swipeLatestY = event.clientY;
+      hasSwipeIntent = false;
+      wrapper.setPointerCapture?.(event.pointerId);
+    });
+
+    wrapper.addEventListener('pointermove', (event) => {
+      if (swipePointerId !== event.pointerId) return;
+
+      swipeLatestX = event.clientX;
+      swipeLatestY = event.clientY;
+      const deltaX = swipeLatestX - swipeStartX;
+      const deltaY = swipeLatestY - swipeStartY;
+
+      if (!hasSwipeIntent && Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15) {
+        hasSwipeIntent = true;
+      }
+
+      if (hasSwipeIntent && event.cancelable) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    const finishSwipe = (event) => {
+      if (swipePointerId !== event.pointerId) return;
+
+      const deltaX = swipeLatestX - swipeStartX;
+      const deltaY = swipeLatestY - swipeStartY;
+      wrapper.releasePointerCapture?.(event.pointerId);
+      swipePointerId = null;
+
+      if (!hasSwipeIntent || Math.abs(deltaX) < 42 || Math.abs(deltaX) < Math.abs(deltaY) * 1.15) {
+        hasSwipeIntent = false;
+        return;
+      }
+
+      lastSwipeTime = Date.now();
+      goBy(deltaX < 0 ? 1 : -1);
+      hasSwipeIntent = false;
+    };
+
+    wrapper.addEventListener('pointerup', finishSwipe);
+    wrapper.addEventListener('pointercancel', (event) => {
+      if (swipePointerId !== event.pointerId) return;
+      wrapper.releasePointerCapture?.(event.pointerId);
+      swipePointerId = null;
+      hasSwipeIntent = false;
+    });
+
     wrapper.addEventListener('click', (event) => {
       if (event.target.closest('.project-carousel-progress')) return;
+      if (Date.now() - lastSwipeTime < 450) {
+        event.preventDefault();
+        return;
+      }
 
       const rect = wrapper.getBoundingClientRect();
       goBy((event.clientX - rect.left) < rect.width / 2 ? -1 : 1);
@@ -759,6 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initImageShaders() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(max-width: 768px), (pointer: coarse)').matches) return;
 
     const containers = Array.from(document.querySelectorAll('.raw-shader-image[data-shader-effect="soft-ripple"]'));
     if (!containers.length) return;

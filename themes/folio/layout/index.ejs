@@ -381,6 +381,18 @@ src="<%- previewSrcs[0] || '' %>"
                                                                                         <% } else { %>
                                                                                             <% const useShaderImage = project.shader_effect && slideIndex === 0 && !darkItem; %>
                                                                                             <% if (useShaderImage) { %>
+                                                                                                <% if (mobileStaticItem) { %>
+                                                                                                    <div class="image-container mobile-static-first-slide loaded">
+                                                                                                        <img src="<%- url_for(mobileStaticItem) %>"
+                                                                                                            alt="<%= project.title %>"
+                                                                                                            loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                            decoding="async"
+                                                                                                            <%=pindex===0
+                                                                                                            ? 'fetchpriority="high"'
+                                                                                                            : '' %>
+                                                                                                            draggable="false">
+                                                                                                    </div>
+                                                                                                <% } %>
                                                                                                 <div class="raw-shader-image loaded" data-shader-effect="<%= project.shader_effect %>" <% if (project.shader_settings) { %>data-shader-settings='<%- JSON.stringify(project.shader_settings) %>'<% } %>>
                                                                                                     <img src="<%- url_for(lightItem) %>"
                                                                                                         alt="<%= project.title %>"
