@@ -498,13 +498,27 @@ src="<%- previewSrcs[0] || '' %>"
                                                                     <%= project.title %>
                                                                     <svg class="world-icon" viewBox="0 0 24 24"
                                                                         fill="none" stroke="currentColor"
-                                                                        stroke-width="2" stroke-linecap="round"
+                                                                        stroke-width="1.8" stroke-linecap="round"
                                                                         stroke-linejoin="round" aria-hidden="true">
-                                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                                                        <path
-                                                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                                                        </path>
+                                                                        <defs>
+                                                                            <clipPath id="globe-clip-<%= pindex %>">
+                                                                                <circle cx="12" cy="12" r="9"></circle>
+                                                                            </clipPath>
+                                                                        </defs>
+                                                                        <circle class="globe-outline" cx="12" cy="12" r="9"></circle>
+                                                                        <g class="globe-surface" clip-path="url(#globe-clip-<%= pindex %>)">
+                                                                            <ellipse class="globe-latitude globe-latitude--top" cx="12" cy="8.5" rx="8.5" ry="2.55"></ellipse>
+                                                                            <ellipse class="globe-latitude" cx="12" cy="12" rx="9" ry="3.15"></ellipse>
+                                                                            <ellipse class="globe-latitude globe-latitude--bottom" cx="12" cy="15.5" rx="8.5" ry="2.55"></ellipse>
+                                                                            <g class="globe-longitude-belt">
+                                                                                <path d="M-4 3 C1 5.5 1 18.5 -4 21"></path>
+                                                                                <path d="M4 3 C9 5.5 9 18.5 4 21"></path>
+                                                                                <path d="M12 3 C17 5.5 17 18.5 12 21"></path>
+                                                                                <path d="M20 3 C25 5.5 25 18.5 20 21"></path>
+                                                                                <path d="M28 3 C33 5.5 33 18.5 28 21"></path>
+                                                                                <path d="M36 3 C41 5.5 41 18.5 36 21"></path>
+                                                                            </g>
+                                                                        </g>
                                                                     </svg>
                                                                 </a>
                                                             <% } else { %>
@@ -521,27 +535,26 @@ src="<%- previewSrcs[0] || '' %>"
                                                             </svg>
                                                         </a>
                                                     </div>
-                                                    <% if (project.solution || project.intro) { %>
-                                                        <p class="project-subtitle">
-                                                            <%= project.solution || project.intro %>
-                                                        </p>
+                                                    <% if (project.solution || project.intro || (project.scope && project.scope.length)) { %>
+                                                        <div class="project-text-body">
+                                                            <% if (project.solution || project.intro) { %>
+                                                                <p class="project-subtitle">
+                                                                    <%= project.solution || project.intro %>
+                                                                </p>
+                                                            <% } %>
+                                                            <% if (project.scope && project.scope.length) { %>
+                                                                <div class="project-meta-row">
+                                                                    <div class="project-scope-tags" aria-label="Project scope">
+                                                                        <% project.scope.forEach(function(item, idx) { %>
+                                                                            <span class="scope-tag"><%= item %></span><% if (idx < project.scope.length - 1) { %><span class="scope-separator">·</span><% } %>
+                                                                        <% }); %>
+                                                                    </div>
+                                                                </div>
+                                                            <% } %>
+                                                        </div>
                                                     <% } %>
                                                 </div>
                                             </div>
-                                                        <div class="project-meta-row">
-                                                            <% if (project.scope && project.scope.length) { %>
-                                                                <div class="project-scope-tags">
-                                                                    <% project.scope.forEach(function(item, idx) { %>
-                                                                        <span class="scope-tag">
-                                                                            <%= item %>
-                                                                        </span>
-                                                                        <% if (idx < project.scope.length - 1) { %><span
-                                                                                class="scope-separator">·</span>
-                                                                            <% } %>
-                                                                                <% }); %>
-                                                                </div>
-                                                                <% } %>
-                                                        </div>
                                         </div>
                             </section>
                             <% }); %>
