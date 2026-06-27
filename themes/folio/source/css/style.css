@@ -3278,6 +3278,12 @@ body.index-page {
     --slide-size: 96%;
   }
 
+  .projects-main-content .custom-shader-carousel {
+    --custom-slider-duration: 1.05s;
+    --custom-slider-focus-duration: 0.42s;
+    --custom-slider-desaturate-duration: 0.85s;
+  }
+
   .projects-main-content .embla__slide,
   .projects-main-content .custom-shader-slide {
     flex: 0 0 var(--slide-size);

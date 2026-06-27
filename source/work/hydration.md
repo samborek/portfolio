@@ -16,13 +16,13 @@ shader_effect: soft-ripple
 # Hexo dev server applies these after save/refresh; static /public output needs `npm run build`.
 shader_settings:
   # Overall image displacement strength. Higher = more watery/smeared image movement.
-  distortion: 6.72
+  distortion: 4.72
   # Amount of bright cursor sheen and ripple highlight. 0 disables extra light.
   light: 0.72
   # Global animation clock speed for the shader.
   speed: 0.28
   # How fast ripple rings expand away from cursor/touch points.
-  ripple_speed: 1.58
+  ripple_speed: 1.28
   # How long ripple energy stays visible before fading.
   ripple_fade: 1.28
   # Trail length behind cursor movement. Higher = longer falloff tail.
