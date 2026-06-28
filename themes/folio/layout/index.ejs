@@ -274,7 +274,8 @@
                                 ? firstCarouselItem.endsWith('.json')
                                 : (firstCarouselItem.light && String(firstCarouselItem.light).endsWith('.json'))
                             ); %>
-                            <% const useCustomShaderCarousel = project.shader_effect && pindex === 0 && project.carousel && project.carousel.length && !project.preview_slideshow; %>
+                            <% const useCustomShaderCarousel = project.carousel && project.carousel.length && !project.preview_slideshow; %>
+                            <% const showCarouselHint = ['hydration', 'hydradx'].includes(String(project.short_title || project.title || '').toLowerCase()); %>
                             <% const needsTopbarLight = Boolean(project.topbar_light || firstCarouselIsJson); %>
                             <section class="project-section reveal-on-scroll" id="project-<%= pindex %>"
                                 data-project-index="<%= pindex %>"<% if (needsTopbarLight) { %> data-topbar-light="true"<% } %><% if (carouselStyle) { %>
@@ -286,7 +287,10 @@
                                                 <div class="carousel-nav-zone carousel-nav-zone--right" data-nav="next">
                                                 </div>
 
-                                                <div class="<%= useCustomShaderCarousel ? 'custom-shader-carousel' : 'embla' %>">
+                                                <div class="<%= useCustomShaderCarousel ? 'custom-shader-carousel' : 'embla' %><%= showCarouselHint ? ' has-scroll-hint' : '' %>">
+                                                    <% if (showCarouselHint) { %>
+                                                        <span class="carousel-scroll-hint" aria-hidden="true">← →</span>
+                                                    <% } %>
                                                     <div class="<%= useCustomShaderCarousel ? 'custom-shader-viewport' : 'embla__viewport' %>">
                                                         <div class="<%= useCustomShaderCarousel ? 'custom-shader-track' : 'embla__container' %>">
                                                             <% if (project.carousel && project.carousel.length) { %>
@@ -422,7 +426,7 @@ src="<%- previewSrcs[0] || '' %>"
                                                                                                             <img src="<%- url_for(lightItem) %>"
                             alt="<%= project.title %>"
                                                                                                                 class="theme-light-only"
-                                                                                                                loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                                loading="<%= slideIndex === 0 ? 'eager' : 'lazy' %>"
                                                                                                                 decoding="async"
                                                                                                                 <%=pindex===0
                                                                                                                 ? 'fetchpriority="high"'
@@ -432,7 +436,7 @@ src="<%- previewSrcs[0] || '' %>"
                                                                                                             <img src="<%- url_for(darkItem) %>"
                             alt="<%= project.title %>"
                                                                                                                 class="theme-dark-only"
-                                                                                                                loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                                loading="<%= slideIndex === 0 ? 'eager' : 'lazy' %>"
                                                                                                                 decoding="async"
                                                                                                                 <%=pindex===0
                                                                                                                 ? 'fetchpriority="high"'
@@ -443,7 +447,7 @@ src="<%- previewSrcs[0] || '' %>"
                                                                                                                 %>
                                                                                                                 <img src="<%- url_for(lightItem) %>"
                                 alt="<%= project.title %>"
-                                                                                                                    loading="<%= pindex === 0 ? 'eager' : 'lazy' %>"
+                                                                                                                    loading="<%= slideIndex === 0 ? 'eager' : 'lazy' %>"
                                                                                                                     decoding="async"
                                                                                                                     <%=pindex===0
                                                                                                                     ? 'fetchpriority="high"'
@@ -482,7 +486,6 @@ src="<%- previewSrcs[0] || '' %>"
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span class="carousel-scroll-hint" aria-hidden="true">Scroll ↔</span>
                                         </div>
 
 
@@ -1374,12 +1377,29 @@ src="<%- previewSrcs[0] || '' %>"
             tabIndicator.style.transform = `translateX(${rect.left - parentRect.left}px)`;
         };
 
+        const showFloatingControls = () => {
+            if (floatControls) {
+                floatControls.classList.add('controls-ready');
+            }
+        };
+
         // Initial indicator
         const initialActive = document.querySelector('.tab-button.active');
         if (initialActive) {
-            document.fonts.ready.then(() => {
-                setTimeout(() => updateIndicator(initialActive), 100);
-            });
+            const settleInitialIndicator = () => {
+                updateIndicator(initialActive);
+                requestAnimationFrame(showFloatingControls);
+            };
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready
+                    .then(() => setTimeout(settleInitialIndicator, 100))
+                    .catch(settleInitialIndicator);
+            } else {
+                settleInitialIndicator();
+            }
+        } else {
+            showFloatingControls();
         }
 
         // Initialize aria-hidden

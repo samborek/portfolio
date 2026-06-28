@@ -30,13 +30,13 @@ shader_settings:
   # How many ripple samples are laid down along cursor movement. Higher = denser/longer mouse trail.
   trail_density: 0.5
   # How much cursor/ripple motion can deform the image mask edge.
-  edge: 1.56
+  edge: 3.56
   # Mouse-follow smoothing. Higher = slower, more delayed follow.
   cursor_lag: 1.12
   # Cursor influence radius. Higher = wider distortion area around pointer.
-  cursor_area: 0.20
+  cursor_area: 0.10
   # Cursor falloff steepness. Higher = tighter/faster fade from pointer.
-  cursor_falloff: 8.6
+  cursor_falloff: 5.6
   # Ripple spatial width. Higher = broader rings and wake.
   ripple_area: 0.2
   # Ripple overlap smoothing. Higher = less stagger/stacking, but softer detail.

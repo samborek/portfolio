@@ -1023,6 +1023,19 @@ body.index-page {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .floating-controls {
+    transition: none;
+  }
+
+  .floating-controls.controls-ready {
+    visibility: visible;
+    transform: translateX(-50%);
+  }
+
+  .floating-controls.controls-hidden {
+    transform: translateX(-50%) translateY(150%);
+  }
+
   .index-page .sidebar-accordion-toggle {
     animation: none;
     transform: none;
@@ -1349,6 +1362,32 @@ body.index-page {
 
 .carousel-scroll-hint {
   display: none;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 8;
+  align-items: center;
+  justify-content: center;
+  height: 1.65rem;
+  min-width: 3.15rem;
+  padding: 0 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-text) 13%, transparent);
+  color: color-mix(in srgb, var(--color-text) 88%, transparent);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(16px) saturate(1.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    visibility 0.28s ease;
 }
 
 .project-carousel-wrapper:hover .carousel-scroll-hint,
@@ -1368,6 +1407,7 @@ body.index-page {
 
 /* Embla Carousel */
 .embla {
+  position: relative;
   overflow: hidden;
 }
 
@@ -1428,6 +1468,7 @@ body.index-page {
   --custom-slider-focus-duration: 0.72s;
   --custom-slider-desaturate-duration: 1.35s;
   --custom-slider-desaturate-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
   overflow: visible;
   width: 100%;
 }
@@ -2168,23 +2209,34 @@ body.index-page {
   position: fixed;
   bottom: calc(1.5rem + env(safe-area-inset-bottom));
   left: 50%;
-  transform: translateX(-50%);
+  visibility: hidden;
+  transform: translateX(-50%) translateY(0.75rem) scale(0.992);
   z-index: 9999;
   display: flex;
   align-items: center;
   gap: 0.7rem;
   pointer-events: none;
   /* Let events pass through the container */
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    transform 0.64s cubic-bezier(0.19, 1, 0.22, 1),
+    visibility 0s linear 0.64s;
   will-change: transform;
 }
 
+.floating-controls.controls-ready {
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+  transition:
+    transform 0.64s cubic-bezier(0.19, 1, 0.22, 1),
+    visibility 0s;
+}
+
 .floating-controls.controls-hidden {
-  transform: translate(-50%, 150%);
-  opacity: 0;
+  transform: translateX(-50%) translateY(150%) scale(1);
 }
 
 .content-tabs {
+  background: rgba(255, 255, 255, 0.58);
   background: color-mix(in srgb, var(--color-bg) 58%, transparent);
   backdrop-filter: blur(24px) saturate(1.45);
   -webkit-backdrop-filter: blur(24px) saturate(1.45);
@@ -2205,11 +2257,16 @@ body.index-page {
 }
 
 [data-theme="dark"] .content-tabs {
+  background: rgba(8, 8, 8, 0.56);
   background: color-mix(in srgb, var(--color-bg) 52%, transparent);
   border-color: color-mix(in srgb, #fff 13%, transparent);
   box-shadow:
     0 18px 54px rgba(0, 0, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.floating-controls:not(.controls-ready) .tab-indicator {
+  transition: none;
 }
 
 .tab-indicator {
@@ -2258,6 +2315,7 @@ body.index-page {
   height: 3rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.58);
   background: color-mix(in srgb, var(--color-bg) 58%, transparent);
   backdrop-filter: blur(24px) saturate(1.45);
   -webkit-backdrop-filter: blur(24px) saturate(1.45);
@@ -2281,6 +2339,7 @@ body.index-page {
 }
 
 [data-theme="dark"] .theme-toggle {
+  background: rgba(8, 8, 8, 0.56);
   background: color-mix(in srgb, var(--color-bg) 52%, transparent);
   border-color: color-mix(in srgb, #fff 13%, transparent);
   box-shadow:
@@ -3392,10 +3451,10 @@ body.index-page {
     -webkit-mask-image: none !important;
   }
 
-  /* Peek: 96% so only a sliver of prev/next is visible */
+  /* Smartphone peek: small side slivers hint that project media is swipeable. */
   .projects-main-content .embla,
   .projects-main-content .custom-shader-carousel {
-    --slide-size: 96%;
+    --slide-size: 94.5%;
   }
 
   .projects-main-content .custom-shader-carousel {
@@ -3461,9 +3520,42 @@ body.index-page {
     display: block;
   }
 
-  /* Hide the scroll hint on mobile — peek layout makes it self-explanatory */
-  .carousel-scroll-hint {
-    display: none !important;
+  /* Compact mobile scroll hint for dark slides where side peeks are subtle. */
+  .projects-main-content .custom-shader-carousel.has-scroll-hint:not(.has-hidden-scroll-hint) > .carousel-scroll-hint,
+  .projects-main-content .embla.has-scroll-hint:not(.has-hidden-scroll-hint) > .carousel-scroll-hint {
+    position: absolute;
+    top: 0.75rem;
+    right: calc(((100% - var(--slide-size, 100%)) / 2) + 0.75rem);
+    left: auto;
+    z-index: 50;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 1.65rem;
+    min-width: 3.15rem;
+    padding: 0 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-full);
+    background: rgba(0, 0, 0, 0.38);
+    color: rgba(255, 255, 255, 0.92);
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(16px) saturate(1.35);
+    -webkit-backdrop-filter: blur(16px) saturate(1.35);
+    pointer-events: none;
+    opacity: 0.88;
+    transform: translateY(0);
+  }
+
+  .projects-main-content .custom-shader-carousel.has-scroll-hint.has-hidden-scroll-hint > .carousel-scroll-hint,
+  .projects-main-content .embla.has-scroll-hint.has-hidden-scroll-hint > .carousel-scroll-hint {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.35rem);
   }
 
   .project-info,
@@ -3505,11 +3597,18 @@ body.index-page {
   /* Disable heavy effects for better mobile performance */
   .content-tabs,
   .theme-toggle {
-    backdrop-filter: blur(22px) saturate(1.35);
-    -webkit-backdrop-filter: blur(22px) saturate(1.35);
+    backdrop-filter: blur(24px) saturate(1.45);
+    -webkit-backdrop-filter: blur(24px) saturate(1.45);
+    background: rgba(255, 255, 255, 0.58);
     background: color-mix(in srgb, var(--color-bg) 56%, transparent);
     pointer-events: auto !important;
     /* Ensure interactive on mobile too */
+  }
+
+  [data-theme="dark"] .content-tabs,
+  [data-theme="dark"] .theme-toggle {
+    background: rgba(8, 8, 8, 0.58);
+    background: color-mix(in srgb, var(--color-bg) 54%, transparent);
   }
 
   .embla__slide {
@@ -3945,6 +4044,14 @@ body.index-page {
   }
 
   .projects-main-content .project-section.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .projects-main-content .project-section.reveal-on-scroll.revealed {
     opacity: 1;
     transform: none;
   }
@@ -4817,6 +4924,15 @@ body.project-page {
 .reveal-on-scroll.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 

@@ -284,6 +284,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const customSliderNodes = document.querySelectorAll('.custom-shader-carousel');
 
+  const hideCarouselHint = (carouselNode) => {
+    if (carouselNode && carouselNode.classList.contains('has-scroll-hint')) {
+      carouselNode.classList.add('has-hidden-scroll-hint');
+    }
+  };
+
   customSliderNodes.forEach(sliderNode => {
     const track = sliderNode.querySelector('.custom-shader-track');
     const originalSlides = Array.from(sliderNode.querySelectorAll('.custom-shader-slide'));
@@ -401,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const goBy = (direction) => {
+      hideCarouselHint(sliderNode);
       const didLoopReset = finishLoopIfNeeded();
       if (didLoopReset) {
         track.offsetHeight;
@@ -721,6 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const onEmblaSelect = () => {
       const selected = getSelectedSlideIndex();
+      hideCarouselHint(emblaNode);
       emblaNode.classList.add('is-sliding');
       updateSlideFocus(selected);
       window.dispatchEvent(new CustomEvent('folio:scroll'));
@@ -794,8 +802,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const markMediaLoaded = (media) => {
     const container = media.closest('.image-container, .tile-image-wrapper, .raw-shader-image');
-    if (container) container.classList.add('loaded');
+    if (!container || container.classList.contains('loaded')) return;
+
+    const startedAt = Number(container.dataset.loadStartedAt || 0);
+    const elapsed = startedAt ? performance.now() - startedAt : MIN_SKELETON_TIME;
+    const delay = Math.max(0, MIN_SKELETON_TIME - elapsed);
+
+    setTimeout(() => {
+      container.classList.add('loaded');
+    }, delay);
   };
+
+  document.querySelectorAll('.image-container, .tile-image-wrapper, .raw-shader-image').forEach(container => {
+    if (!container.dataset.loadStartedAt) {
+      container.dataset.loadStartedAt = String(performance.now());
+    }
+  });
 
   const handleImageLoad = (img) => {
     if (img.decode && img.currentSrc) {
