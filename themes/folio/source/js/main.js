@@ -216,10 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Mobile Navigation ---
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-  const sidebar = document.querySelector('.sidebar');
-  if (mobileNavToggle && sidebar) {
+  const mobileHeroSection = document.querySelector('.hero-section');
+  if (mobileNavToggle && mobileHeroSection) {
     mobileNavToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
+      mobileHeroSection.classList.toggle('active');
     });
   }
 
