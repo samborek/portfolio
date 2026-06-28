@@ -5360,6 +5360,23 @@ body.project-page {
   }
 }
 
+@media (min-width: 769px) and (max-width: 900px) {
+  /* Tablet inset from browser edge — clients + behance/dribbble only */
+  .projects-main-content {
+    --homepage-section-padding-inline: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .projects-main-content > #clients.home-client-section {
+    width: calc(100% - 2 * var(--homepage-section-padding-inline));
+    margin-inline: var(--homepage-section-padding-inline);
+  }
+
+  .projects-main-content #more-works-combined {
+    padding-inline: var(--homepage-section-padding-inline);
+    box-sizing: border-box;
+  }
+}
+
 @media (max-width: 600px) {
   .dribbble-grid {
     gap: var(--space-md);
