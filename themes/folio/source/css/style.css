@@ -880,7 +880,7 @@ body.index-page {
   width: 116px;
   min-width: 0;
   height: 46px;
-  margin-left: -24px;
+  margin-left: -14px;
   padding-inline: 1rem;
   display: inline-flex;
   align-items: center;
@@ -3942,7 +3942,7 @@ body.index-page {
     width: 116px;
     min-width: 0;
     height: 46px;
-    margin-left: -24px;
+    margin-left: -14px;
     padding-inline: 0.8rem;
     justify-content: center;
   }
@@ -4108,7 +4108,7 @@ body.index-page {
   .sidebar-cta-wrapper .copy-email-btn {
     flex: 0 0 7.25rem;
     width: 7.25rem;
-    margin-left: -30px;
+    margin-left: -1s4px;
   }
 }
 
