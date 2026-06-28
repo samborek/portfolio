@@ -1959,12 +1959,44 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Reveal on Scroll ---
   const revealElements = document.querySelectorAll('.reveal-on-scroll');
   if (revealElements.length > 0 && homeView) {
+    const revealStartTime = performance.now();
+    const mobileRevealMq = window.matchMedia('(max-width: 600px)');
+    const revealTimers = new WeakMap();
+
+    const revealElement = (element, delay = 0) => {
+      if (element.classList.contains('revealed')) return;
+
+      const applyReveal = () => {
+        element.classList.add('revealed');
+        revealObserver.unobserve(element);
+        revealTimers.delete(element);
+      };
+
+      if (delay <= 0) {
+        applyReveal();
+        return;
+      }
+
+      if (!revealTimers.has(element)) {
+        revealTimers.set(element, setTimeout(applyReveal, delay));
+      }
+    };
+
+    const getRevealDelay = (element) => {
+      if (!mobileRevealMq.matches || !element.classList.contains('project-section')) return 0;
+
+      const elapsed = performance.now() - revealStartTime;
+      if (elapsed > 1400) return 0;
+
+      const projectIndex = Number.parseInt(element.dataset.projectIndex || '0', 10);
+      const targetDelay = 860 + Math.min(Math.max(projectIndex, 0), 1) * 150;
+      return Math.max(0, targetDelay - elapsed);
+    };
+
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          // Once revealed, we don't need to observe it anymore
-          revealObserver.unobserve(entry.target);
+          revealElement(entry.target, getRevealDelay(entry.target));
         }
       });
     }, {
@@ -1974,18 +2006,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     revealElements.forEach(el => revealObserver.observe(el));
-
-    // Staggered reveal for the first two projects on load to ensure movement is visible
-    setTimeout(() => {
-      revealElements.forEach((el, index) => {
-        if (index < 2 && !el.classList.contains('revealed')) {
-          setTimeout(() => {
-            el.classList.add('revealed');
-            revealObserver.unobserve(el);
-          }, index * 150); // Stagger the first two
-        }
-      });
-    }, 200); // Wait for page to settle
   }
 
   // Work section toggle
