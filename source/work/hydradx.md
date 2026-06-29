@@ -7,6 +7,39 @@ year: 2023
 order: 999
 cover: /images/work/hydra_1_1.jpg
 hero_image: /images/work/hydra_1_1.jpg
+mobile_first_slide: /images/work/hydra_1_1.jpg
+preview_extra:
+  - /images/work/hydra_1_1.jpg
+shader_effect: soft-ripple
+shader_settings:
+  # Overall image displacement strength. Higher = more watery/smeared image movement.
+  distortion: 3.6
+  # Amount of bright cursor sheen and ripple highlight. 0 disables extra light.
+  light: 0.54
+  # Global animation clock speed for the shader.
+  speed: 0.24
+  # How fast ripple rings expand away from cursor/touch points.
+  ripple_speed: 1.1
+  # How long ripple energy stays visible before fading.
+  ripple_fade: 1.4
+  # Trail length behind cursor movement. Higher = longer falloff tail.
+  tail: 2.2
+  # How many ripple samples are laid down along cursor movement. Higher = denser/longer mouse trail.
+  trail_density: 0.5
+  # How much cursor/ripple motion can deform the image mask edge.
+  edge: 2.2
+  # Mouse-follow smoothing. Higher = slower, more delayed follow.
+  cursor_lag: 1.16
+  # Cursor influence radius. Higher = wider distortion area around pointer.
+  cursor_area: 0.12
+  # Cursor falloff steepness. Higher = tighter/faster fade from pointer.
+  cursor_falloff: 5.4
+  # Ripple spatial width. Higher = broader rings and wake.
+  ripple_area: 0.22
+  # Ripple overlap smoothing. Higher = less stagger/stacking, but softer detail.
+  ripple_smoothing: 0.75
+  # RGB channel split near active distortion. Higher = stronger chromatic fringe.
+  chromatic_aberration: 0.1
 carousel:
   - /images/work/hydra_1_1.jpg
   - /images/work/hydra_2.jpg

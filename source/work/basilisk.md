@@ -7,6 +7,27 @@ year: 2022
 order: 998
 cover: /images/work/basilisk_1.jpg
 hero_image: /images/work/basilisk_1.jpg
+mobile_first_slide: /images/work/basilisk_1.jpg
+preview_extra:
+  - /images/work/basilisk_1.jpg
+shader_effect: pixel-falloff
+shader_settings:
+  # Pixel block size around the cursor. Higher = larger pixels.
+  pixel_size: 3
+  # Cursor influence radius. Higher = wider pixelated area.
+  pixel_area: 0.22
+  # Cursor falloff steepness. Higher = tighter/faster fade from pointer.
+  pixel_falloff: 2.2
+  # Edge softness of the pixelated area. Higher = smoother blend into the clean image.
+  pixel_softness: 0.22
+  # Subtle contrast/brightness lift inside the pixelated area.
+  light: 0.12
+  # Speed of the small animated pixel jitter around the cursor.
+  speed: .40
+  # Edge breakup and directional smear amount inside the pixelated area.
+  edge: 1.28
+  # Mouse-follow smoothing. Higher = slower, more delayed follow.
+  cursor_lag: 1.06
 carousel:
   - /images/work/basilisk_1.jpg
   - /images/work/basilisk_2.jpg

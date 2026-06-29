@@ -851,7 +851,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (window.matchMedia('(max-width: 768px), (pointer: coarse)').matches) return;
 
-    const containers = Array.from(document.querySelectorAll('.raw-shader-image[data-shader-effect="soft-ripple"]'));
+    const supportedEffects = new Set(['soft-ripple', 'pixel-falloff']);
+    const containers = Array.from(document.querySelectorAll('.raw-shader-image[data-shader-effect]'))
+      .filter((container) => supportedEffects.has(container.dataset.shaderEffect));
     if (!containers.length) return;
 
     const vertexSource = `
@@ -864,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     `;
 
-    const fragmentSource = `
+    const softRippleFragmentSource = `
       precision highp float;
 
       uniform sampler2D u_texture;
@@ -1013,6 +1015,108 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     `;
 
+    const pixelFalloffFragmentSource = `
+      precision highp float;
+
+      uniform sampler2D u_texture;
+      uniform vec2 u_resolution;
+      uniform vec2 u_imageResolution;
+      uniform vec4 u_innerRect;
+      uniform float u_radius;
+      uniform vec2 u_mouse;
+      uniform float u_time;
+      uniform float u_hover;
+      uniform vec4 u_effects;
+      uniform vec4 u_areaSettings;
+
+      varying vec2 v_uv;
+
+      vec2 coverUv(vec2 uv) {
+        float canvasRatio = u_resolution.x / u_resolution.y;
+        float imageRatio = u_imageResolution.x / u_imageResolution.y;
+        vec2 scale = vec2(1.0);
+
+        if (imageRatio > canvasRatio) {
+          scale.x = canvasRatio / imageRatio;
+        } else {
+          scale.y = imageRatio / canvasRatio;
+        }
+
+        vec2 covered = (uv - 0.5) * scale + 0.5;
+        return (covered - 0.5) / vec2(1.124, 1.018) + 0.5;
+      }
+
+      float roundedRectMask(vec2 p, float radius, float aspect) {
+        vec2 scale = vec2(aspect, 1.0);
+        vec2 position = (p - 0.5) * scale;
+        vec2 halfSize = scale * 0.5;
+        vec2 q = abs(position) - halfSize + vec2(radius);
+        float distance = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - radius;
+        float aa = 0.75 / max(min(u_resolution.x, u_resolution.y), 1.0);
+        return 1.0 - smoothstep(-aa, aa, distance);
+      }
+
+      float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+      }
+
+      void main() {
+        float pixelSize = max(u_effects.x, 1.0);
+        float contrast = max(u_effects.y, 0.0);
+        float speed = max(u_effects.z, 0.05);
+        float edgeStrength = max(u_effects.w, 0.0);
+        float pixelArea = max(u_areaSettings.x, 0.05);
+        float falloffSteepness = max(u_areaSettings.y, 0.05);
+        float softness = max(u_areaSettings.z, 0.01);
+
+        vec2 innerSize = max(u_innerRect.zw - u_innerRect.xy, vec2(0.001));
+        vec2 p = (v_uv - u_innerRect.xy) / innerSize;
+        vec2 mouse = (u_mouse - u_innerRect.xy) / innerSize;
+        vec2 toMouse = p - mouse;
+        float dist = length(toMouse);
+        float influence = exp(-(dist / pixelArea) * falloffSteepness) * u_hover;
+        influence = smoothstep(0.0, softness, influence);
+
+        vec2 pixelGrid = max(u_resolution / pixelSize, vec2(1.0));
+        vec2 maskGrid = max((innerSize * u_resolution) / pixelSize, vec2(1.0));
+        vec2 maskCell = floor(p * maskGrid);
+        vec2 pixelMaskP = (floor(p * maskGrid) + 0.5) / maskGrid;
+        float aspect = (innerSize.x * u_resolution.x) / max(innerSize.y * u_resolution.y, 0.001);
+        float edgeDist = min(min(p.x, 1.0 - p.x), min(p.y, 1.0 - p.y));
+        float edgeBand = 1.0 - smoothstep(0.0, 0.18, edgeDist);
+        float edgeInfluence = clamp(influence * edgeBand * edgeStrength, 0.0, 1.0);
+        vec2 edgeDirection = normalize((p - 0.5) * vec2(aspect, 1.0) + 0.0001) / vec2(max(aspect, 0.001), 1.0);
+        float edgeNoise = hash(maskCell + floor(u_time * speed * 10.0));
+        vec2 edgeChunk = vec2(
+          hash(maskCell + vec2(3.1, 8.7)),
+          hash(maskCell + vec2(9.4, 2.6))
+        ) - 0.5;
+        vec2 edgeOffset = edgeDirection * (edgeNoise - 0.5) * 0.09 * edgeInfluence;
+        edgeOffset += edgeChunk / maskGrid * edgeInfluence * 3.5;
+        vec2 maskP = mix(p, pixelMaskP + edgeOffset, clamp(influence * edgeStrength * 3.0, 0.0, 1.0));
+        float alpha = roundedRectMask(maskP, u_radius, aspect);
+
+        if (alpha <= 0.001) {
+          discard;
+        }
+
+        vec2 sampleP = mix(p, maskP, edgeInfluence);
+        vec2 baseUv = clamp(coverUv(sampleP), vec2(0.001), vec2(0.999));
+        vec2 pixelUv = (floor(baseUv * pixelGrid) + 0.5) / pixelGrid;
+
+        float pixelNoise = hash(floor(baseUv * pixelGrid) + floor(u_time * speed * 16.0));
+        vec2 pixelJitter = vec2(pixelNoise - 0.5, hash(vec2(pixelNoise, pixelNoise + 2.7)) - 0.5) * influence * 0.012;
+        vec2 smear = normalize(toMouse + 0.0001) * influence * edgeStrength * 0.008;
+        vec4 originalColor = texture2D(u_texture, baseUv);
+        vec4 pixelColor = texture2D(u_texture, clamp(pixelUv + smear + pixelJitter, vec2(0.001), vec2(0.999)));
+
+        pixelColor.rgb = mix(pixelColor.rgb, pow(pixelColor.rgb, vec3(1.0 + contrast * 0.16)), influence * 0.7);
+
+        vec3 color = mix(originalColor.rgb, pixelColor.rgb, influence);
+        gl_FragColor = vec4(color, alpha);
+      }
+    `;
+
     const createShader = (gl, type, source) => {
       const shader = gl.createShader(type);
       gl.shaderSource(shader, source);
@@ -1026,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return shader;
     };
 
-    const createProgram = (gl) => {
+    const createProgram = (gl, fragmentSource) => {
       const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource);
       const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
       if (!vertexShader || !fragmentShader) return null;
@@ -1073,6 +1177,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       return {
         distortion: clampSetting(parsed.distortion, 0.72, 0, 24),
+        pixelSize: clampSetting(parsed.pixel_size ?? parsed.pixelSize, 18, 2, 120),
+        pixelArea: clampSetting(parsed.pixel_area ?? parsed.pixelArea, 0.24, 0.05, 2),
+        pixelFalloff: clampSetting(parsed.pixel_falloff ?? parsed.pixelFalloff, 5, 0.2, 18),
+        pixelSoftness: clampSetting(parsed.pixel_softness ?? parsed.pixelSoftness, 0.7, 0.05, 2),
         light: clampSetting(parsed.light, 0.72, 0, 4),
         speed: clampSetting(parsed.speed, 0.68, 0.05, 6),
         rippleSpeed: clampSetting(parsed.ripple_speed ?? parsed.rippleSpeed, 0.78, 0.05, 6),
@@ -1099,7 +1207,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const img = getVisibleImage(container);
       if (!img) return;
+      const effect = container.dataset.shaderEffect;
       const settings = getShaderSettings(container);
+      const fragmentSource = effect === 'pixel-falloff'
+        ? pixelFalloffFragmentSource
+        : softRippleFragmentSource;
 
       const start = () => {
         if (!img.naturalWidth || !img.naturalHeight || container.dataset.shaderReady === 'true') return;
@@ -1123,7 +1235,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const program = createProgram(gl);
+        const program = createProgram(gl, fragmentSource);
         if (!program) {
           canvas.remove();
           return;
@@ -1295,10 +1407,15 @@ document.addEventListener('DOMContentLoaded', () => {
           gl.uniform2f(locations.mouse, mouseX, mouseY);
           gl.uniform1f(locations.time, (now - startTime) / 1000);
           gl.uniform1f(locations.hover, hover);
-          gl.uniform4f(locations.effects, settings.distortion, settings.light, settings.speed, settings.edge);
+          if (effect === 'pixel-falloff') {
+            gl.uniform4f(locations.effects, settings.pixelSize, settings.light, settings.speed, settings.edge);
+            gl.uniform4f(locations.areaSettings, settings.pixelArea, settings.pixelFalloff, settings.pixelSoftness, 0);
+          } else {
+            gl.uniform4f(locations.effects, settings.distortion, settings.light, settings.speed, settings.edge);
+            gl.uniform4f(locations.areaSettings, settings.cursorArea, settings.cursorFalloff, settings.rippleArea, settings.rippleSmoothing);
+          }
           gl.uniform4f(locations.rippleSettings, settings.rippleSpeed, settings.rippleFade, settings.tail, settings.cursorLag);
           gl.uniform4f(locations.trailSettings, settings.tail, settings.trailDensity, 0, 0);
-          gl.uniform4f(locations.areaSettings, settings.cursorArea, settings.cursorFalloff, settings.rippleArea, settings.rippleSmoothing);
           gl.uniform1f(locations.chromaticAberration, settings.chromaticAberration);
           gl.uniform4fv(locations.ripples, ripples);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
