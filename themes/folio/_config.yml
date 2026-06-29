@@ -48,7 +48,7 @@ experience:
 clients:
   title: "Clients & Collaborators"
   home_title: "Clients & cooperation"
-  intro: "A curated look at 30+ client collaborations spanning product design, illustration, branding, and interface work across fintech, crypto, legal tech, mobility, marketplaces, consumer apps, and media."
+  intro: "A curated look at 30+ client collaborations spanning product design, illustration, branding, project management, and interface work across fintech, crypto, legal tech, mobility, marketplaces, consumer apps, and media."
   featured:
     - name: "Definely"
       url: "https://www.definely.com/"
@@ -66,10 +66,10 @@ clients:
     - name: "NIMIQ"
       url: "https://nimiq.com/"
       logo: "/images/clients/nimiq.svg"
-    - name: "Washington Post"
-      url: "https://washingtonpost.com/"
-      logo: "/images/clients/washington-post.svg"
-      logo_scale: mark
+    - name: "Hydration"
+      url: "https://hydration.net/"
+      logo: "/images/clients/hydration.svg"
+      logo_scale: wide
     - name: "RelayPay"
       url: "https://www.relaypay.io/"
       logo: "/images/clients/relaypay.svg"
@@ -115,6 +115,8 @@ clients:
         - name: "Cake Wallet"
           url: "https://cakewallet.com/"
         - name: "Goldencoin"
+        - name: "Hydration"
+          url: "https://hydration.net/"
         - name: "NIMIQ"
           url: "https://nimiq.com/"
         - name: "ParcelX"
@@ -134,8 +136,6 @@ clients:
           url: "https://www.definely.com/"
         - name: "Subskribe"
           url: "https://www.subskribe.com/"
-        - name: "Washington Post"
-          url: "https://washingtonpost.com/"
     - title: "Sports / Mobility / Other"
       items:
         - name: "Futurehome"
