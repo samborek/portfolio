@@ -13,11 +13,11 @@ preview_extra:
 shader_effect: pixel-falloff
 shader_settings:
   # Pixel block size around the cursor. Higher = larger pixels.
-  pixel_size: 3
+  pixel_size: 6
   # Cursor influence radius. Higher = wider pixelated area.
-  pixel_area: 0.22
+  pixel_area: 0.12
   # Cursor falloff steepness. Higher = tighter/faster fade from pointer.
-  pixel_falloff: 2.2
+  pixel_falloff: 1.2
   # Edge softness of the pixelated area. Higher = smoother blend into the clean image.
   pixel_softness: 0.22
   # Subtle contrast/brightness lift inside the pixelated area.

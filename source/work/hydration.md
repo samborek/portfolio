@@ -42,7 +42,7 @@ shader_settings:
   # Ripple overlap smoothing. Higher = less stagger/stacking, but softer detail.
   ripple_smoothing: 0.7
   # RGB channel split near active distortion. Higher = stronger chromatic fringe.
-  chromatic_aberration: 0.13
+  chromatic_aberration: 0.23
 carousel:
   - /images/work/hydration_1.jpg
   - light: /images/work/hydration_2.jpg
