@@ -30,7 +30,7 @@
                             </a>
                         </div>
                         <div class="sidebar-accordion-item">
-                            <a href="#clients" class="sidebar-accordion-toggle sidebar-scroll-link">
+                            <a href="#clients" class="sidebar-accordion-toggle" id="clients-toggle">
                                 <span class="sidebar-accordion-label">Clients</span>
                             </a>
                         </div>
@@ -211,9 +211,7 @@
                                 </section>
                             <% } %>
                             <% if (theme.clients) { %>
-                                <section class="about-section about-list-section">
-                                    <%- partial('_partial/clients-section', { variant: 'about' }) %>
-                                </section>
+                                <%- partial('_partial/clients-section', { sectionId: 'clients', sectionClass: 'about-section about-list-section home-client-section' }) %>
                             <% } %>
                             <% if (theme.events) { %>
                                 <section class="about-section about-list-section">
@@ -663,11 +661,6 @@ src="<%- previewSrcs[0] || '' %>"
                                         </div>
                                     </section>
                                 </div>
-
-                                <% if (theme.clients) { %>
-                                    <%- partial('_partial/clients-section', { sectionId: 'clients', sectionClass: 'home-client-section' }) %>
-                                <% } %>
-
 
                                         <!-- SCOPE SECTION -->
                                         <%
@@ -1175,6 +1168,25 @@ src="<%- previewSrcs[0] || '' %>"
                     switchToMain();
                 } else {
                     switchToAbout();
+                }
+            });
+        });
+
+        const clientsToggle = document.getElementById('clients-toggle');
+        if (clientsToggle) clientsToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            ensureHomeView(() => {
+                const clientsEl = document.getElementById('clients');
+                const scrollToClients = () => {
+                    if (clientsEl) {
+                        clientsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                };
+                if (aboutView.classList.contains('is-active')) {
+                    scrollToClients();
+                } else {
+                    switchToAbout();
+                    setTimeout(scrollToClients, fadeDuration + 50);
                 }
             });
         });

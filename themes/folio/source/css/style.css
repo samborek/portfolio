@@ -6290,39 +6290,27 @@ body.project-page {
 .cv-experience-row:last-child {
   border-bottom: none;
   margin-bottom: 0;
-  padding-bottom: 0;
 }
 
-/* About panel — clients block matches other about-list-section cards (no nested home card) */
-#about-view .about-clients {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  border-radius: 0;
-}
-
-#about-view .about-clients-intro {
-  font-size: var(--size-lg);
-  line-height: 1.5;
-  color: var(--color-text);
-  margin: 0;
-  max-width: 1000px;
-}
-
-#about-view .about-clients .home-client-grid {
-  width: 100%;
-  margin-bottom: 0;
-}
-
-#about-view .about-clients .home-client-groups {
-  width: 100%;
+/* About clients: one card only — match other about-section panels, not home chrome */
+#about-view .about-section.home-client-section {
   margin-top: 0;
+  margin-bottom: 0;
+  max-width: var(--max-project-width);
+  width: 100%;
+  padding-block: var(--about-section-padding-block, 2rem);
+  padding-inline: var(--about-section-padding-inline, 2.5rem);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-bg-secondary), transparent 50%);
+  box-sizing: border-box;
+}
+
+#about-view .about-section.home-client-section .home-client-header {
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+#about-view .about-section.home-client-section .project-title {
+  margin-bottom: 1.5rem;
 }
 
 .cv-experience-company {
@@ -6883,6 +6871,17 @@ a.home-client-name:active {
     margin-top: 0;
     padding: 1.5rem 1rem;
     border-radius: var(--radius-l);
+  }
+
+  #about-view .about-section.home-client-section {
+    padding-block: var(--about-list-section-padding-block, 1.75rem);
+    padding-inline: 1rem;
+    border-radius: var(--radius-l);
+    background: color-mix(in srgb, var(--color-bg-secondary), transparent 50%);
+  }
+
+  #about-view .about-section.home-client-section .project-title {
+    margin-bottom: 1.25rem;
   }
 
   /* Smartphones: outer inset from browser edge — clients + behance/dribbble only */
