@@ -4700,6 +4700,19 @@ body.project-page {
   -ms-overflow-style: none;
 }
 
+/* Keep the physical slider sequence aligned with the tab sequence. */
+#home-view {
+  order: 0;
+}
+
+#about-view {
+  order: 1;
+}
+
+#playground-view {
+  order: 2;
+}
+
 .app-view::-webkit-scrollbar {
   display: none;
 }

@@ -969,8 +969,8 @@ src="<%- previewSrcs[0] || '' %>"
     <nav class="content-tabs">
         <div class="tab-indicator"></div>
         <button class="tab-button active" data-tab="home">Home</button>
-        <button class="tab-button" data-tab="playground">Playground</button>
         <button class="tab-button" data-tab="about">About</button>
+        <button class="tab-button" data-tab="playground">Playground</button>
     </nav>
 </div>
 
@@ -1092,7 +1092,7 @@ src="<%- previewSrcs[0] || '' %>"
         const aboutView = document.getElementById('about-view');
 
         // Panels live side by side in #app-viewport; order must match the tab order
-        const viewOrder = ['home', 'playground', 'about'];
+        const viewOrder = ['home', 'about', 'playground'];
         const viewsByTab = {
             home: homeView,
             playground: playgroundView,
