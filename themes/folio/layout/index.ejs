@@ -5,35 +5,27 @@
 <% const projects=site.pages.filter(p=> p.layout === 'project').toArray().sort((a, b) => (b.order || 0) -
     (a.order || 0)); %>
 
-<!-- Persists across Home / Playground (outside sliding #app-viewport) -->
+<!-- Persists across Home / Playground / About (outside sliding #app-viewport) -->
 <div class="sidebar-topbar-wrapper">
                 <div class="sidebar-topbar-bg"></div>
                 <div class="sidebar-topbar">
                     <nav class="sidebar-nav sidebar-accordion" aria-label="Site">
-                        <div class="sidebar-accordion-item">
-                            <button class="sidebar-accordion-toggle" aria-expanded="false">
-                                <span class="sidebar-accordion-label">Recent works</span>
-                                <span class="sidebar-accordion-icon">+</span>
-                            </button>
-                            <nav class="sidebar-accordion-content">
-                                <% projects.forEach(function(project, index) { %>
-                                    <a href="#project-<%= index %>" class="footer-link-item project-link-item">
-                                        <%= project.short_title || project.title %>
-                                    </a>
-                                <% }); %>
-                                <a href="#more-works" class="footer-link-item">More</a>
-                            </nav>
-                        </div>
-                        <div class="sidebar-accordion-item">
-                            <a href="#" class="sidebar-accordion-toggle" id="about-toggle">
-                                <span class="sidebar-accordion-label">About</span>
-                            </a>
-                        </div>
-                        <div class="sidebar-accordion-item">
-                            <a href="#clients" class="sidebar-accordion-toggle" id="clients-toggle">
-                                <span class="sidebar-accordion-label">Clients</span>
-                            </a>
-                        </div>
+                        <% if (theme.topbar?.recent_works !== false) { %>
+                            <div class="sidebar-accordion-item sidebar-works-item">
+                                <button class="sidebar-accordion-toggle" aria-expanded="false">
+                                    <span class="sidebar-accordion-label">Recent works</span>
+                                    <span class="sidebar-accordion-icon">+</span>
+                                </button>
+                                <nav class="sidebar-accordion-content">
+                                    <% projects.forEach(function(project, index) { %>
+                                        <a href="#project-<%= index %>" class="footer-link-item project-link-item">
+                                            <%= project.short_title || project.title %>
+                                        </a>
+                                    <% }); %>
+                                    <a href="#more-works" class="footer-link-item">More</a>
+                                </nav>
+                            </div>
+                        <% } %>
                         <div class="sidebar-accordion-item sidebar-channels-item" aria-label="Channels">
                             <button class="sidebar-accordion-toggle sidebar-channels-toggle" aria-expanded="false" type="button">
                                 <span class="sidebar-accordion-label">Channels</span>
@@ -162,96 +154,6 @@
 
                 <!-- Right Content - Projects -->
                 <main class="projects-column" id="projects">
-
-                    <!-- ABOUT VIEW (hidden by default) -->
-                    <div class="about-view" id="about-view">
-                        <div class="about-back-row">
-                            <a href="#" class="project-back" id="about-close">
-                                <span class="project-back-icon" aria-hidden="true">&larr;</span>
-                                <span class="project-back-label">Back</span>
-                            </a>
-                        </div>
-                        <% if (theme.experience) { %>
-                            <section class="about-section">
-                                <h2 class="about-title">The Journey</h2>
-                                <div class="about-intro" id="about-intro">
-                                    <%= theme.experience.intro_variants[0] %>
-                                </div>
-                                <div class="experience-timeline">
-                                    <% theme.experience.timeline.forEach(function(item) { %>
-                                        <div class="timeline-item">
-                                            <div class="timeline-marker"></div>
-                                            <div class="timeline-content">
-                                                <div class="timeline-header">
-                                                    <span class="timeline-milestone"><%= item.milestone %></span>
-                                                    <h4 class="timeline-title"><%= item.title %></h4>
-                                                </div>
-                                                <p class="timeline-text"><%= item.content %></p>
-                                            </div>
-                                        </div>
-                                    <% }); %>
-                                </div>
-                            </section>
-                            <% if (theme.experience.roles) { %>
-                                <section class="about-section about-list-section">
-                                    <div class="cv-experience">
-                                        <h3 class="cv-experience-heading">Experiences</h3>
-                                        <div class="cv-experience-list">
-                                            <% theme.experience.roles.forEach(function(role) { %>
-                                                <div class="cv-experience-row">
-                                                    <div class="cv-experience-role">
-                                                        <h4 class="cv-experience-company"><%= role.company %></h4>
-                                                        <p class="cv-experience-title"><%= role.title %></p>
-                                                    </div>
-                                                    <span class="cv-experience-period"><%= role.period %></span>
-                                                </div>
-                                            <% }); %>
-                                        </div>
-                                    </div>
-                                </section>
-                            <% } %>
-                            <% if (theme.clients) { %>
-                                <%- partial('_partial/clients-section', { sectionId: 'clients', sectionClass: 'about-section about-list-section home-client-section' }) %>
-                            <% } %>
-                            <% if (theme.events) { %>
-                                <section class="about-section about-list-section">
-                                    <div class="cv-experience">
-                                        <h3 class="cv-experience-heading">Events</h3>
-                                        <div class="cv-experience-list">
-                                            <% theme.events.forEach(function(item) { %>
-                                                <div class="cv-experience-row">
-                                                    <div class="cv-experience-role">
-                                                        <h4 class="cv-experience-company"><%= item.title %></h4>
-                                                        <% if (item.role) { %>
-                                                            <p class="cv-experience-label"><%= item.role %></p>
-                                                        <% } %>
-                                                        <% if (item.description) { %>
-                                                            <p class="cv-experience-title"><%= item.description %></p>
-                                                        <% } %>
-                                                    </div>
-                                                    <span class="cv-experience-period"><%= item.year %></span>
-                                                </div>
-                                            <% }); %>
-                                        </div>
-                                    </div>
-                                </section>
-                            <% } %>
-                            <div class="resume-hover-preview">
-                                <div class="preview-content">
-                                    <div class="preview-media">
-                                        <img src="" alt="" class="preview-image">
-                                    </div>
-                                    <div class="preview-text">
-                                        <div class="preview-header">
-                                            <span class="preview-year"></span>
-                                            <h4 class="preview-title"></h4>
-                                        </div>
-                                        <p class="preview-description"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
-                    </div>
 
                     <!-- Main content (projects + more works + connect) -->
                     <div class="projects-main-content" id="projects-main-content">
@@ -966,15 +868,113 @@ src="<%- previewSrcs[0] || '' %>"
             </div>
         </div>
     </div>
+
+    <!-- VIEW 3: ABOUT -->
+    <div id="about-view" class="app-view">
+        <div class="about-wrapper">
+            <header class="about-hero">
+                <% if (theme.about?.eyebrow) { %>
+                    <p class="about-hero-eyebrow"><%= theme.about.eyebrow %></p>
+                <% } %>
+                <h1 class="about-hero-title"><%= theme.about?.title || 'About me' %></h1>
+                <% if (theme.about?.subtitle) { %>
+                    <p class="about-hero-subtitle"><%= theme.about.subtitle %></p>
+                <% } %>
+            </header>
+            <% if (theme.experience) { %>
+                <section class="about-section">
+                    <h2 class="about-title">The Journey</h2>
+                    <div class="about-intro" id="about-intro">
+                        <%= theme.experience.intro_variants[0] %>
+                    </div>
+                    <div class="experience-timeline">
+                        <% theme.experience.timeline.forEach(function(item) { %>
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-milestone"><%= item.milestone %></span>
+                                        <h4 class="timeline-title"><%= item.title %></h4>
+                                    </div>
+                                    <p class="timeline-text"><%= item.content %></p>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </section>
+                <% if (theme.experience.roles) { %>
+                    <section class="about-section about-list-section">
+                        <div class="cv-experience">
+                            <h3 class="cv-experience-heading">Experiences</h3>
+                            <div class="cv-experience-list">
+                                <% theme.experience.roles.forEach(function(role) { %>
+                                    <div class="cv-experience-row">
+                                        <div class="cv-experience-role">
+                                            <h4 class="cv-experience-company"><%= role.company %></h4>
+                                            <p class="cv-experience-title"><%= role.title %></p>
+                                        </div>
+                                        <span class="cv-experience-period"><%= role.period %></span>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                <% } %>
+                <% if (theme.clients) { %>
+                    <%- partial('_partial/clients-section', { sectionId: 'clients', sectionClass: 'about-section about-list-section home-client-section' }) %>
+                <% } %>
+                <% if (theme.events) { %>
+                    <section class="about-section about-list-section">
+                        <div class="cv-experience">
+                            <h3 class="cv-experience-heading">Events</h3>
+                            <div class="cv-experience-list">
+                                <% theme.events.forEach(function(item) { %>
+                                    <div class="cv-experience-row">
+                                        <div class="cv-experience-role">
+                                            <h4 class="cv-experience-company"><%= item.title %></h4>
+                                            <% if (item.role) { %>
+                                                <p class="cv-experience-label"><%= item.role %></p>
+                                            <% } %>
+                                            <% if (item.description) { %>
+                                                <p class="cv-experience-title"><%= item.description %></p>
+                                            <% } %>
+                                        </div>
+                                        <span class="cv-experience-period"><%= item.year %></span>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                <% } %>
+                <div class="resume-hover-preview">
+                    <div class="preview-content">
+                        <div class="preview-media">
+                            <img src="" alt="" class="preview-image">
+                        </div>
+                        <div class="preview-text">
+                            <div class="preview-header">
+                                <span class="preview-year"></span>
+                                <h4 class="preview-title"></h4>
+                            </div>
+                            <p class="preview-description"></p>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
 </div>
 
-<div class="floating-controls">
+<div class="floating-controls floating-controls--top-left">
     <nav class="content-tabs">
         <div class="tab-indicator"></div>
         <button class="tab-button active" data-tab="home">Home</button>
         <button class="tab-button" data-tab="playground">Playground</button>
+        <button class="tab-button" data-tab="about">About</button>
     </nav>
+</div>
 
+<div class="floating-controls floating-controls--bottom-left">
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
         <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -1089,107 +1089,77 @@ src="<%- previewSrcs[0] || '' %>"
         const homeView = document.getElementById('home-view');
         const playgroundView = document.getElementById('playground-view');
 
-        const isPlaygroundActive = () => homeView && homeView.getAttribute('aria-hidden') === 'true';
+        const aboutView = document.getElementById('about-view');
+
+        // Panels live side by side in #app-viewport; order must match the tab order
+        const viewOrder = ['home', 'playground', 'about'];
+        const viewsByTab = {
+            home: homeView,
+            playground: playgroundView,
+            about: aboutView,
+        };
+        const viewTransition = 700;
+        const initialTab = (() => {
+            try {
+                const saved = JSON.parse(sessionStorage.getItem('folio_scroll_state'));
+                const isFreshIndexState = saved
+                    && saved.url === window.location.pathname
+                    && Date.now() - saved.timestamp <= 60 * 60 * 1000;
+
+                return isFreshIndexState && viewOrder.includes(saved.activeTab)
+                    ? saved.activeTab
+                    : 'home';
+            } catch (_) {
+                return 'home';
+            }
+        })();
+
+        const activeTabName = () => {
+            const btn = document.querySelector('.tab-button.active');
+            return btn ? btn.dataset.tab : 'home';
+        };
+
+        const activateTab = (tab) => {
+            const btn = document.querySelector(`.tab-button[data-tab="${tab}"]`);
+            if (btn) btn.click();
+        };
 
         const ensureHomeView = (callback) => {
-            if (!isPlaygroundActive()) {
+            if (activeTabName() === 'home') {
                 callback();
                 return;
             }
-            const homeTab = document.querySelector('.tab-button[data-tab="home"]');
-            if (homeTab) {
-                homeTab.click();
-                setTimeout(callback, 780);
-            } else {
-                callback();
-            }
+            activateTab('home');
+            setTimeout(callback, viewTransition + 80);
         };
 
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabIndicator = document.querySelector('.tab-indicator');
-        const floatControls = document.querySelector('.floating-controls');
+
+        // Restore the saved panel before the page cover lifts. Starting from Home
+        // and clicking the saved tab here causes the full slider animation to be visible on refresh.
+        if (initialTab !== 'home') {
+            const initialButton = document.querySelector(`.tab-button[data-tab="${initialTab}"]`);
+            tabButtons.forEach(btn => btn.classList.toggle('active', btn === initialButton));
+            viewport.style.transition = 'none';
+            viewport.style.transform = `translateX(-${viewOrder.indexOf(initialTab) * 100}vw)`;
+            document.body.classList.toggle('about-mode', initialTab === 'about');
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    viewport.style.transition = '';
+                });
+            });
+        }
+
+        // Tab cluster drives the hover / scroll-hide behaviour; every cluster shares the entry reveal
+        const floatControls = document.querySelector('.floating-controls--top-left') || document.querySelector('.floating-controls');
+        const allFloatControls = document.querySelectorAll('.floating-controls');
+        // CSS decides which clusters actually move when hidden — see .controls-hidden variants
+        const setControlsHidden = (hidden) => {
+            allFloatControls.forEach(el => el.classList.toggle('controls-hidden', hidden));
+        };
         const isMobile = () => window.innerWidth <= 768;
-
-        // --- About View Toggle ---
-        const aboutToggle = document.getElementById('about-toggle');
-        const aboutClose = document.getElementById('about-close');
-        const aboutView = document.getElementById('about-view');
-        const mainContent = document.getElementById('projects-main-content');
-
-        const fadeDuration = 250;
-
-        function fadeOut(el) {
-            el.style.opacity = '0';
-        }
-
-        function fadeIn(el) {
-            requestAnimationFrame(() => { el.style.opacity = '1'; });
-        }
-
-        function switchToAbout() {
-            document.body.classList.add('about-mode');
-            fadeOut(mainContent);
-            setTimeout(() => {
-                mainContent.classList.add('is-hidden');
-                aboutView.classList.add('is-active');
-                homeView.scrollTop = 0;
-                document.getElementById('projects').scrollTop = 0;
-                fadeIn(aboutView);
-            }, fadeDuration);
-        }
-
-        function switchToMain(scrollTarget) {
-            fadeOut(aboutView);
-            setTimeout(() => {
-                aboutView.classList.remove('is-active');
-                mainContent.classList.remove('is-hidden');
-                document.body.classList.remove('about-mode');
-                fadeIn(mainContent);
-                if (scrollTarget) {
-                    setTimeout(() => {
-                        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 50);
-                }
-                setTimeout(() => {
-                    document.dispatchEvent(new CustomEvent('folio:work-visible'));
-                    window.dispatchEvent(new Event('resize'));
-                    window.dispatchEvent(new MouseEvent('mousemove', { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }));
-                    setTimeout(() => {
-                        document.dispatchEvent(new CustomEvent('folio:work-visible'));
-                    }, 250);
-                }, fadeDuration + 100);
-            }, fadeDuration);
-        }
-
-        if (aboutToggle) aboutToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            ensureHomeView(() => {
-                if (aboutView.classList.contains('is-active')) {
-                    switchToMain();
-                } else {
-                    switchToAbout();
-                }
-            });
-        });
-
-        const clientsToggle = document.getElementById('clients-toggle');
-        if (clientsToggle) clientsToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            ensureHomeView(() => {
-                const clientsEl = document.getElementById('clients');
-                const scrollToClients = () => {
-                    if (clientsEl) {
-                        clientsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                };
-                if (aboutView.classList.contains('is-active')) {
-                    scrollToClients();
-                } else {
-                    switchToAbout();
-                    setTimeout(scrollToClients, fadeDuration + 50);
-                }
-            });
-        });
 
         // --- Playground Toggle from Navbar ---
         const navbarPlaygroundToggle = document.getElementById('navbar-playground-toggle');
@@ -1202,20 +1172,9 @@ src="<%- previewSrcs[0] || '' %>"
                 }
             });
         }
-        if (aboutClose) aboutClose.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchToMain();
-        });
-
-        // Close About when clicking any sidebar project/section link
+        // Sidebar project/section links always resolve against the home panel
         document.querySelectorAll('.sidebar-accordion-content .footer-link-item').forEach(link => {
-            link.addEventListener('click', () => {
-                ensureHomeView(() => {
-                    if (aboutView.classList.contains('is-active')) {
-                        switchToMain();
-                    }
-                });
-            });
+            link.addEventListener('click', () => ensureHomeView(() => { }));
         });
 
         // --- Section scroll links (Contact, Cooperate, etc.) ---
@@ -1243,16 +1202,7 @@ src="<%- previewSrcs[0] || '' %>"
                     }
                 };
 
-                ensureHomeView(() => {
-                    if (aboutView.classList.contains('is-active')) {
-                        switchToMain(target);
-                        if (shouldOpenCollab) {
-                            setTimeout(openCollabSection, fadeDuration + 80);
-                        }
-                    } else {
-                        scrollToTarget();
-                    }
-                });
+                ensureHomeView(scrollToTarget);
             });
         });
 
@@ -1308,12 +1258,12 @@ src="<%- previewSrcs[0] || '' %>"
         }
 
         // --- View & Scroll Management ---
-        let activeView = homeView;
+        let activeView = viewsByTab[initialTab] || homeView;
         let scrollListeners = new Map();
 
         // Register hover handler for controls
         floatControls.addEventListener('mouseenter', () => {
-            floatControls.classList.remove('controls-hidden');
+            setControlsHidden(false);
             const handler = scrollListeners.get(activeView);
             if (handler) {
                 clearTimeout(handler.timer);
@@ -1333,15 +1283,15 @@ src="<%- previewSrcs[0] || '' %>"
 
                 // If scrolling down, hide
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                    floatControls.classList.add('controls-hidden');
+                    setControlsHidden(true);
                 } else if (currentScrollY < lastScrollY) {
                     // If scrolling up, show
-                    floatControls.classList.remove('controls-hidden');
+                    setControlsHidden(false);
                 }
 
                 // If at the very top, always show
                 if (currentScrollY <= 10) {
-                    floatControls.classList.remove('controls-hidden');
+                    setControlsHidden(false);
                 }
 
                 lastScrollY = currentScrollY;
@@ -1349,7 +1299,7 @@ src="<%- previewSrcs[0] || '' %>"
                 // Show after scrolling stops
                 clearTimeout(handler.timer);
                 handler.timer = setTimeout(() => {
-                    floatControls.classList.remove('controls-hidden');
+                    setControlsHidden(false);
                 }, 1200); // Wait longer before auto-showing
             };
             handler.timer = null;
@@ -1377,8 +1327,8 @@ src="<%- previewSrcs[0] || '' %>"
             view.addEventListener('scroll', handler, { passive: true });
         };
 
-        // Start with Home
-        attachScrollListener(homeView);
+        // Start on the saved panel, if this tab was active when the page refreshed.
+        attachScrollListener(activeView);
 
         // --- Navigation Logic ---
         const updateIndicator = (activeBtn) => {
@@ -1390,9 +1340,7 @@ src="<%- previewSrcs[0] || '' %>"
         };
 
         const showFloatingControls = () => {
-            if (floatControls) {
-                floatControls.classList.add('controls-ready');
-            }
+            allFloatControls.forEach(el => el.classList.add('controls-ready'));
         };
 
         // Initial indicator
@@ -1415,8 +1363,10 @@ src="<%- previewSrcs[0] || '' %>"
         }
 
         // Initialize aria-hidden
-        homeView.setAttribute('aria-hidden', 'false');
-        playgroundView.setAttribute('aria-hidden', 'true');
+        viewOrder.forEach(tab => {
+            const view = viewsByTab[tab];
+            if (view) view.setAttribute('aria-hidden', String(tab !== initialTab));
+        });
 
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -1430,43 +1380,32 @@ src="<%- previewSrcs[0] || '' %>"
                 updateIndicator(button);
 
                 // Slide Viewport & Manage Visibility
-                if (tab === 'playground') {
-                    viewport.style.transform = 'translateX(-50%)';
-                    activeView = playgroundView;
-                    playgroundView.setAttribute('aria-hidden', 'false');
-                    homeView.setAttribute('aria-hidden', 'true');
+                const index = Math.max(viewOrder.indexOf(tab), 0);
+                viewport.style.transform = `translateX(-${index * 100}vw)`;
+                activeView = viewsByTab[tab] || homeView;
+                viewOrder.forEach(name => {
+                    const view = viewsByTab[name];
+                    if (view) view.setAttribute('aria-hidden', String(name !== tab));
+                });
+                document.body.classList.toggle('about-mode', tab === 'about');
 
-                    // Wake up playground
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('resize'));
-                        // Trigger mousemove to wake unicorn
-                        window.dispatchEvent(new MouseEvent('mousemove', {
-                            clientX: window.innerWidth / 2,
-                            clientY: window.innerHeight / 2,
-                            bubbles: true
-                        }));
-                    }, 750); // > 0.7s transition
-                } else {
-                    viewport.style.transform = 'translateX(0)';
-                    activeView = homeView;
-                    homeView.setAttribute('aria-hidden', 'false');
-                    playgroundView.setAttribute('aria-hidden', 'true');
-
-                    // Wake up Unicorn Studio canvases
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('resize'));
-                        window.dispatchEvent(new MouseEvent('mousemove', {
-                            clientX: window.innerWidth / 2,
-                            clientY: window.innerHeight / 2,
-                            bubbles: true
-                        }));
-                    }, 750);
-                }
+                // Wake canvases that were parked while off-screen
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                    window.dispatchEvent(new MouseEvent('mousemove', {
+                        clientX: window.innerWidth / 2,
+                        clientY: window.innerHeight / 2,
+                        bubbles: true
+                    }));
+                    if (tab === 'home') {
+                        document.dispatchEvent(new CustomEvent('folio:work-visible'));
+                    }
+                }, viewTransition + 50);
 
                 // Update Scroll Listener
                 attachScrollListener(activeView);
                 // Ensure controls are visible when switching
-                floatControls.classList.remove('controls-hidden');
+                setControlsHidden(false);
             });
         });
 

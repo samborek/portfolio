@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
         contentSelector: '.playground-wrapper',
         key: 'playground',
       },
+      {
+        view: document.getElementById('about-view'),
+        contentSelector: '.about-wrapper',
+        key: 'about',
+      },
     ];
 
     viewConfigs.forEach(({ view, contentSelector, key }) => {
@@ -80,17 +85,26 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Scroll Restoration Logic ---
-  const saveScrollState = () => {
-    const homeView = document.getElementById('home-view');
-    const playgroundView = document.getElementById('playground-view');
-    const activeBtn = document.querySelector('.tab-button.active');
+  const panelViewIds = {
+    home: 'home-view',
+    playground: 'playground-view',
+    about: 'about-view',
+  };
 
-    if (!homeView && !playgroundView) return;
+  const saveScrollState = () => {
+    const activeBtn = document.querySelector('.tab-button.active');
+    const scroll = {};
+
+    Object.entries(panelViewIds).forEach(([tab, id]) => {
+      const view = document.getElementById(id);
+      if (view) scroll[tab] = view.scrollTop;
+    });
+
+    if (!Object.keys(scroll).length) return;
 
     const state = {
       activeTab: activeBtn ? activeBtn.dataset.tab : 'home',
-      homeScroll: homeView ? homeView.scrollTop : 0,
-      playgroundScroll: playgroundView ? playgroundView.scrollTop : 0,
+      scroll,
       timestamp: Date.now(),
       url: window.location.pathname
     };
@@ -109,9 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.url !== window.location.pathname) return;
       if (Date.now() - state.timestamp > 60 * 60 * 1000) return;
 
-      const homeView = document.getElementById('home-view');
-      const playgroundView = document.getElementById('playground-view');
-
       // Restore Tab first if not already active
       if (state.activeTab && state.activeTab !== 'home') {
         const tabBtn = document.querySelector(`.tab-button[data-tab="${state.activeTab}"]`);
@@ -121,12 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // Restore Scroll Positions
       // We use a small delay to ensure content has stabilized
       setTimeout(() => {
-        if (homeView && state.homeScroll) {
-          homeView.scrollTo({ top: state.homeScroll, behavior: 'auto' });
-        }
-        if (playgroundView && state.playgroundScroll) {
-          playgroundView.scrollTo({ top: state.playgroundScroll, behavior: 'auto' });
-        }
+        Object.entries(state.scroll || {}).forEach(([tab, top]) => {
+          const view = document.getElementById(panelViewIds[tab]);
+          if (view && top) view.scrollTo({ top, behavior: 'auto' });
+        });
       }, 100);
     } catch (e) {
       console.error('Failed to restore scroll state', e);
@@ -1696,11 +1705,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.tab-button').forEach((btn) => {
       btn.addEventListener('click', () => setTimeout(refreshContactNavVisibility, 750));
-    });
-
-    ['about-toggle', 'about-close'].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('click', () => setTimeout(refreshContactNavVisibility, 450));
     });
 
     const homeLenis = window.folioLenis?.home || window.folioLenis?.get?.(homeView);

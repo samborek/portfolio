@@ -5,6 +5,18 @@ email: contact@msambora.com
 
 # Hero section
 hero_title: "Building refined digital products in the age of AI"
+
+# Top navigation
+topbar:
+  # Flip to true to bring back the "Recent works" pill and its project dropdown
+  recent_works: false
+
+# About view header
+about:
+  eyebrow: "michal sambora — sambø"
+  title: "About me"
+  subtitle: "The story behind the work — how I got here, the roles and skills I bring, and the clients I've built with."
+
 # Experience Section
 experience:
   intro_variants:
