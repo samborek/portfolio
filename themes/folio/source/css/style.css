@@ -1038,6 +1038,41 @@ body.index-page {
   animation-delay: 0.86s;
 }
 
+/* Give each page the same refresh entrance as Home: navigation settles first,
+   then the heading and its initial content lift into place. Hidden app panels
+   still complete this only during the initial page load, never on tab changes. */
+.project-page .project-header-top,
+.page .page-nav {
+  opacity: 0;
+  animation: folioTopContentIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.08s;
+}
+
+.project-page .header-content-centered,
+.page .page-header,
+.index-page #playground-view .playground-header,
+.index-page #about-view .about-hero {
+  opacity: 0;
+  animation: folioTopContentIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.54s;
+}
+
+.project-page .project-content,
+.page .page-content,
+.index-page #playground-view .playground-grid,
+.index-page #about-view .about-section:first-of-type {
+  opacity: 0;
+  animation: folioTopContentInFlat 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.86s;
+}
+
+.project-page .project-image-stack,
+.project-page .project-gallery {
+  opacity: 0;
+  animation: folioTopContentInFlat 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.98s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .floating-controls {
     transition: none;
@@ -1061,7 +1096,19 @@ body.index-page {
   .index-page .sidebar-header,
   .index-page .sidebar-description-wrapper,
   .index-page .sidebar-cta-wrapper,
-  .index-page .projects-main-content .project-section:first-child {
+  .index-page .projects-main-content .project-section:first-child,
+  .project-page .project-header-top,
+  .page .page-nav,
+  .project-page .header-content-centered,
+  .page .page-header,
+  .index-page #playground-view .playground-header,
+  .index-page #about-view .about-hero,
+  .project-page .project-content,
+  .page .page-content,
+  .index-page #playground-view .playground-grid,
+  .index-page #about-view .about-section:first-of-type,
+  .project-page .project-image-stack,
+  .project-page .project-gallery {
     opacity: 1;
     filter: none;
     transform: none;
@@ -2279,9 +2326,9 @@ body.index-page {
   transform: translateY(0) scale(1);
 }
 
-/* Placement variant: theme toggle parked in the bottom-left corner, clear of the content column */
+/* Placement variant: theme toggle hugs the bottom-left viewport edge. */
 .floating-controls--bottom-left {
-  left: max(var(--topbar-padding), calc(50vw - (var(--max-project-width) / 2) - var(--floating-control-height)));
+  left: var(--topbar-padding);
   bottom: calc(1.5rem + env(safe-area-inset-bottom));
   transform: translateY(0.75rem) scale(0.992);
 }
