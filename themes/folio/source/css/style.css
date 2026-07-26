@@ -2348,23 +2348,22 @@ body.index-page {
   margin-left: auto;
 }
 
-/* Not enough room beside the nav on small screens — keep it docked at the bottom.
-   The toggle owns the bottom-left corner there, so the tabs take the opposite end. */
+/* Keep the view menu centered on small screens while the toggle owns the left corner. */
 @media (max-width: 900px) {
   .floating-controls--top-left {
     top: auto;
     bottom: calc(1.5rem + env(safe-area-inset-bottom));
-    left: auto;
-    right: var(--topbar-padding);
-    transform: translateY(0.75rem) scale(0.992);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(0.75rem) scale(0.992);
   }
 
   .floating-controls--top-left.controls-ready {
-    transform: translateY(0) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 
   .floating-controls--top-left.controls-hidden {
-    transform: translateY(150%) scale(1);
+    transform: translateX(-50%) translateY(150%) scale(1);
   }
 
   /* Shares the bottom row with the tabs here, so it ducks away with them */
