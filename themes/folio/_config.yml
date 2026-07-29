@@ -13,9 +13,8 @@ topbar:
 
 # About view header
 about:
-  eyebrow: "michal sambora — sambø"
   title: "About me"
-  subtitle: "The story behind the work — how I got here, the roles and skills I bring, and the clients I've built with."
+  subtitle: "The story behind the work, how I got here, the roles and skills I bring, and the clients I've built with."
 
 # Experience Section
 experience:
