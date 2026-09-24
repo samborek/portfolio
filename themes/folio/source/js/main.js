@@ -1511,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const imagesReady = visibleImages.every(img => img.complete);
       const shader = initialCarousel.querySelector('.is-active-slide .raw-shader-image');
       const shaderReady = !expectsShader || !shader || shader.classList.contains('shader-ready');
-      if (reducedMotion || elapsed >= 650 || (elapsed >= 180 && imagesReady && shaderReady)) {
+      if (reducedMotion || elapsed >= 650 || (elapsed >= 160 && imagesReady && shaderReady)) {
         // Commit settled child styles before starting the parent fade.
         initialCarousel.offsetHeight;
         initialCarousel.classList.remove('is-initializing');
