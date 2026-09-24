@@ -818,26 +818,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Loading States (Images, Videos & Unicorn Studio) ---
-  const MIN_SKELETON_TIME = 120;
-
   const markMediaLoaded = (media) => {
     const container = media.closest('.image-container, .tile-image-wrapper, .raw-shader-image');
-    if (!container || container.classList.contains('loaded')) return;
-
-    const startedAt = Number(container.dataset.loadStartedAt || 0);
-    const elapsed = startedAt ? performance.now() - startedAt : MIN_SKELETON_TIME;
-    const delay = Math.max(0, MIN_SKELETON_TIME - elapsed);
-
-    setTimeout(() => {
-      container.classList.add('loaded');
-    }, delay);
+    if (container) container.classList.add('loaded');
   };
-
-  document.querySelectorAll('.image-container, .tile-image-wrapper, .raw-shader-image').forEach(container => {
-    if (!container.dataset.loadStartedAt) {
-      container.dataset.loadStartedAt = String(performance.now());
-    }
-  });
 
   const handleImageLoad = (img) => {
     if (img.decode && img.currentSrc) {
@@ -1513,6 +1497,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initImageShaders();
 
+  // Reveal the first carousel as one surface after its visible media settles.
+  const initialCarousel = document.querySelector('#project-0 .project-carousel-wrapper.is-initializing');
+  if (initialCarousel) {
+    const entranceStarted = performance.now();
+    const expectsShader = !reducedMotion && !window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    const revealWhenReady = () => {
+      const elapsed = performance.now() - entranceStarted;
+      const visibleImages = [...initialCarousel.querySelectorAll('img')].filter(img => {
+        const rect = img.getBoundingClientRect();
+        return rect.width > 0 && rect.right > 0 && rect.left < window.innerWidth;
+      });
+      const imagesReady = visibleImages.every(img => img.complete);
+      const shader = initialCarousel.querySelector('.is-active-slide .raw-shader-image');
+      const shaderReady = !expectsShader || !shader || shader.classList.contains('shader-ready');
+      if (reducedMotion || elapsed >= 650 || (elapsed >= 180 && imagesReady && shaderReady)) {
+        // Commit settled child styles before starting the parent fade.
+        initialCarousel.offsetHeight;
+        initialCarousel.classList.remove('is-initializing');
+      } else {
+        requestAnimationFrame(revealWhenReady);
+      }
+    };
+    requestAnimationFrame(revealWhenReady);
+  }
+
   const enableDesktopUnicornScenes = () => {
     if (window.matchMedia('(max-width: 900px)').matches) return;
 
@@ -1528,19 +1537,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     UnicornStudio.init().then(() => {
       document.querySelectorAll('.unicorn-scene').forEach(scene => {
-        const startTime = performance.now();
         let sceneLoaded = false;
 
         const markSceneLoaded = () => {
           if (sceneLoaded || scene.classList.contains('loaded')) return;
           sceneLoaded = true;
 
-          const remaining = Math.max(0, MIN_SKELETON_TIME - (performance.now() - startTime));
-          setTimeout(() => {
-            scene.classList.add('loaded');
-            const container = scene.closest('.image-container');
-            if (container) container.classList.add('loaded');
-          }, remaining);
+          scene.classList.add('loaded');
+          const container = scene.closest('.image-container');
+          if (container) container.classList.add('loaded');
         };
 
         const waitForCanvasPaint = () => {
@@ -2106,44 +2111,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Reveal on Scroll ---
   const revealElements = document.querySelectorAll('.reveal-on-scroll');
   if (revealElements.length > 0 && homeView) {
-    const revealStartTime = performance.now();
-    const mobileRevealMq = window.matchMedia('(max-width: 600px)');
-    const revealTimers = new WeakMap();
-
-    const revealElement = (element, delay = 0) => {
-      if (element.classList.contains('revealed')) return;
-
-      const applyReveal = () => {
-        element.classList.add('revealed');
-        revealObserver.unobserve(element);
-        revealTimers.delete(element);
-      };
-
-      if (delay <= 0) {
-        applyReveal();
-        return;
-      }
-
-      if (!revealTimers.has(element)) {
-        revealTimers.set(element, setTimeout(applyReveal, delay));
-      }
-    };
-
-    const getRevealDelay = (element) => {
-      if (!mobileRevealMq.matches || !element.classList.contains('project-section')) return 0;
-
-      const elapsed = performance.now() - revealStartTime;
-      if (elapsed > 1400) return 0;
-
-      const projectIndex = Number.parseInt(element.dataset.projectIndex || '0', 10);
-      const targetDelay = 860 + Math.min(Math.max(projectIndex, 0), 1) * 150;
-      return Math.max(0, targetDelay - elapsed);
-    };
-
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          revealElement(entry.target, getRevealDelay(entry.target));
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
         }
       });
     }, {

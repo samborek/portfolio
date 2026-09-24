@@ -968,109 +968,50 @@ body.index-page {
   }
 }
 
-.index-page .sidebar-accordion-toggle {
-  transform: translateY(16px);
-  animation: folioNavPillIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
+/* A short shared entrance, without the old sequential stagger. */
+.index-page .sidebar-accordion-toggle,
 .index-page .sidebar-social-icons a,
 .index-page .sidebar-header,
 .index-page .sidebar-description-wrapper,
 .index-page .sidebar-cta-wrapper,
-.index-page .projects-main-content .project-section:first-child {
-  opacity: 0;
-  animation: folioTopContentIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.index-page .projects-main-content .project-section:first-child {
-  animation-name: folioTopContentInFlat;
-}
-
-.index-page .sidebar-accordion-item:nth-child(1) .sidebar-accordion-toggle {
-  animation-delay: 0.08s;
-}
-
-.index-page .sidebar-accordion-item:nth-child(2) .sidebar-accordion-toggle {
-  animation-delay: 0.14s;
-}
-
-.index-page .sidebar-accordion-item:nth-child(3) .sidebar-accordion-toggle {
-  animation-delay: 0.2s;
-}
-
-.index-page .sidebar-accordion-item:nth-child(4) .sidebar-accordion-toggle {
-  animation-delay: 0.26s;
-}
-
-.index-page .sidebar-accordion-item:nth-child(5) .sidebar-accordion-toggle {
-  animation-delay: 0.32s;
-}
-
-.index-page .sidebar-social-icons a:nth-child(1) {
-  animation-delay: 0.36s;
-}
-
-.index-page .sidebar-social-icons a:nth-child(2) {
-  animation-delay: 0.41s;
-}
-
-.index-page .sidebar-social-icons a:nth-child(3) {
-  animation-delay: 0.46s;
-}
-
-.index-page .sidebar-social-icons a:nth-child(4) {
-  animation-delay: 0.51s;
-}
-
-.index-page .sidebar-header {
-  animation-delay: 0.54s;
-}
-
-.index-page .sidebar-description-wrapper {
-  animation-delay: 0.62s;
-}
-
-.index-page .sidebar-cta-wrapper {
-  animation-delay: 0.74s;
-}
-
-.index-page .projects-main-content .project-section:first-child {
-  animation-delay: 0.86s;
-}
-
-/* Give each page the same refresh entrance as Home: navigation settles first,
-   then the heading and its initial content lift into place. Hidden app panels
-   still complete this only during the initial page load, never on tab changes. */
+.index-page .projects-main-content .project-section:first-child,
 .project-page .project-header-top,
-.page .page-nav {
-  opacity: 0;
-  animation: folioTopContentIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 0.08s;
-}
-
+.page .page-nav,
 .project-page .header-content-centered,
 .page .page-header,
 .index-page #playground-view .playground-header,
-.index-page #about-view .about-hero {
-  opacity: 0;
-  animation: folioTopContentIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 0.54s;
-}
-
+.index-page #about-view .about-hero,
 .project-page .project-content,
 .page .page-content,
 .index-page #playground-view .playground-grid,
-.index-page #about-view .about-section:first-of-type {
-  opacity: 0;
-  animation: folioTopContentInFlat 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 0.86s;
-}
-
+.index-page #about-view .about-section:first-of-type,
 .project-page .project-image-stack,
 .project-page .project-gallery {
+  opacity: 1;
+  transform: none;
+  animation: folioTopContentIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
+}
+
+.index-page .projects-main-content .project-section:first-child {
+  animation: none;
+}
+
+#project-0 .project-carousel-wrapper {
+  opacity: 1;
+  transition: opacity 0.32s ease-out;
+}
+
+#project-0 .project-carousel-wrapper.is-initializing {
   opacity: 0;
-  animation: folioTopContentInFlat 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 0.98s;
+  pointer-events: none;
+}
+
+/* Set side-slide dimming and the first shader frame behind the shared fade. */
+#project-0 .is-initializing .project-slide-item,
+#project-0 .is-initializing .project-slide-item::after,
+#project-0 .is-initializing .image-shader-canvas,
+#project-0 .is-initializing img {
+  transition: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1550,9 +1491,22 @@ body.index-page {
   display: flex;
   gap: 0;
   touch-action: pan-y pinch-zoom;
-  transform: translate3d(var(--custom-slider-offset, 0px), 0, 0);
+  /* Match updatePosition() before JS adds loop clones and its measured offset. */
+  transform: translate3d(var(--custom-slider-offset, calc((100% - var(--slide-size)) / 2)), 0, 0);
   transition: transform var(--custom-slider-duration) var(--custom-slider-easing);
   will-change: transform;
+}
+
+.custom-shader-carousel:not(.is-focus-ready) .custom-shader-viewport {
+  overflow: hidden;
+}
+
+.custom-shader-carousel:not(.is-focus-ready) .custom-shader-track {
+  transition: none;
+}
+
+.custom-shader-carousel:not(.is-focus-ready) .custom-shader-slide:not(:first-child) {
+  visibility: hidden;
 }
 
 .project-carousel-wrapper:has(.custom-shader-carousel),
@@ -4149,8 +4103,8 @@ body.index-page {
     opacity: 0;
     transform: translateY(1.125rem);
     transition:
-      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .projects-main-content .project-section.reveal-on-scroll.revealed {
@@ -4900,10 +4854,8 @@ body.project-page {
   transform: scale(var(--carousel-image-scale, 1.05));
   transform-origin: center;
   opacity: 0;
-  filter: blur(14px);
-  transition:
-    opacity 0.45s ease,
-    filter 0.55s ease;
+  filter: none;
+  transition: opacity 0.15s ease;
   z-index: 1;
 }
 
@@ -7448,4 +7400,11 @@ a.home-client-name:active {
   .scope-pulse {
     animation: none;
   }
+}
+a {
+  color: var(--color-text);
+}
+
+a:hover {
+  color: var(--color-text-muted);
 }

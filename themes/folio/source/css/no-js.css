@@ -11,3 +11,5 @@ html, body.index-page { position: static !important; overflow: auto !important; 
 .header-content-centered, .project-content, .project-image-stack,
 .page-header, .page-content, .page-nav, .project-gallery, .playground-grid,
 .sidebar-social-icons a { opacity: 1 !important; filter: none !important; transform: none !important; }
+
+#project-0 .project-carousel-wrapper.is-initializing { opacity: 1; pointer-events: auto; }

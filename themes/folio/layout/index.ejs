@@ -180,7 +180,7 @@
                             <section class="project-section reveal-on-scroll" id="project-<%= pindex %>"
                                 data-project-index="<%= pindex %>"<% if (needsTopbarLight) { %> data-topbar-light="true"<% } %><% if (carouselStyle) { %>
                                 style="<%- carouselStyle %>"<% } %>>
-                                        <div class="project-carousel-wrapper"<% if (project.disable_parallax) { %> data-disable-parallax="true"<% } %><% if (needsTopbarLight) { %> data-topbar-light="true"<% } %>>
+                                        <div class="project-carousel-wrapper<%= pindex === 0 ? ' is-initializing' : '' %>"<% if (project.disable_parallax) { %> data-disable-parallax="true"<% } %><% if (needsTopbarLight) { %> data-topbar-light="true"<% } %>>
                                                 <!-- Navigation Zones -->
                                                 <div class="carousel-nav-zone carousel-nav-zone--left" data-nav="prev">
                                                 </div>
@@ -887,7 +887,7 @@ src="<%- previewSrcs[0] || '' %>"
             <% if (theme.experience) { %>
                 <section class="about-section">
                     <h2 class="about-title">The Journey</h2>
-                    <p class="about-intro">I'm Michal Sambora, a product designer based in Krakow, Poland. You may also know me as SAMBO (sambø) or SAMBOREK, the name I use on <a href="https://dribbble.com/samborek" target="_blank" rel="noopener noreferrer">Dribbble</a> and <a href="https://behance.net/samborek" target="_blank" rel="noopener noreferrer">Behance</a>.</p>
+                    <p class="about-intro">I'm Michal Sambora, a product designer based in Krakow, Poland.</p>
                     <div class="about-intro" id="about-intro">
                         <%= theme.experience.intro_variants[0] %>
                     </div>
@@ -1350,12 +1350,10 @@ src="<%- previewSrcs[0] || '' %>"
                 requestAnimationFrame(showFloatingControls);
             };
 
+            settleInitialIndicator();
+            // Re-measure after fonts load without withholding navigation.
             if (document.fonts && document.fonts.ready) {
-                document.fonts.ready
-                    .then(() => setTimeout(settleInitialIndicator, 100))
-                    .catch(settleInitialIndicator);
-            } else {
-                settleInitialIndicator();
+                document.fonts.ready.then(() => updateIndicator(document.querySelector('.tab-button.active')));
             }
         } else {
             showFloatingControls();
@@ -1377,6 +1375,7 @@ src="<%- previewSrcs[0] || '' %>"
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 updateIndicator(button);
+                syncPlaygroundVideos(tab === 'playground');
 
                 // Crossfade viewport-sized panels instead of translating the entire
                 // image-heavy track, which can tear into raster tiles in Chromium.
@@ -1464,13 +1463,13 @@ src="<%- previewSrcs[0] || '' %>"
 
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) loadVideo(entry.target);
+                if (entry.isIntersecting && activeView === playgroundView) loadVideo(entry.target);
             });
         }, { root: playgroundView, rootMargin: '200px', threshold: 0.01 }); // Root is now playgroundView? Or null? relative to viewport yes.
 
         // Mobile Focus
         const mobileFocusObserver = new IntersectionObserver((entries) => {
-            if (!isMobile()) return;
+            if (!isMobile() || activeView !== playgroundView) return;
             entries.forEach(entry => {
                 const video = entry.target.querySelector('video');
                 if (video) {
@@ -1484,10 +1483,22 @@ src="<%- previewSrcs[0] || '' %>"
         }, { root: playgroundView, threshold: 0.7 });
 
         const videoItems = document.querySelectorAll('.playground-item');
+        // A hidden panel still intersects its own scroll root. Observe only while open.
+        const syncPlaygroundVideos = (active) => {
+            videoObserver.disconnect();
+            mobileFocusObserver.disconnect();
+            videoItems.forEach(item => {
+                if (active) {
+                    videoObserver.observe(item);
+                    if (!window.folioReducedMotion) mobileFocusObserver.observe(item);
+                } else {
+                    item.querySelector('video')?.pause();
+                }
+            });
+        };
+        syncPlaygroundVideos(initialTab === 'playground');
         videoItems.forEach(item => {
-            videoObserver.observe(item);
             if (window.folioReducedMotion) return;
-            mobileFocusObserver.observe(item);
 
             item.addEventListener('mouseenter', () => {
                 if (isMobile()) return;
