@@ -76,7 +76,7 @@ credits:
   - role: Brand
     name: Properly Studio
 when: 2024/25
-website: https://next-hydration.netlify.app/
+website: https://app.hydration.net/
 ---
 
 Complete redesign of former HydraDX interface after rebrand to Hydration. The project involved expanding the user experience in multiple areas, establishing a robust design tokens architecture, and delivering a native feeling mobile of experience.

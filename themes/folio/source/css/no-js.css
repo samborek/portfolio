@@ -1,0 +1,13 @@
+/* Accessible document fallback for visitors and crawlers without JavaScript. */
+*, *::before, *::after { animation: none !important; transition: none !important; }
+html, body.index-page { position: static !important; overflow: auto !important; height: auto !important; }
+#page-cover, .floating-controls, .image-skeleton, .image-placeholder,
+.unicorn-scene-skeleton { display: none !important; }
+#app-viewport { height: auto; overflow: visible; }
+.index-page .app-view { position: relative; height: auto; overflow: visible; visibility: visible; opacity: 1; pointer-events: auto; }
+.reveal-on-scroll, .image-container img, .sidebar-header,
+.sidebar-description-wrapper, .sidebar-cta-wrapper, .about-hero,
+.about-section, .playground-header, .project-header-top,
+.header-content-centered, .project-content, .project-image-stack,
+.page-header, .page-content, .page-nav, .project-gallery, .playground-grid,
+.sidebar-social-icons a { opacity: 1 !important; filter: none !important; transform: none !important; }

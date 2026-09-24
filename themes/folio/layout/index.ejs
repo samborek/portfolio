@@ -112,7 +112,7 @@
 
 <div id="app-viewport">
     <!-- VIEW 1: HOME (Hero + Work) -->
-    <div id="home-view" class="app-view">
+    <div id="home-view" class="app-view is-active">
         <div class="portfolio-wrapper">
                 <!-- Top header -->
                 <section class="hero-section">
@@ -526,7 +526,10 @@ src="<%- previewSrcs[0] || '' %>"
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
                                                 <div class="tile-image-wrapper">
-                                                    <img src="<%- url_for('/images/work/dribbble/cards.gif') %>" alt="" loading="lazy" decoding="async">
+                                                    <picture>
+                                                        <source media="(prefers-reduced-motion: reduce)" srcset="<%- url_for('/images/work/dribbble/cards-poster.png') %>">
+                                                        <img src="<%- url_for('/images/work/dribbble/cards.gif') %>" alt="Card interface exploration" loading="lazy" decoding="async">
+                                                    </picture>
                                                 </div>
                                             </a>
                                             <a href="https://dribbble.com/samborek" target="_blank" class="work-tile dribbble-grid-item">
@@ -884,6 +887,7 @@ src="<%- previewSrcs[0] || '' %>"
             <% if (theme.experience) { %>
                 <section class="about-section">
                     <h2 class="about-title">The Journey</h2>
+                    <p class="about-intro">I'm Michal Sambora, a product designer based in Krakow, Poland. You may also know me as SAMBO (sambø) or SAMBOREK, the name I use on <a href="https://dribbble.com/samborek" target="_blank" rel="noopener noreferrer">Dribbble</a> and <a href="https://behance.net/samborek" target="_blank" rel="noopener noreferrer">Behance</a>.</p>
                     <div class="about-intro" id="about-intro">
                         <%= theme.experience.intro_variants[0] %>
                     </div>
@@ -998,6 +1002,7 @@ src="<%- previewSrcs[0] || '' %>"
 <script>
     // Preview slideshow: cycle through slide images on the first slide
     document.querySelectorAll('.preview-slideshow-slide').forEach(function (slide) {
+        if (window.folioReducedMotion) return;
         const srcs = JSON.parse(slide.dataset.previewSrcs || '[]');
         if (srcs.length < 2) return;
         const img = slide.querySelector('.preview-slideshow-img');
@@ -1023,6 +1028,7 @@ src="<%- previewSrcs[0] || '' %>"
             video.removeAttribute('data-src');
         });
 
+        if (window.folioReducedMotion) return;
         if (isHover) {
             document.querySelectorAll('.dribbble-grid-item video').forEach(video => {
                 const tile = video.closest('.dribbble-grid-item');
@@ -1098,7 +1104,8 @@ src="<%- previewSrcs[0] || '' %>"
             playground: playgroundView,
             about: aboutView,
         };
-        const viewTransition = 700;
+        const viewTransition = 360;
+        let viewTransitionTimer = null;
         const initialTab = (() => {
             try {
                 const saved = JSON.parse(sessionStorage.getItem('folio_scroll_state'));
@@ -1136,21 +1143,13 @@ src="<%- previewSrcs[0] || '' %>"
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabIndicator = document.querySelector('.tab-indicator');
 
-        // Restore the saved panel before the page cover lifts. Starting from Home
-        // and clicking the saved tab here causes the full slider animation to be visible on refresh.
-        if (initialTab !== 'home') {
-            const initialButton = document.querySelector(`.tab-button[data-tab="${initialTab}"]`);
-            tabButtons.forEach(btn => btn.classList.toggle('active', btn === initialButton));
-            viewport.style.transition = 'none';
-            viewport.style.transform = `translateX(-${viewOrder.indexOf(initialTab) * 100}vw)`;
-            document.body.classList.toggle('about-mode', initialTab === 'about');
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    viewport.style.transition = '';
-                });
-            });
-        }
+        // Restore the saved panel before the page cover lifts.
+        const initialButton = document.querySelector(`.tab-button[data-tab="${initialTab}"]`);
+        const initialView = viewsByTab[initialTab] || homeView;
+        tabButtons.forEach(btn => btn.classList.toggle('active', btn === initialButton));
+        Object.values(viewsByTab).forEach(view => view.classList.remove('is-active', 'is-entering', 'is-exiting'));
+        initialView.classList.add('is-active');
+        document.body.classList.toggle('about-mode', initialTab === 'about');
 
         // Tab cluster drives the hover / scroll-hide behaviour; every cluster shares the entry reveal
         const floatControls = document.querySelector('.floating-controls--top-left') || document.querySelector('.floating-controls');
@@ -1198,7 +1197,7 @@ src="<%- previewSrcs[0] || '' %>"
                         openCollabSection();
                     }
                     if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        target.scrollIntoView({ behavior: window.folioReducedMotion ? 'auto' : 'smooth', block: 'start' });
                     }
                 };
 
@@ -1246,7 +1245,7 @@ src="<%- previewSrcs[0] || '' %>"
             const isOpen = collabSection.classList.toggle('is-open');
             if (isOpen) {
                 setTimeout(() => {
-                    collabSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    collabSection.scrollIntoView({ behavior: window.folioReducedMotion ? 'auto' : 'smooth', block: 'start' });
                 }, 100);
             }
         }
@@ -1372,17 +1371,44 @@ src="<%- previewSrcs[0] || '' %>"
             button.addEventListener('click', () => {
                 const tab = button.dataset.tab;
                 const currentActiveBtn = document.querySelector('.tab-button.active');
-                if (currentActiveBtn === button) return;
+                if (currentActiveBtn === button || viewport.classList.contains('is-switching')) return;
 
                 // Update Buttons
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 updateIndicator(button);
 
-                // Slide Viewport & Manage Visibility
-                const index = Math.max(viewOrder.indexOf(tab), 0);
-                viewport.style.transform = `translateX(-${index * 100}vw)`;
-                activeView = viewsByTab[tab] || homeView;
+                // Crossfade viewport-sized panels instead of translating the entire
+                // image-heavy track, which can tear into raster tiles in Chromium.
+                const previousView = activeView;
+                const nextView = viewsByTab[tab] || homeView;
+                if (window.folioReducedMotion) {
+                    previousView.classList.remove('is-active', 'is-entering', 'is-exiting');
+                    nextView.classList.add('is-active');
+                    activeView = nextView;
+                    viewOrder.forEach(name => viewsByTab[name]?.setAttribute('aria-hidden', String(name !== tab)));
+                    document.body.classList.toggle('about-mode', tab === 'about');
+                    attachScrollListener(activeView);
+                    setControlsHidden(false);
+                    window.dispatchEvent(new Event('resize'));
+                    return;
+                }
+                clearTimeout(viewTransitionTimer);
+                viewport.classList.add('is-switching');
+                document.dispatchEvent(new CustomEvent('folio:view-transition-start'));
+                previousView.classList.remove('is-active');
+                previousView.classList.add('is-exiting');
+                nextView.classList.remove('is-active', 'is-exiting');
+                nextView.classList.add('is-entering');
+                activeView = nextView;
+
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        nextView.classList.remove('is-entering');
+                        nextView.classList.add('is-active');
+                    });
+                });
+
                 viewOrder.forEach(name => {
                     const view = viewsByTab[name];
                     if (view) view.setAttribute('aria-hidden', String(name !== tab));
@@ -1390,7 +1416,11 @@ src="<%- previewSrcs[0] || '' %>"
                 document.body.classList.toggle('about-mode', tab === 'about');
 
                 // Wake canvases that were parked while off-screen
-                setTimeout(() => {
+                viewTransitionTimer = setTimeout(() => {
+                    previousView.classList.remove('is-exiting');
+                    nextView.classList.remove('is-entering');
+                    viewport.classList.remove('is-switching');
+                    document.dispatchEvent(new CustomEvent('folio:view-transition-end'));
                     window.dispatchEvent(new Event('resize'));
                     window.dispatchEvent(new MouseEvent('mousemove', {
                         clientX: window.innerWidth / 2,
@@ -1456,6 +1486,7 @@ src="<%- previewSrcs[0] || '' %>"
         const videoItems = document.querySelectorAll('.playground-item');
         videoItems.forEach(item => {
             videoObserver.observe(item);
+            if (window.folioReducedMotion) return;
             mobileFocusObserver.observe(item);
 
             item.addEventListener('mouseenter', () => {

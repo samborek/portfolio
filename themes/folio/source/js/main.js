@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const reducedMotion = window.folioReducedMotion === true;
+  if (reducedMotion) {
+    document.querySelectorAll('video').forEach(video => {
+      video.autoplay = false;
+      video.loop = false;
+      video.pause();
+      video.controls = true;
+    });
+  }
   // --- Lenis smooth scroll (app views only, respects reduced motion) ---
   const lenisInstances = new Map();
 
@@ -155,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
       !url.includes('#') &&
       !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
 
-    if (isInternal && pageCover) {
+    if (isInternal && pageCover && !reducedMotion) {
       // Save scroll position before navigating away
       saveScrollState();
 
@@ -252,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         });
       } else {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
+        targetElement.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
       }
     });
   });
@@ -262,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const emblaInstances = [];
 
   const wakeUnicornScene = (scene) => {
-    if (!scene) return;
+    if (!scene || reducedMotion) return;
 
     if (scene.getAttribute('data-us-lazyload') === 'true') {
       scene.setAttribute('data-us-lazyload', 'false');
@@ -286,7 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const getEmblaOptions = () => ({
     loop: true,
     align: 'center',
-    duration: 34,
+    duration: reducedMotion ? 0 : 34,
+    watchDrag: !reducedMotion,
     dragFree: false,
     containScroll: 'keepSnaps',
   });
@@ -340,6 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const getSliderSettleMs = () => {
+      if (reducedMotion) return 0;
       const duration = window.getComputedStyle(sliderNode).getPropertyValue('--custom-slider-duration');
       return parseCssTimeMs(duration, 1720) + 80;
     };
@@ -1286,7 +1297,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         let visible = false;
+        let viewTransitionPaused = false;
         let frame = null;
+        const parentView = container.closest('.app-view');
+        const isActiveView = () => !parentView || parentView.classList.contains('is-active');
         let hover = 0;
         let targetHover = 0;
         let mouseX = 0.5;
@@ -1389,7 +1403,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const render = (now) => {
           frame = null;
-          if (!visible) return;
+          if (!visible || viewTransitionPaused || !isActiveView()) return;
 
           resize();
           const hoverEase = 0.08 / settings.cursorLag;
@@ -1438,9 +1452,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const requestRender = () => {
-          if (frame || !visible) return;
+          if (frame || !visible || viewTransitionPaused || !isActiveView()) return;
           frame = requestAnimationFrame(render);
         };
+
+        document.addEventListener('folio:view-transition-start', () => {
+          viewTransitionPaused = true;
+          if (frame) cancelAnimationFrame(frame);
+          frame = null;
+        });
+
+        document.addEventListener('folio:view-transition-end', () => {
+          viewTransitionPaused = false;
+          requestRender();
+        });
 
         container.addEventListener('pointermove', (event) => {
           const rect = canvas.getBoundingClientRect();
@@ -1498,7 +1523,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Unicorn Studio Handler
-  if (window.UnicornStudio) {
+  if (window.UnicornStudio && !reducedMotion) {
     enableDesktopUnicornScenes();
 
     UnicornStudio.init().then(() => {
@@ -2057,6 +2082,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastLoopKey = '';
 
     const runTopbarContrastLoop = () => {
+      if (reducedMotion) return;
       const ctx = getTopbarBackdropContext();
       const key = buildTopbarContrastKey(ctx);
       if (key !== lastLoopKey) {
@@ -2204,6 +2230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Resume Hover Preview ---
   const initResumeHoverPreview = () => {
+    if (reducedMotion) return;
     const preview = document.querySelector('.resume-hover-preview');
     const items = document.querySelectorAll('.resume-list-item');
     if (!preview || !items.length) return;

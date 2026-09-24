@@ -1,0 +1,37 @@
+/* Keep positioning transforms used by carousels and controls intact. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+    backdrop-filter: none !important;
+  }
+  #page-cover, .image-shader-canvas, .unicorn-scene canvas,
+  .unicorn-btn canvas, .unicorn-scene-skeleton, .image-skeleton,
+  .image-placeholder, .resume-hover-preview, .raw-shader-image::after {
+    display: none !important;
+  }
+  .reveal-on-scroll, .image-container img, .tile-image-wrapper img,
+  .tile-image-wrapper video, .unicorn-scene-poster,
+  .raw-shader-image > img, .playground-item video {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .reveal-on-scroll, .image-container img, .tile-image-wrapper img,
+  .tile-image-wrapper video, .raw-shader-image > img,
+  .playground-item:hover, .playground-item video {
+    transform: none !important;
+  }
+  .unicorn-scene { display: block !important; }
+  .raw-shader-image { display: block !important; }
+  .unicorn-scene-poster { display: block !important; }
+  .project-slide-item, .work-tile img, .dribbble-grid-item img,
+  .dribbble-grid-item video, .service-icon, .service-icon * {
+    filter: none !important;
+    transform: none !important;
+  }
+  .project-slide-item::after { display: none !important; }
+  .project-slide-item.has-mobile-static-first .mobile-static-first-slide {
+    display: none !important;
+  }
+}

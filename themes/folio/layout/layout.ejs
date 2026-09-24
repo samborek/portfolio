@@ -22,11 +22,10 @@
                 '@type': 'Person',
                 '@id': siteUrl + '/#person',
                 name: 'Michal Sambora',
-                alternateName: ['Michal Sambora', 'sambø', 'samborek'],
+                alternateName: ['SAMBO', 'SAMBOREK', 'sambø'],
                 jobTitle: 'Senior Product Designer',
                 description: 'Senior product designer, UI/UX designer, startup design partner, and AI-assisted design engineering collaborator based in Poland, working from Krakow on digital products, design systems, fintech, crypto, Web3, SaaS, mobile apps, web apps, and prototypes.',
                 url: siteUrl + '/',
-                image: metaImage,
                 email: theme.email || theme.connect?.email || 'contact@msambora.com',
                 address: {
                     '@type': 'PostalAddress',
@@ -71,13 +70,7 @@
                 '@type': 'WebSite',
                 '@id': siteUrl + '/#website',
                 name: 'Michal Sambora Portfolio',
-                alternateName: [
-                    'Product Designer Poland',
-                    'Product Designer Krakow',
-                    'Product Designer Kraków',
-                    'Startup Design Partner',
-                    'UI/UX Designer Poland'
-                ],
+                alternateName: ['SAMBO', 'SAMBOREK', 'sambø'],
                 url: siteUrl + '/',
                 publisher: { '@id': siteUrl + '/#person' },
                 inLanguage: 'en'
@@ -88,26 +81,10 @@
                 '@type': 'ProfessionalService',
                 '@id': siteUrl + '/#product-design-service',
                 name: 'Michal Sambora Product Design',
-                alternateName: [
-                    'Product designer in Poland',
-                    'Product designer in Krakow',
-                    'Product designer in Kraków',
-                    'Startup design partner',
-                    'Product design partner for startups',
-                    'Skilled product designer in Poland',
-                    'AI product designer',
-                    'AI UX designer',
-                    'AI design engineer',
-                    'Design engineering partner',
-                    'Senior UI/UX designer in Krakow',
-                    'UI/UX designer in Poland',
-                    'Design systems consultant Poland'
-                ],
                 description: 'Senior product design, UI/UX, design systems, AI-assisted prototyping, design engineering, and design-to-development support from Krakow, Poland for startups, SaaS, fintech, crypto, Web3, mobile app, and web app teams.',
                 url: siteUrl + '/',
                 image: metaImage,
                 founder: { '@id': siteUrl + '/#person' },
-                priceRange: '$$',
                 areaServed: [
                     { '@type': 'Country', name: 'Poland' },
                     { '@type': 'City', name: 'Krakow' },
@@ -145,12 +122,39 @@
                 ]
             });
         }
+        jsonLdGraph.push({
+            '@type': 'WebPage',
+            '@id': canonicalUrl + '#webpage',
+            url: canonicalUrl,
+            name: metaTitle,
+            description: metaDescription,
+            inLanguage: config.language || 'en',
+            isPartOf: { '@id': siteUrl + '/#website' },
+            about: { '@id': siteUrl + '/#person' },
+            ...(page.layout === 'project' ? { mainEntity: { '@id': canonicalUrl + '#project' } } : {})
+        });
+        if (page.layout === 'project') jsonLdGraph.push({
+            '@type': 'CreativeWork',
+            '@id': canonicalUrl + '#project',
+            name: page.title,
+            description: metaDescription,
+            url: canonicalUrl,
+            image: metaImage,
+            creator: { '@id': siteUrl + '/#person' },
+            mainEntityOfPage: { '@id': canonicalUrl + '#webpage' },
+            ...(page.website ? { about: { '@type': 'WebSite', name: page.title, url: page.website } } : {})
+        });
         const structuredData = {
             '@context': 'https://schema.org',
             '@graph': jsonLdGraph
         };
     %>
     <script>
+        // Reinitialize all media when the OS preference changes. beforeunload
+        // preserves the selected panel and scroll position in main.js.
+        const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+        window.folioReducedMotion = motionPreference.matches;
+        motionPreference.addEventListener('change', () => window.location.reload());
         // Initialize theme BEFORE any content renders to prevent flash
         (function () {
             const storedTheme = localStorage.getItem('theme');
@@ -170,6 +174,8 @@
     <meta name="keywords" content="<%= metaKeywords %>">
     <meta name="author" content="<%= config.author %>">
     <link rel="canonical" href="<%= canonicalUrl %>">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="sitemap" type="application/xml" href="<%= siteUrl %>/sitemap.xml">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -186,7 +192,7 @@
     <meta name="twitter:title" content="<%= metaTitle %>">
     <meta name="twitter:description" content="<%= metaDescription %>">
     <meta name="twitter:image" content="<%= metaImage %>">
-    <script type="application/ld+json"><%- JSON.stringify(structuredData) %></script>
+    <script type="application/ld+json"><%- JSON.stringify(structuredData).replace(/</g, '\\u003c') %></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -203,6 +209,8 @@
 
     <!-- Styles -->
     <%- css('css/style') %>
+    <%- css('css/reduced-motion') %>
+    <noscript><%- css('css/no-js') %></noscript>
 
         <!-- Vercel Analytics -->
         <script defer src="/_vercel/insights/script.js"></script>
